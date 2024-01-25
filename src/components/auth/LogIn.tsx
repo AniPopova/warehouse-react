@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-interface LoginProps {
+export interface LoginProps {
   onLogin: (email: string, password: string) => void;
 }
+
 
 const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -14,8 +15,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     onLogin(email, password);
   };
 
+  const handleBackToMainPage = () => {
+   window.location.href = '/home';
+  };
   return (
-    <div>
+    <div className='login'>
       <h2>Login</h2>
       <form>
         <label>
@@ -39,9 +43,13 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         <button type="button" onClick={handleLogin}>
           Login
         </button>
+        <br />
+        <button type="button" onClick={handleBackToMainPage}>
+          Back to main page
+        </button>
       </form>
     </div>
   );
 };
-
 export default Login;
+

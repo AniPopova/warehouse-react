@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-interface ClientFormProps {
+export interface ClientFormProps {
   onSubmit: (formData: ClientFormData) => void;
 }
 
-interface ClientFormData {
+export interface ClientFormData {
   name: string;
   address: string;
   identificationCode: string;
@@ -12,9 +12,9 @@ interface ClientFormData {
 
 const ClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<ClientFormData>({
-    name: '',
-    address: '',
-    identificationCode: ''
+    name: "",
+    address: "",
+    identificationCode: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,15 +30,19 @@ const ClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
     onSubmit(formData);
 
     setFormData({
-      name: '',
-      address: '',
-      identificationCode:''
+      name: "",
+      address: "",
+      identificationCode: "",
     });
+  };
+
+  const handleBackToPreviousPage = () => {
+    history.back();
   };
 
   return (
     <div>
-      <h2>Client Form</h2>
+      <h2>Register new client</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Name:
@@ -67,11 +71,15 @@ const ClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
             name="identificationCode"
             value={formData.identificationCode}
             onChange={handleChange}
-            />
-          </label>
-          <br />
+          />
+        </label>
+        <br />
 
         <button type="submit">Submit</button>
+        <br />
+        <button type="button" onClick={handleBackToPreviousPage}>
+          Back
+        </button>
       </form>
     </div>
   );
