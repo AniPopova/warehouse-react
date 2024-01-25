@@ -1,5 +1,32 @@
-import  { useState } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { useState } from "react";
+import { NavLink, Outlet } from "react-router-dom";
+
+import {
+  RootStyle,
+  NavContainer,
+  Logo,
+  BurgerMenu,
+  Bar,
+  NavLinks
+} from "./NavbarLayout";
+import { styled } from "styled-components";
+
+export const NavLinkStyled = styled(NavLink)`
+  text-decoration: none;
+  font-size: 10px;
+  padding: 4px;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 0.9rem;
+
+  &.active {
+    background-color: #333;
+    text-decoration: none;
+  }
+  &:hover {
+    text-decoration: none;
+  }
+`;
 
 
 export default function RootLayout() {
@@ -10,34 +37,33 @@ export default function RootLayout() {
   };
 
   return (
-    <div className={`root-layout ${isNavOpen ? 'nav-open' : ''}`}>
+    <RootStyle className={isNavOpen ? "nav-open" : ""}>
       <header>
-        <nav>
-          <div className="logo">
+        <NavContainer>
+          <Logo>
             <h1>WHM</h1>
-          </div>
-          <div className="burger-menu" onClick={toggleNav}>
-            <div className="bar"></div>
-            <div className="bar"></div>
-            <div className="bar"></div>
-          </div>
-          <div className={`nav-links ${isNavOpen ? 'show' : ''}`}>
-            <NavLink to="/" end>
+          </Logo>
+          <BurgerMenu onClick={toggleNav}>
+            <Bar></Bar>
+            <Bar></Bar>
+            <Bar></Bar>
+          </BurgerMenu>
+          <NavLinks className={isNavOpen ? "show" : ""}>
+            <NavLinkStyled to="/" end>
               Home
-            </NavLink>
-            <NavLink to="login">LogIn / SignUp</NavLink>
-            <NavLink to="client">Client</NavLink>
-            <NavLink to="product">Product</NavLink>
-            <NavLink to="order">Order</NavLink>
-            <NavLink to="order-detail">Order Detail</NavLink>
-            <NavLink to="warehouse">Warehouse</NavLink>
-            <NavLink to="invoice">Invoice</NavLink>
-          </div>
-        </nav>
+            </NavLinkStyled>
+            <NavLinkStyled to="login">LogIn / SignUp</NavLinkStyled>
+            <NavLinkStyled to="client">Client</NavLinkStyled>
+            <NavLinkStyled to="product">Product</NavLinkStyled>
+            <NavLinkStyled to="order">Order</NavLinkStyled>
+            <NavLinkStyled to="warehouse">Warehouse</NavLinkStyled>
+          </NavLinks>
+        </NavContainer>
       </header>
+
       <main>
         <Outlet />
       </main>
-    </div>
+    </RootStyle>
   );
 }

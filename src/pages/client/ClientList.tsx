@@ -1,5 +1,12 @@
-export default function ClientList(){
+import React from 'react';
+
+const ClientList: React.FC = () => {
+
   return (
-    <div></div>
-  )
-}
+    <div>
+      <h2>Client List</h2>
+    </div>
+  );
+};
+
+export default ClientList;

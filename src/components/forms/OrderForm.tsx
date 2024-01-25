@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-interface OrderFormProps {
+export interface OrderFormProps {
   onSubmit: (formData: OrderFormData) => void;
 }
 
@@ -10,7 +10,7 @@ export enum OrderType {
   DELIVERY = "DELIVERY",
 }
 
-interface OrderFormData {
+export interface OrderFormData {
   orderType: OrderType | "";
   clientId: string;
 }
@@ -41,6 +41,9 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
     });
   };
 
+  const handleBackToPreviousPage = () => {
+    history.back();
+  };
   return (
     <div>
       <h2>Order Form</h2>
@@ -70,6 +73,10 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
         </label>
         <br />
         <button type="submit">Submit</button>
+        <br />
+        <button type="button" onClick={handleBackToPreviousPage}>
+          Back
+        </button>
       </form>
     </div>
   );

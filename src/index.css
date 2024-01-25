@@ -1,11 +1,10 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family:  Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: rgba(130, 14, 14, 0.87);
+  background-color: #4d4949;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,11 +14,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #141ba6;
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: #000109;
 }
 
 body {
@@ -28,6 +27,11 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background:linear-gradient(rgba(248, 243, 243, 0.6), rgba(255, 255, 255, 0.7)), url('/src/warehouse.jpg') center / cover;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: rgba(0, 0, 0, 0.9); 
 }
 
 h1 {
@@ -56,13 +60,14 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: #2c3e4e;
     background-color: #ffffff;
   }
   a:hover {
-    color: #747bff;
+    color: #5f65ca;
   }
   button {
-    background-color: #f9f9f9;
+    background-color: #8d6a6a;
   }
 }
+

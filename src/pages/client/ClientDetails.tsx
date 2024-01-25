@@ -1,5 +1,17 @@
-export default function ClientDetails(){
+import React from 'react';
+
+const ClientDetails: React.FC = () => {
+
   return (
-    <div></div>
-  )
-}
+    <div>
+      <h2>Client Details</h2>
+      <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+  );
+};
+
+export default ClientDetails;

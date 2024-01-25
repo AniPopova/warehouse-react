@@ -1,5 +1,12 @@
-export default function ProductList(){
+import React from 'react';
+
+const ProductList: React.FC = () => {
+
   return (
-    <div></div>
-  )
-}
+    <div>
+      <h2>Product List</h2>
+    </div>
+  );
+};
+
+export default ProductList;

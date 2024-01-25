@@ -23,7 +23,6 @@ export default function Home() {
             <li>Inventory Tracking:</li>
             <li>Supplier Interaction:</li>
             <li>Reports and Analytics:</li>
-
             <li>Logout:</li>
           </ol>
         </div>

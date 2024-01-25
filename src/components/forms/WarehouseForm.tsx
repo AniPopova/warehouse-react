@@ -10,7 +10,7 @@ export enum ProductType {
 }
 
 
-interface WarehouseFormData {
+export interface WarehouseFormData {
   name: string;
   warehouseType: ProductType | "";
 }

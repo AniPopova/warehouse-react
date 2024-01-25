@@ -10,13 +10,13 @@ export const GlobalStyles = createGlobalStyle`
     padding: 0;
   }
 
-  /* Remove list styles (optional) */
+  /* Remove list styles */
   ul,
   ol {
     list-style: none;
   }
 
-  /* Remove default margin and padding for some elements (optional) */
+  /* Remove default margin and padding for some elements */
   body,
   h1,
   h2,
@@ -33,7 +33,7 @@ export const GlobalStyles = createGlobalStyle`
     padding: 0;
   }
 
-  /* Remove hyperlink text decoration (optional) */
+  /* Remove hyperlink text decoration */
   a {
     text-decoration: none;
   }
@@ -43,7 +43,7 @@ export const GlobalStyles = createGlobalStyle`
     tab-size: 4;
   }
 
-  /* Set default font family (optional) */
+  /* Set default font family */
   body {
     font-family: sans-serif;
   }

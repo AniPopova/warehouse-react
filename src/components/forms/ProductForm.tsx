@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-interface ProductFormProps {
+export interface ProductFormProps {
   onSubmit: (formData: ProductFormData) => void;
 }
 
@@ -14,7 +14,7 @@ export enum UnitType {
   LITTERS = 'l',
 }
 
-interface ProductFormData {
+export interface ProductFormData {
   name: string;
   productType: ProductType | "";
   unit: UnitType | "";
@@ -50,7 +50,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit }) => {
 
   return (
     <div>
-      <h2>Create product</h2>
+      <h2>Register new product</h2>
       <form onSubmit={handleSubmit}>
       <label>
           Product Name:
