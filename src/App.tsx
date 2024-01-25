@@ -12,39 +12,36 @@ import WarehouseForm from "./components/forms/WarehouseForm";
 import OrderDetailsData from "./pages/order_details/OrderDetailsData";
 
 const router = createBrowserRouter(
-   createRoutesFromElements(
-    <Route path="/" element={<RootLayout/>}>
-    < Route index element={< Home />} />
-    < Route path="login" element={< Login onLogin={function (_email: string, _password: string): void {
-      throw new Error("Function not implemented.");
-    } } />} />
-    < Route path="client" element={< ClientForm onSubmit={function (_formData: ClientFormData): void {
-         throw new Error("Function not implemented.");
-       } } />} />
-    < Route path="product" element={< ProductForm onSubmit={function (_formData: ProductFormData): void {
-         throw new Error("Function not implemented.");
-       } } />} />
-    < Route path="order" element={< OrderForm onSubmit={function (_formData: OrderFormData): void {
-         throw new Error("Function not implemented.");
-       } } />} />
-           < Route path="order_details" element={< OrderDetailsData/>}/>
-    < Route path="order_details" />
-    < Route path="warehouse" element={< WarehouseForm onSubmit={function (_formData: WarehouseFormData): void {
-         throw new Error("Function not implemented.");
-       } } />} />
+  createRoutesFromElements(
+    <Route path="/" element={<RootLayout />}>
+      <Route index element={<Home />} />
+      <Route path="login" element={<Login onLogin={(_email: string, _password: string): void => {
+        // handle login logic
+      }} />} />
+      <Route path="client" element={<ClientForm onSubmit={(_formData: ClientFormData): void => {
+        // handle client form submission
+      }} />} />
+      <Route path="product" element={<ProductForm onSubmit={(_formData: ProductFormData): void => {
+        // handle product form submission
+      }} />} />
+      <Route path="order" element={<OrderForm onSubmit={(_formData: OrderFormData): void => {
+        // handle order form submission
+      }} />} />
+      <Route path="order_details" element={<OrderDetailsData />} />
+      <Route path="warehouse" element={<WarehouseForm onSubmit={(_formData: WarehouseFormData): void => {
+        // handle warehouse form submission
+      }} />} />
     </Route>
-   )
+  )
 );
 
 const App: React.FC = () => {
-  const handleLogin = (email: string, password: string) => {
-    console.log("Login credentials:", { email, password });
-  };
+  // const handleLogin = (email: string, password: string) => {
+  //   console.log("Login credentials:", { email, password });
+  // };
 
   return (
-
     <RouterProvider router={router} />
-  
   );
 };
 
