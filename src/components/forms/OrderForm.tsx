@@ -1,28 +1,29 @@
-/* eslint-disable react-refresh/only-export-components */
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 interface OrderFormProps {
   onSubmit: (formData: OrderFormData) => void;
 }
 
 export enum OrderType {
-  TRANSFER = 'TRANSFER',
-  ORDER = 'ORDER',
-  DELIVERY = 'DELIVERY'
+  TRANSFER = "TRANSFER",
+  ORDER = "ORDER",
+  DELIVERY = "DELIVERY",
 }
 
 interface OrderFormData {
-  orderType: OrderType | '';
+  orderType: OrderType | "";
   clientId: string;
 }
 
 const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<OrderFormData>({
-    orderType: '',
-    clientId: ''
+    orderType: "", 
+    clientId: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -35,45 +36,39 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
     onSubmit(formData);
 
     setFormData({
-
+      orderType: "",
+      clientId: "",
     });
   };
 
   return (
     <div>
-      <h2>Client Form</h2>
+      <h2>Order Form</h2>
       <form onSubmit={handleSubmit}>
         <label>
-          Name:
+          Order Type:
+          <select
+            name="orderType"
+            value={formData.orderType}
+            onChange={handleChange}
+          >
+            <option value="">Select Order Type</option>
+            <option value={OrderType.TRANSFER}>Transfer</option>
+            <option value={OrderType.ORDER}>Order</option>
+            <option value={OrderType.DELIVERY}>Delivery</option>
+          </select>
+        </label>
+        <br />
+        <label>
+          Client ID:
           <input
             type="text"
-            name="name"
-            value={formData.name}
+            name="clientId"
+            value={formData.clientId}
             onChange={handleChange}
           />
         </label>
         <br />
-        <label>
-          Address:
-          <input
-            type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          UIC:
-          <input
-            type="text"
-            name="identificationCode"
-            value={formData.identificationCode}
-            onChange={handleChange}
-            />
-          </label>
-          <br />
-
         <button type="submit">Submit</button>
       </form>
     </div>
