@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
 :root {
-  --primary: #a86c5d;
-  --secondary: #304791;
+  --primary: #c9b3ae;
+  --secondary: #1a3694;
 }
 body {
   margin: 0;
@@ -27,29 +27,79 @@ button {
 }
 
 /* Navbar */
-header nav {
+/* Navbar */
+.root-layout header {
+  background: var(--secondary);
+  padding: 10px; /* Adjust padding if needed */
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+
+.root-layout nav {
   display: flex;
-  gap: 16px;
-  justify-content: end;
+  justify-content: space-between;
+  align-items: center;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-header nav h1 {
-  margin-right: auto;
-  border-bottom: 3px solid var(--primary);
+.root-layout .logo h1 {
+  margin: 0;
+  font-size: 1.5rem; /* Adjust font size as needed */
 }
 
-header nav a {
+.root-layout .burger-menu {
+  display: none;
+  cursor: pointer;
+}
+
+.root-layout .bar {
+  width: 20px; /* Adjust bar size if needed */
+  height: 2px; /* Adjust bar size if needed */
+  background-color: var(--primary);
+  margin: 4px 0;
+}
+
+.root-layout .nav-links {
+  display: flex;
+  gap: 12px; /* Adjust gap between links if needed */
+}
+
+.root-layout .nav-links a {
   text-decoration: none;
-  padding: 6px;
+  padding: 4px; /* Adjust padding if needed */
   border-radius: 4px;
+  color: #fff;
+  font-size: 0.9rem; /* Adjust font size as needed */
 }
 
-header nav a.active {
-  background: var(--primary);
+.root-layout .nav-links.show {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50px; /* Adjust top position if needed */
+  left: 0;
+  width: 100%;
+  background: var(--secondary);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Responsive styles */
+@media only screen and (max-width: 768px) {
+  .root-layout .burger-menu {
+    display: block;
+  }
+
+  .root-layout .nav-links {
+    display: none;
+  }
+
+  .root-layout.nav-open .nav-links {
+    display: flex;
+  }
+}
 /* page content */
 main {
   max-width: 1200px;
