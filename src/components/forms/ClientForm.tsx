@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RegBox, StyledButton, StyledInput } from "../../styles/CommonStyles";
 
 export interface ClientFormProps {
   onSubmit: (formData: ClientFormData) => void;
@@ -41,12 +42,13 @@ const ClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <div>
+    <RegBox>
       <h2>Register new client</h2>
       <form onSubmit={handleSubmit}>
+        <br />
         <label>
           Name:
-          <input
+          <StyledInput
             type="text"
             name="name"
             value={formData.name}
@@ -56,7 +58,7 @@ const ClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
         <br />
         <label>
           Address:
-          <input
+          <StyledInput
             type="text"
             name="address"
             value={formData.address}
@@ -66,7 +68,7 @@ const ClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
         <br />
         <label>
           UIC:
-          <input
+          <StyledInput
             type="text"
             name="identificationCode"
             value={formData.identificationCode}
@@ -74,14 +76,12 @@ const ClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
           />
         </label>
         <br />
-
-        <button type="submit">Submit</button>
-        <br />
-        <button type="button" onClick={handleBackToPreviousPage}>
+        <StyledButton type="button">Submit</StyledButton>
+        <StyledButton type="button" onClick={handleBackToPreviousPage}>
           Back
-        </button>
+        </StyledButton>
       </form>
-    </div>
+    </RegBox>
   );
 };
 

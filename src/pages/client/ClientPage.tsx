@@ -1,9 +1,12 @@
 import React from "react";
+import ClientForm from "../../components/forms/ClientForm";
+import {
+  PageWrapper,
+  Explanation,
+  StyledButton,
+} from "../../styles/CommonStyles";
 import ClientDetails from "./ClientDetails";
 import ClientList from "./ClientList";
-import ClientForm, { ClientFormData } from "../../components/forms/ClientForm";
-import { StyledButton } from "../../components/layouts/ButtonsLayout";
-import { PageWrapper, Explanation } from "../../components/layouts/PageLayout";
 
 const ClientPage = () => {
   const [isNewClient, setIsNewClient] = React.useState<boolean | null>(null);
@@ -15,12 +18,6 @@ const ClientPage = () => {
   const handleBackToPreviousPage = () => {
     history.back();
   };
-
-  function onSignUp(formData: ClientFormData): void {
-    console.log(formData);
-
-    throw new Error("Function not implemented."); //TODO
-  }
 
   return (
     <PageWrapper>
@@ -52,7 +49,11 @@ const ClientPage = () => {
           </div>
         </>
       ) : isNewClient ? (
-        <ClientForm onSubmit={onSignUp} />
+        <ClientForm
+          onSubmit={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
       ) : (
         <>
           <ClientList />

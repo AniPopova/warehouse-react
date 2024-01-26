@@ -1,13 +1,14 @@
 import React, { useState } from "react";
+import { StyledButton } from "../../styles/CommonStyles";
 
 interface UserFormProps {
   onSubmit: (formData: UserFormData) => void;
 }
 
 export enum UserRights {
-  OWNER = 'OWNER',
-  OPERATOR = 'OPERATOR',
-  VIEWER = 'VIEWER',
+  OWNER = "OWNER",
+  OPERATOR = "OPERATOR",
+  VIEWER = "VIEWER",
 }
 
 interface UserFormData {
@@ -19,8 +20,8 @@ interface UserFormData {
 
 const UserForm: React.FC<UserFormProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<UserFormData>({
-    username:"",
-    email: "", 
+    username: "",
+    email: "",
     password: "",
     userRole: "",
   });
@@ -40,8 +41,8 @@ const UserForm: React.FC<UserFormProps> = ({ onSubmit }) => {
     onSubmit(formData);
 
     setFormData({
-      username:"",
-      email: "", 
+      username: "",
+      email: "",
       password: "",
       userRole: "",
     });
@@ -51,7 +52,7 @@ const UserForm: React.FC<UserFormProps> = ({ onSubmit }) => {
     <div>
       <h2>Registration for new users</h2>
       <form onSubmit={handleSubmit}>
-      <label>
+        <label>
           Username:
           <input
             type="text"
@@ -95,7 +96,7 @@ const UserForm: React.FC<UserFormProps> = ({ onSubmit }) => {
           </select>
         </label>
         <br />
-        <button type="submit">Submit</button>
+        <StyledButton type="submit">Submit</StyledButton>
       </form>
     </div>
   );

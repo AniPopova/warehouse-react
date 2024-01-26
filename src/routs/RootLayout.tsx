@@ -1,33 +1,32 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
-import {
-  RootStyle,
-  NavContainer,
-  Logo,
-  BurgerMenu,
-  Bar,
-  NavLinks
-} from "./NavbarLayout";
 import { styled } from "styled-components";
+import {
+  Bar,
+  BurgerMenu,
+  Logo,
+  NavContainer,
+  NavLinks,
+  RootStyle,
+} from "../styles/CommonStyles";
 
 export const NavLinkStyled = styled(NavLink)`
   text-decoration: none;
-  font-size: 10px;
-  padding: 4px;
-  border-radius: 4px;
+  font-size: 8px;
+  padding: 8px 8px;
+  align-items: right;
+  justify-content: space-evenly;
   color: #fff;
-  font-size: 0.9rem;
 
   &.active {
-    background-color: #333;
+    background-color: #544949;
     text-decoration: none;
   }
   &:hover {
     text-decoration: none;
   }
 `;
-
 
 export default function RootLayout() {
   const [isNavOpen, setIsNavOpen] = useState(false);

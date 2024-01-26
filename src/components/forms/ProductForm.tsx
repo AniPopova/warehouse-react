@@ -1,4 +1,11 @@
 import React, { useState } from "react";
+import {
+  RegBox,
+  StyledButton,
+  StyledInput,
+  StyledOption,
+  StyledSelect,
+} from "../../styles/CommonStyles";
 
 export interface ProductFormProps {
   onSubmit: (formData: ProductFormData) => void;
@@ -10,8 +17,8 @@ export enum ProductType {
 }
 
 export enum UnitType {
-  KILOGRAMS = 'kg',
-  LITTERS = 'l',
+  KILOGRAMS = "kg",
+  LITTERS = "l",
 }
 
 export interface ProductFormData {
@@ -22,8 +29,8 @@ export interface ProductFormData {
 
 const ProductForm: React.FC<ProductFormProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<ProductFormData>({
-    name:"",
-    productType: "", 
+    name: "",
+    productType: "",
     unit: "",
   });
 
@@ -42,19 +49,23 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit }) => {
     onSubmit(formData);
 
     setFormData({
-      name:"",
+      name: "",
       productType: "",
       unit: "",
     });
   };
 
+  const handleBackToMainPage = () => {
+    history.back();
+  };
+
   return (
-    <div>
+    <RegBox>
       <h2>Register new product</h2>
       <form onSubmit={handleSubmit}>
-      <label>
+        <label>
           Product Name:
-          <input
+          <StyledInput
             type="text"
             name="name"
             value={formData.name}
@@ -64,33 +75,38 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit }) => {
         <br />
         <label>
           Product Type:
-          <select
+          <StyledSelect
             name="productType"
             value={formData.productType}
             onChange={handleChange}
           >
-            <option value="">Select Product Type</option>
-            <option value={ProductType.LIQUID}>liquid</option>
-            <option value={ProductType.NON_LIQUID}>non-liquid</option>
-          </select>
+            <StyledOption value="">Select Product Type</StyledOption>
+            <StyledOption value={ProductType.LIQUID}>liquid</StyledOption>
+            <StyledOption value={ProductType.NON_LIQUID}>
+              non-liquid
+            </StyledOption>
+          </StyledSelect>
         </label>
         <br />
         <label>
           Unit Type:
-          <select
+          <StyledSelect
             name="productType"
             value={formData.unit}
             onChange={handleChange}
           >
-            <option value="">Select Unit</option>
-            <option value={UnitType.LITTERS}>l</option>
-            <option value={UnitType.KILOGRAMS}>kg</option>
-          </select>
+            <StyledOption value="">Select Unit</StyledOption>
+            <StyledOption value={UnitType.LITTERS}>l</StyledOption>
+            <StyledOption value={UnitType.KILOGRAMS}>kg</StyledOption>
+          </StyledSelect>
         </label>
         <br />
-        <button type="submit">Submit</button>
+        <StyledButton type="button">Submit</StyledButton>
+        <StyledButton type="button" onClick={handleBackToMainPage}>
+          Back
+        </StyledButton>
       </form>
-    </div>
+    </RegBox>
   );
 };
 

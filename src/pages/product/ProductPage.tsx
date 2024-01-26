@@ -1,10 +1,10 @@
 import React from "react";
 import ProductList from "./ProductList";
-import ProductForm, { ProductFormData } from "../../components/forms/ProductForm";
-import { StyledButton } from "../../components/layouts/ButtonsLayout";
-import { PageWrapper } from "../../components/layouts/PageLayout";
+import ProductForm, {
+  ProductFormData,
+} from "../../components/forms/ProductForm";
 import ProductDetails from "./ProductDetail";
-
+import { PageWrapper, RegBox, StyledButton } from "../../styles/CommonStyles";
 
 const ProductPage = () => {
   const [isNewProduct, setIsNewProduct] = React.useState<boolean | null>(null);
@@ -27,9 +27,9 @@ const ProductPage = () => {
     <PageWrapper>
       {isNewProduct === null ? (
         <>
-        <div>
-          <br />
-          <p>Choose one of the options</p>
+          <RegBox>
+            <br />
+            <p>Choose one of the options</p>
             <br />
             <StyledButton type="button" onClick={() => handleAnswer(true)}>
               Register new product
@@ -47,7 +47,7 @@ const ProductPage = () => {
               Back
             </StyledButton>
             <br />
-          </div>
+          </RegBox>
         </>
       ) : isNewProduct ? (
         <ProductForm onSubmit={onSignUp} />
@@ -66,5 +66,3 @@ const ProductPage = () => {
 };
 
 export default ProductPage;
-
-
