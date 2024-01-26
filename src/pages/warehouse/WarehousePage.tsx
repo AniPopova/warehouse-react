@@ -1,14 +1,15 @@
 import React from "react";
-import WarehouseForm, { WarehouseFormData } from "../../components/forms/WarehouseForm";
-import { StyledButton } from "../../components/layouts/ButtonsLayout";
-import { PageWrapper } from "../../components/layouts/PageLayout";
+import WarehouseForm, {
+  WarehouseFormData,
+} from "../../components/forms/WarehouseForm";
+import { PageWrapper, StyledButton } from "../../styles/CommonStyles";
 import WarehouseDetails from "./WarehouseDetails";
 import WarehouseList from "./WarehouseList";
 
-
-
 const WarehousePage = () => {
-  const [isNewWarehouse, setIsNewWarehouse] = React.useState<boolean | null>(null);
+  const [isNewWarehouse, setIsNewWarehouse] = React.useState<boolean | null>(
+    null
+  );
 
   const handleAnswer = (answer: boolean) => {
     setIsNewWarehouse(answer);
@@ -28,10 +29,10 @@ const WarehousePage = () => {
     <PageWrapper>
       {isNewWarehouse === null ? (
         <>
-        <div>
-          <br />
-          <p>Choose one of the options</p>
-          <br />
+          <div>
+            <br />
+            <p>Choose one of the options</p>
+            <br />
             <StyledButton type="button" onClick={() => handleAnswer(true)}>
               Register new Warehouse
             </StyledButton>
@@ -67,5 +68,3 @@ const WarehousePage = () => {
 };
 
 export default WarehousePage;
-
-

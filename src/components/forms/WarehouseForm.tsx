@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { StyledButton } from "../../styles/CommonStyles";
 
 interface WarehouseFormProps {
   onSubmit: (formData: WarehouseFormData) => void;
@@ -9,7 +10,6 @@ export enum ProductType {
   NON_LIQUID = "NON_LIQUID",
 }
 
-
 export interface WarehouseFormData {
   name: string;
   warehouseType: ProductType | "";
@@ -17,8 +17,8 @@ export interface WarehouseFormData {
 
 const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<WarehouseFormData>({
-    name:"",
-    warehouseType: "", 
+    name: "",
+    warehouseType: "",
   });
 
   const handleChange = (
@@ -36,7 +36,7 @@ const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
     onSubmit(formData);
 
     setFormData({
-      name:"",
+      name: "",
       warehouseType: "",
     });
   };
@@ -45,7 +45,7 @@ const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
     <div>
       <h2>Create Warehouse</h2>
       <form onSubmit={handleSubmit}>
-      <label>
+        <label>
           Warehouse Name:
           <input
             type="text"
@@ -68,8 +68,8 @@ const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
           </select>
         </label>
         <br />
-        
-        <button type="submit">Submit</button>
+
+        <StyledButton type="submit">Submit</StyledButton>
       </form>
     </div>
   );
