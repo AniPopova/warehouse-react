@@ -1,32 +1,33 @@
-import React from "react";
 import {
   createBrowserRouter,
   Route,
   createRoutesFromElements,
   RouterProvider,
 } from "react-router-dom";
-import Home from "./pages/Home/HomePage";
-import RootLayout from "./routs/RootLayout";
+import Home from "./pages/BasicView/HomePage";
 import AuthPage from "./pages/Auth/AuthPage";
-import ClientPage from "./pages/Client/ClientPage";
-import OrderPage from "./pages/Order/OrderPage";
-import ProductPage from "./pages/Product/ProductPage";
-import WarehousePage from "./pages/Warehouse/WarehousePage";
+import RootLayout from "./routs/RootLayout";
+import Client from "./pages/Client/Client";
+import Order from "./pages/Order/Order";
+import Product from "./pages/Product/Product";
+import Warehouse from "./pages/Warehouse/Warehouse";
+import BestClientReport from "./pages/Order/OrderDetails/BestClientReport";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />} />
       <Route path="login" element={<AuthPage />} />
-      <Route path="client" element={<ClientPage />} />
-      <Route path="product" element={<ProductPage />} />
-      <Route path="order" element={<OrderPage />} />
-      <Route path="warehouse" element={<WarehousePage />} />
+      <Route path="client" element={<Client />} />
+      <Route path="product" element={<Product />} />
+      <Route path="order" element={<Order />} />
+      <Route path="bestClient" element={<BestClientReport />} />
+      <Route path="warehouse" element={<Warehouse />} />
     </Route>
   )
 );
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <>
       <RouterProvider router={router} />

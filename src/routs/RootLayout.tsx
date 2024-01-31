@@ -1,32 +1,11 @@
+
 import { useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import { RootStyle, NavContainer, Logo, BurgerMenu, Bar, NavLinks } from "../styles/CommonStyles";
+import { NavLinkStyled } from "./Rout.style";
+import Header from "../pages/BasicView/Header/Header";
+import { imageSrcPath } from "../pages/BasicView/Header/Header.static";
 
-import { styled } from "styled-components";
-import {
-  Bar,
-  BurgerMenu,
-  Logo,
-  NavContainer,
-  NavLinks,
-  RootStyle,
-} from "../styles/CommonStyles";
-
-export const NavLinkStyled = styled(NavLink)`
-  text-decoration: none;
-  font-size: 8px;
-  padding: 8px 8px;
-  align-items: right;
-  justify-content: space-evenly;
-  color: #fff;
-
-  &.active {
-    background-color: #544949;
-    text-decoration: none;
-  }
-  &:hover {
-    text-decoration: none;
-  }
-`;
 
 export default function RootLayout() {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -37,15 +16,23 @@ export default function RootLayout() {
 
   return (
     <RootStyle className={isNavOpen ? "nav-open" : ""}>
+      <Header />
       <header>
         <NavContainer>
           <Logo>
-            <h1>WHM</h1>
+          <img
+            src={imageSrcPath}
+            width="30"
+            height="30"
+            alt="box"
+          />
           </Logo>
           <BurgerMenu onClick={toggleNav}>
-            <Bar></Bar>
-            <Bar></Bar>
-            <Bar></Bar>
+            <Bar>LogIn / SignUp</Bar>
+            <Bar>Client</Bar>
+            <Bar>Product</Bar>
+            <Bar>Order</Bar>
+            <Bar>Warehouse</Bar>
           </BurgerMenu>
           <NavLinks className={isNavOpen ? "show" : ""}>
             <NavLinkStyled to="/" end>

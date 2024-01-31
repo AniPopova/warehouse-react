@@ -1,14 +1,12 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
-  /* Box sizing border-box reset */
   *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+  *{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
   /* Remove list styles */
   ul,
@@ -61,11 +59,11 @@ a:hover {
 }
 
 body {
-  margin: 5px;
+  margin: 0;
   place-items: center;
-  min-width: 320px;
+  min-width: 100vh;
   min-height: 100vh;
-  background:linear-gradient(rgba(248, 243, 243, 0.6), rgba(255, 255, 255, 0.7)), url('/src/warehouse.jpg') center / cover;
+  background:linear-gradient(rgba(248, 243, 243, 0.6), rgba(255, 255, 255, 0.7)), url('/src/assets/warehouse.jpg');
   background-size: cover;
   background-repeat: no-repeat;
 }

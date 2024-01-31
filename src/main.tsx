@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import { Wrapper } from "./styles/CommonStyles.ts";
+
 import GlobalStyles from "./styles/GlobalStyleResetter.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <GlobalStyles />
-    <Wrapper>
+
       <App />
-    </Wrapper>
+
   </React.StrictMode>
 );
