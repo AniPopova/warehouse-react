@@ -3,11 +3,12 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Client, clientUrl } from "./Client.constants";
 import { StyledButton, StyledButtonDelete, StyledButtonUpdate, StyledTable } from "./Client.style";
-
+import { useNavigate } from "react-router-dom";
 
 function ClientList() {
 
   const [records, setRecords] = useState<Client[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -22,7 +23,7 @@ function ClientList() {
   }, []);
 
   const handleBackToPreviousPage = () => {
-    history.back();
+    navigate('/');
   };
 
   function handleRegisterNewClient(): void {
@@ -34,7 +35,7 @@ function ClientList() {
       <div className="mt-3">
         <h3>Registered clients</h3>
         <br />
-        <StyledTable className="table table-bordered">
+        <StyledTable className="table ">
           <thead className="thead-dark">
             <tr>
               <th>Name</th>
@@ -62,7 +63,6 @@ function ClientList() {
         <StyledButton type="button" onClick={() => handleRegisterNewClient()}>
           Register new client
         </StyledButton>
-        <br />
         <br />
         <StyledButton type="button" onClick={() => handleBackToPreviousPage()}>
           Back

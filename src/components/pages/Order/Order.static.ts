@@ -11,6 +11,18 @@ export enum OrderType {
 }
 
 export interface BestClient{
+  ordersCount: string;
+  spentMoney: string;
+  clientName: string;
+}
+
+export interface BestProduct{
+  order_count: string;
+  spent_money: string;
+  client_name: string;
+}
+
+export interface ProductsOnStock{
   order_count: string;
   spent_money: string;
   client_name: string;

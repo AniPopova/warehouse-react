@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 
 export const Wrapper = styled.div`
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
 
 body {
   /* margin: 5px; */
@@ -192,7 +192,7 @@ export const RootStyle = styled.div`
 
 export const NavContainer = styled.nav`
   display: flex;
-  justify-content: space-around;
+  justify-content: end;
   background-color: grey;
   font-size: 12px;
   align-items: right;
@@ -204,6 +204,7 @@ export const Logo = styled.div`
   h1 {
     margin: 0;
     align-self: left;
+    justify-content: right;
     font-size: 18px;
   }
 `;

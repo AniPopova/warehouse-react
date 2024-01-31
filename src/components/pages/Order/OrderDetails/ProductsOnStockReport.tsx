@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { BestClient, bestBuyerReportUrl } from "../Order.constants";
-import { StyledButton } from "../../../styles/CommonStyles";
+import { BestClient, bestBuyerReportUrl } from "../Order.static";
+import { StyledButton } from "../Order.style";
 
-
-function BestClientReport() {
+function ProductsOnStock() {
   const [records, setRecords] = useState<BestClient[]>([]);
 
   useEffect(() => {
@@ -30,7 +29,7 @@ function BestClientReport() {
         <table className="table table">
           <thead className="thead-dark">
             <tr>
-            <th>Client name</th>
+              <th>Client name</th>
               <th>Orders done</th>
               <th>Money spent</th>
             </tr>
@@ -38,9 +37,9 @@ function BestClientReport() {
           <tbody>
             {records.map((record: BestClient, index) => (
               <tr key={index}>
-                <td>{record.client_name}</td>
+                {/* <td>{record.client_name}</td>
                 <td>{record.order_count}</td>
-                <td>{record.spent_money}</td>
+                <td>{record.spent_money}</td> */}
               </tr>
             ))}
           </tbody>
@@ -56,4 +55,4 @@ function BestClientReport() {
   );
 }
 
-export default BestClientReport;
+export default ProductsOnStock;

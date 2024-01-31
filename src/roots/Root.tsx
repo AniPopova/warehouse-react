@@ -1,11 +1,16 @@
-
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { RootStyle, NavContainer, Logo, BurgerMenu, Bar, NavLinks } from "../styles/CommonStyles";
-import { NavLinkStyled } from "./Rout.style";
-import Header from "../pages/BasicView/Header/Header";
-import { imageSrcPath } from "../pages/BasicView/Header/Header.static";
-
+import {
+  RootStyle,
+  NavContainer,
+  Logo,
+  BurgerMenu,
+  Bar,
+  NavLinks,
+} from "../styles/CommonStyles";
+import { NavLinkStyled } from "./Root.style";
+import Header from "../components/BasicView/Header/Header";
+import { imageSrcPath } from "../components/BasicView/Header/Header.static";
 
 export default function RootLayout() {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -20,12 +25,7 @@ export default function RootLayout() {
       <header>
         <NavContainer>
           <Logo>
-          <img
-            src={imageSrcPath}
-            width="30"
-            height="30"
-            alt="box"
-          />
+            <img src={imageSrcPath} width="30" height="30" alt="box" />
           </Logo>
           <BurgerMenu onClick={toggleNav}>
             <Bar>LogIn / SignUp</Bar>
