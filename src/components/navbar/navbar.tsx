@@ -2,12 +2,11 @@ import { useState } from "react";
 import "./NavBar.style"
 
 interface NavBarProps {
-  brandName: string;
   imageSrcPath: string;
   navItems: string[];
 }
 
-function NavBar({ brandName, imageSrcPath, navItems }: NavBarProps) {
+function NavBar({ imageSrcPath, navItems }: NavBarProps) {
 
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
@@ -22,7 +21,6 @@ function NavBar({ brandName, imageSrcPath, navItems }: NavBarProps) {
             className="d-inline-block align-center"
             alt=""
           />
-          <span className="fw-bolder fs-4">{brandName}</span>
         </a>
         <button
           className="navbar-toggler"

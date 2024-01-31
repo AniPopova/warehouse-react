@@ -10,8 +10,7 @@ const AuthPage = () => {
   };
 
   return (
-    <RegBox>
-      
+    <RegBox>     
       {isNewUser === null ? (
         <>
           <Question>Are you a new user?</Question>

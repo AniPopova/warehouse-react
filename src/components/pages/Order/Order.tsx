@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import {Order, orderUrl} from "./Order.constants";
-import { StyledButton } from "../Auth/Auth.style";
+import { Order, orderUrl } from "./Order.static";
 import BestClientReport from "./OrderDetails/BestClientReport";
+import { StyledButton, StyledTable } from "./Order.style";
+import { useNavigate } from "react-router-dom";
+import BestProductReport from "./OrderDetails/BestProductReport";
+import ProductsOnStock from "./OrderDetails/ProductsOnStockReport";
 
 function OrderList() {
   const [records, setRecords] = useState<Order[]>([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get(orderUrl)
       .then((res) => {
         const data: Order[] = res.data;
         if (data.length > 0) {
-          // setColumns(Object.keys(data[0]));
           setRecords(data);
         }
       })
@@ -21,7 +23,7 @@ function OrderList() {
   }, []);
 
   const handleBackToPreviousPage = () => {
-    history.back();
+    navigate('/');
   };
 
   function handleRegisterNewOrder(): void {
@@ -31,20 +33,20 @@ function OrderList() {
   return (
     <div className="container">
       <br />
-       <StyledButton type="button" onClick={()=>BestClientReport()}>
-          See best client
-        </StyledButton>
-        {/* <br />
-        <StyledButton type="button" onClick={}>
+      <StyledButton type="button" onClick={() => BestClientReport()}>
+        See best client
+      </StyledButton>
+      <br />
+        <StyledButton type="button" onClick={() => BestProductReport()}>
           Check product on stock
         </StyledButton>
         <br />
-        <StyledButton type="button" onClick={}>
+        <StyledButton type="button" onClick={() => ProductsOnStock()}>
           See best product
-        </StyledButton> */}
+        </StyledButton>
       <div className="mt-3">
         <h3>Registered orders</h3>
-        <table className="table table-bordered">
+        <StyledTable className="table table-bordered">
           <thead className="thead-dark">
             <tr>
               <th>Type</th>
@@ -59,7 +61,6 @@ function OrderList() {
               <tr key={index}>
                 <td>{record.type}</td>
                 <td>{record.client}</td>
-                <td>{new Date(record.createdAt).toLocaleString()}</td>
                 <td>
                   <button type="submit">Update</button>
                 </td>
@@ -69,16 +70,16 @@ function OrderList() {
               </tr>
             ))}
           </tbody>
-        </table>
+        </StyledTable>
         <div className="container">
-           <br />
-        <StyledButton type="button" onClick={() => handleRegisterNewOrder()}>
-          Register new order
-        </StyledButton>
-        <br />
-        <StyledButton type="button" onClick={handleBackToPreviousPage}>
-          Back
-        </StyledButton> 
+          <br />
+          <StyledButton type="button" onClick={() => handleRegisterNewOrder()}>
+            Register new order
+          </StyledButton>
+          <br />
+          <StyledButton type="button" onClick={() => handleBackToPreviousPage()}>
+            Back
+          </StyledButton>
         </div>
       </div>
     </div>

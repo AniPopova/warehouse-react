@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Warehouse, warehouseUrl } from "./Warehouse.constants";
+import { Warehouse, warehouseUrl } from "./Warehouse.static";
 import axios from "axios";
 import { StyledTable } from "./Warehouse.style";
 
