@@ -1,26 +1,41 @@
 import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { loginUrl } from "./Auth.static";
 import {
-  StyledInput,
   StyledLabel,
-  RegBox,
+  StyledInput,
   StyledButton,
-} from "../../styles/CommonStyles";
+  SignUpBox,
+} from "./Auth.style";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // authentication logic here TODO FIX BACKEND and to implement it
-    console.log("Logging in with:", { email, password });
-    Login();
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post(loginUrl, { email, password });
+
+      console.log("You are successfully logged in", response.data);
+      saveTokenToLocalStorage(response.data.token);
+      navigate("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  };
+
+  const saveTokenToLocalStorage = (token: string) => {
+    localStorage.setItem("token", token);
   };
 
   const handleBackToMainPage = () => {
-    history.back();
+    navigate("/");
   };
+
   return (
-    <RegBox>
+    <SignUpBox>
       <h2>Login</h2>
       <form>
         <br />
@@ -46,14 +61,23 @@ const Login = () => {
           />
         </StyledLabel>
         <br />
-        <StyledButton type="button" onClick={handleLogin}>
+        <StyledButton
+          className="btn btn-success btn-sm"
+          type="button"
+          onClick={handleLogin}
+        >
           Login
         </StyledButton>
-        <StyledButton type="button" onClick={handleBackToMainPage}>
+        <StyledButton
+          className="btn btn-success btn-sm"
+          type="button"
+          onClick={() => handleBackToMainPage()}
+        >
           Back
         </StyledButton>
       </form>
-    </RegBox>
+    </SignUpBox>
   );
 };
+
 export default Login;

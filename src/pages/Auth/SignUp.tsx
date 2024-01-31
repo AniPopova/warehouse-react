@@ -1,85 +1,84 @@
 import { useState } from "react";
+import { signUpUrl } from "./Auth.static";
+import axios from "axios";
 import {
-  StyledForm,
+  SignUpBox,
   StyledButton,
-  StyledLabel,
+  StyledForm,
   StyledInput,
-} from "../../styles/CommonStyles";
+  StyledLabel,
+} from "./Auth.style";
+import { useNavigate } from "react-router-dom";
 
-export const SignUp = () => {
+const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSignUp = () => {
-    console.log("SignUp ", { username, email, password });
-    SignUp();
+  const handleSignUp = async () => {
+    try {
+      const response = await axios.post(signUpUrl, {
+        username,
+        email,
+        password,
+      });
+      console.log("Sign Up successfully", response.data);
+      navigate('/');
+    } catch (error) {
+      console.log("Sorry you failed, try again.");
+    }
   };
 
   const handleBackToMainPage = () => {
-    history.back();
+    window.history.back();
   };
+
   return (
-    <div>
-      <h2>Sign Up</h2>
-      <StyledForm>
-        <br />
-        <StyledLabel>
-          Username:
-          <StyledInput
-            type="text"
-            name="text"
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </StyledLabel>
-        <br />
-        <StyledLabel>
-          Email:
-          <StyledInput
-            type="email"
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </StyledLabel>
-        <br />
-        <StyledLabel>
-          Password:
-          <input
-            type="password"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </StyledLabel>
-        <br />
-        <StyledButton type="button" onClick={handleSignUp}>
-          Sign Up
-        </StyledButton>
-        <br />
-        <StyledButton type="button" onClick={handleBackToMainPage}>
-          Back to main page
-        </StyledButton>
-      </StyledForm>
-    </div>
+    <SignUpBox>
+      <div className="card">
+        <div className="card-body">
+          <h4 >Sign Up</h4>
+          <br />
+          <StyledForm>
+            <StyledLabel>
+              Username:
+              <StyledInput
+                type="text"
+                name="text"
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </StyledLabel>
+            <StyledLabel>
+              Email:
+              <StyledInput
+                type="email"
+                name="email"
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </StyledLabel>
+            <StyledLabel>
+              Password:
+              <StyledInput
+                type="password"
+                name="password"
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </StyledLabel>
+            <StyledButton type="button" onClick={handleSignUp}>
+              Sign Up
+            </StyledButton>
+            <StyledButton type="button" onClick={handleBackToMainPage}>
+              Back
+            </StyledButton>
+          </StyledForm>
+        </div>
+      </div>
+    </SignUpBox>
   );
 };
-
-// const SignUp: React.FC = () => {
-//   return (
-//     <MDBContainer fluid className=''>
-//       <MDBCardBody className='px-5'>
-//         <h2>Create an account</h2>
-//         <Wrapper>
-//           <StyledMDBInput label='Your Name' type='text'/>
-//           <StyledMDBInput label='Your Email' type='email'/>
-//           <StyledMDBInput label='Password' type='password'/>
-//           <StyledMDBInput label='Repeat your password' type='password'/>
-//         </Wrapper>
-//       </MDBCardBody>
-//     </MDBContainer>
-//   );
-// }
 
 export default SignUp;

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import OrderForm, { OrderFormData } from "../../components/forms/OrderForm";
-import OrderList from "./OrderList";
+import OrderList from "./Order";
 import OrderDetails from "./OrderDetails";
 import { StyledButton, Explanation } from "../../styles/CommonStyles";
 

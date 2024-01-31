@@ -69,7 +69,7 @@ const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
         </label>
         <br />
 
-        <StyledButton type="submit">Submit</StyledButton>
+        <StyledButton type="submit">Save</StyledButton>
       </form>
     </div>
   );

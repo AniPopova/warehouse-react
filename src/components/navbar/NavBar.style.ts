@@ -2,17 +2,24 @@ import styled from 'styled-components';
 
 
 export const Wrapper = styled.div`
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+body {
+  /* margin: 5px; */
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background:linear-gradient(rgba(248, 243, 243, 0.6), rgba(255, 255, 255, 0.7)), url('.src/warehouse.jpg') center / cover;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
+
 
 /* Navbar */
 .root-layout header {
   display: flex;
-  position: flex;
+  /* padding: 10px;  */
+  position: fixed;
   width: 100%;
   top: 0;
   z-index: 1000;
@@ -95,7 +102,7 @@ export const StyledLabel = styled.label`
 export const StyledInput = styled.input`
   font-size: 8px;
   background-color: bisque;
-  color: black;
+  color: bisque;
 `;
 
 
@@ -109,6 +116,7 @@ export const StyledForm = styled.form`
   flex-flow: row wrap;
   margin-bottom: 15px;
   padding-bottom: 25px;
+  gap: 2%;
   border-bottom: 1px solid #eaeaea;
 `;
 
@@ -116,22 +124,41 @@ export const StyledForm = styled.form`
 export const StyledMDBInput = styled.input`
   size: 'lg';
   margin-bottom: '4px';
-  color: black;
 `;
 
 export const RegBox = styled.div`
-  padding: 100px;
+  padding: 12px;
   font-size: 8px;
   color: bisque;
-  height: 300px;
-  width: 100px;
+  max-width: 1440px;
+  width: auto;
   margin: 20px auto;
+  border-radius: 12px;
+  
+  background: #645e5e;
   opacity: 0.12rem;
   @media (max-width: 600px) {
     padding: 3px;
   }
 `;
 
+export const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`;
+
+export const Explanation = styled.p`
+  display: flex;
+  color: black;
+  font-size: 12px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50%;
+`;
 
 export const StyledButton = styled.button`
   margin: 10px;
@@ -254,3 +281,10 @@ export const StyledOption = styled.option`
 export const StyledSelect = styled.select`
   font-size: 0.9em;
 `
+
+export const navStyle = styled.div`
+ .navbar-nav .nav-item .nav-link:hover {
+    color: black;
+    background-color: #f0f0f0; 
+   
+  }`
