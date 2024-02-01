@@ -3,14 +3,13 @@
 // import WarehouseForm from "../../../components/forms/WarehouseForm";
 // import { StyledButton } from "../../../styles/CommonStyles";
 
-// // Make sure to set the root app element for react-modal
+// 
 // Modal.setAppElement("#root");
 
 // const WarehouseRegistrationModal = ({ isOpen, onClose }) => {
 //   const [warehouseFormData, setWarehouseFormData] = useState({
 //     name: "",
-//     type: "",
-//     // ...other fields
+//     type: ""
 //   });
 
 //   const handleInputChange = (e) => {
@@ -22,15 +21,13 @@
 //   };
 
 //   const handleSubmit = () => {
-//     // Implement your logic to handle form submission (e.g., API call)
 //     console.log("Submitting warehouse data:", warehouseFormData);
-//     // Reset form data if needed
+
 //     setWarehouseFormData({
 //       name: "",
 //       type: "",
 //       // ...other fields
 //     });
-//     // Close the modal
 //     onClose();
 //   };
 
