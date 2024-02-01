@@ -86,12 +86,6 @@ body {
 }
 
 
-/* page content */
-main {
-  max-width: auto;
-  margin: 40px auto;
-} 
-
 `
 
 export const StyledLabel = styled.label`

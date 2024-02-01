@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-export const StyledTable = styled.table`
+export const StyledTable = styled.th`
    font-size: 10px;
    border-radius: 5px;
    align-items: center;
-   background-color: rgba(248, 243, 243, 0.9);
-`
+
+`;
 
 export const StyledButton = styled.button`
   background-color: #28a745;

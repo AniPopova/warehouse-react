@@ -1,12 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Client } from "./Client.constants";
+import { routerElements } from "../../../routes/routes.static";
+import { Client } from "./Client.static";
+
+export const createClient = (data: string) => {
+  fetch(routerElements.clientForm, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+     // Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+}
 
 
-export function handleRegisterNewClient(): void {
+export function permDelete(_record: Client): void {
   throw new Error("Function not implemented.");
 }
 
-export function handleDelete(_record: Client): void {
+export function softDelete(_record: Client): void {
   throw new Error("Function not implemented.");
 }
 
@@ -14,6 +26,5 @@ export function handleUpdate(_record: Client): void {
   throw new Error("Function not implemented.");
 }
 
-export function moment(_createdAt: string): Date {
-  throw new Error("Function not implemented.");
-}
+
+

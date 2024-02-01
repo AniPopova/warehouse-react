@@ -8,7 +8,7 @@ import {
   Bar,
   NavLinks,
 } from "../styles/CommonStyles";
-import { NavLinkStyled } from "./Root.style";
+import { NavLinkStyled } from "./Route.style";
 import Header from "../components/BasicView/Header/Header";
 import { imageSrcPath } from "../components/BasicView/Header/Header.static";
 

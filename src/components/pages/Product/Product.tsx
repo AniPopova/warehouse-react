@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Product, productUrl } from "./Product.constants";
 import axios from "axios";
+import { backToHomePage } from "../../../utils/utils";
 
 function ProductList() {
-  // const [columns, setColumns] = useState<string[]>([]);
   const [records, setRecords] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -12,16 +12,12 @@ function ProductList() {
       .then((res) => {
         const data: Product[] = res.data;
         if (data.length > 0) {
-          // setColumns(Object.keys(data[0]));
           setRecords(data);
         }
       })
       .catch((err) => console.error(err));
   }, []);
 
-  const handleBackToPreviousPage = () => {
-    history.back();
-  };
 
   function handleRegisterNewProduct(): void {
     throw new Error("Function not implemented.");
@@ -65,7 +61,7 @@ function ProductList() {
         </button>
         <br />
         <br />
-        <button type="button" onClick={handleBackToPreviousPage}>
+        <button type="button" onClick={backToHomePage}>
           Back
         </button>
       </div>

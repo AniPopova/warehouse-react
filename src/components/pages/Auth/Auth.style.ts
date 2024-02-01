@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 
 export const RegBox = styled.div`
-  padding: 100px;
   box-direction: normal;
   font-size: 8px;
   color: black;
-  height: 300px;
+  height: 200px;
   width: 300px;
   margin: auto;
-  @media (max-width: 600px) {
+  @media (max-width: 400px) {
     padding: 3px;
   }
 `;
@@ -74,7 +73,6 @@ export const StyledForm = styled.form`
   flex-direction: column;
   margin-bottom: 1.5rem; 
   padding-bottom: 1.25rem; 
-  border-bottom: 1px solid #eaeaea; 
 `;
 
 

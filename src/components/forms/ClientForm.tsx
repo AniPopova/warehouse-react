@@ -1,88 +1,78 @@
-import React, { useState } from "react";
-import { RegBox, StyledButton, StyledInput } from "../../styles/CommonStyles";
+import { useState } from "react";
 
-export interface ClientFormProps {
-  onSubmit: (formData: ClientFormData) => void;
-}
+import axios from "axios";
+import { backToHomePage } from "../../utils/utils";
+import { createClientUrl } from "../pages/Client/Client.static";
+import { StyledForm, StyledLabel, StyledInput, StyledButton } from "../navbar/navbar.style";
+import { SignUpBox } from "../pages/Auth/Auth.style";
 
-export interface ClientFormData {
-  name: string;
-  address: string;
-  identificationCode: string;
-}
+function ClientForm()  {
+  const [name, setClientName] = useState("");
+  const [address, setAddress] = useState("");
+  const [identificationCode, setIdentificationCode] = useState("");
+ // const navigate = useNavigate();
 
-const ClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
-  const [formData, setFormData] = useState<ClientFormData>({
-    name: "",
-    address: "",
-    identificationCode: "",
-  });
+  const handleCreate = async () => {
+    try {
+      const response = await axios.post(createClientUrl, {
+        name,
+        address,
+        identificationCode,
+      });
+      console.log("New Client created", response.data);
+      return backToHomePage;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    } catch (error) {
+      console.log("Sorry you failed, try again.");
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
-
-    setFormData({
-      name: "",
-      address: "",
-      identificationCode: "",
-    });
-  };
-
-  const handleBackToPreviousPage = () => {
-    history.back();
-  };
 
   return (
-    <RegBox>
-      <h2>Register new client</h2>
-      <form onSubmit={handleSubmit}>
-        <br />
-        <label>
-          Name:
-          <StyledInput
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Address:
-          <StyledInput
-            type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          UIC:
-          <StyledInput
-            type="text"
-            name="identificationCode"
-            value={formData.identificationCode}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <StyledButton type="button">Submit</StyledButton>
-        <StyledButton type="button" onClick={handleBackToPreviousPage}>
-          Back
-        </StyledButton>
-      </form>
-    </RegBox>
+    <SignUpBox>
+      <div className="card">
+        <div className="card-body">
+          <h4 >Create</h4>
+          <br />
+          <StyledForm>
+            <StyledLabel>
+              Name:
+              <StyledInput
+                type="text"
+                name="name"
+                onChange={(e) => setClientName(e.target.value)}
+                required
+              />
+            </StyledLabel>
+            <StyledLabel>
+              Address:
+              <StyledInput
+                type="text"
+                name="address"
+                onChange={(e) => setAddress(e.target.value)}
+                required
+              />
+            </StyledLabel>
+            <StyledLabel>
+              UIC:
+              <StyledInput
+                type="text"
+                name="Uic"
+                onChange={(e) => setIdentificationCode(e.target.value)}
+                required
+              />
+            </StyledLabel>
+            <StyledButton type="button" onClick={handleCreate}>
+              Create
+            </StyledButton>
+            <StyledButton type="button" onClick={backToHomePage}>
+              Back
+            </StyledButton>
+          </StyledForm>
+        </div>
+      </div>
+    </SignUpBox>
   );
-};
+}
 
 export default ClientForm;

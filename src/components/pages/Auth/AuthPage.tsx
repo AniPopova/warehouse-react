@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Question, RegBox } from "./Auth.style";
+import { Question, RegBox, StyledButton} from "./Auth.style";
 import Login from "./LogIn";
 import SignUp from "./SignUp";
 
@@ -16,19 +16,18 @@ const AuthPage = () => {
           <Question>Are you a new user?</Question>
           <div>
             <button
-              className="btn btn-primary btn-sm"
+              className="btn btn-success btn-sm" 
               onClick={() => handleAnswer(true)}
             >
               Yes
             </button>
             <br />
             <br />
-            <button
-              className="btn btn-primary btn-sm"
+            <StyledButton  
               onClick={() => handleAnswer(false)}
             >
               No
-            </button>
+            </StyledButton>
           </div>
         </>
       ) : isNewUser ? (

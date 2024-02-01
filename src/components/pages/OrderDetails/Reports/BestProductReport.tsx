@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { BestClient, bestBuyerReportUrl } from "../Order.static";
-import { StyledButton } from "../Order.style";
+import { BestClient, bestBuyerReportUrl } from "../../Order/Order.static";
+import { StyledButton } from "../../Order/Order.style";
 
-function ProductsOnStock() {
+function BestProductReport() {
   const [records, setRecords] = useState<BestClient[]>([]);
 
   useEffect(() => {
@@ -37,9 +37,9 @@ function ProductsOnStock() {
           <tbody>
             {records.map((record: BestClient, index) => (
               <tr key={index}>
-                {/* <td>{record.client_name}</td>
-                <td>{record.order_count}</td>
-                <td>{record.spent_money}</td> */}
+                <td>{record.clientName}</td>
+                <td>{record.ordersCount}</td>
+                <td>{record.spentMoney}</td>
               </tr>
             ))}
           </tbody>
@@ -55,4 +55,4 @@ function ProductsOnStock() {
   );
 }
 
-export default ProductsOnStock;
+export default BestProductReport;

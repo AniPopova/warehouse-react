@@ -60,6 +60,7 @@ a:hover {
 
 body {
   margin: 0;
+  padding: 0;
   place-items: center;
   min-width: 100vh;
   min-height: 100vh;

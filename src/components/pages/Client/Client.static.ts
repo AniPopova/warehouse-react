@@ -8,3 +8,5 @@ export interface Client {
 }
 
 export const clientUrl = 'http://localhost:3000/client';
+
+export const createClientUrl = 'http://localhost:3000/client/create';

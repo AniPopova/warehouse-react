@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Warehouse, warehouseUrl } from "./Warehouse.static";
 import axios from "axios";
 import { StyledTable } from "./Warehouse.style";
+import { backToHomePage } from "../../../utils/utils";
 
 function WarehouseList() {
-  // const [columns, setColumns] = useState<string[]>([]);
   const [records, setRecords] = useState<Warehouse[]>([]);
 
   useEffect(() => {
@@ -13,16 +13,11 @@ function WarehouseList() {
       .then((res) => {
         const data: Warehouse[] = res.data;
         if (data.length > 0) {
-          // setColumns(Object.keys(data[0]));
           setRecords(data);
         }
       })
       .catch((err) => console.error(err));
   }, []);
-
-  const handleBackToPreviousPage = () => {
-    history.back();
-  };
 
   function handleRegisterNewWarehouse(): void {
     throw new Error("Function not implemented.");
@@ -65,7 +60,7 @@ function WarehouseList() {
         </button>
         <br />
         <br />
-        <button className="btn btn-success btn-sm" type="button" onClick={() => handleBackToPreviousPage()}>
+        <button className="btn btn-success btn-sm" type="button" onClick={backToHomePage}>
           Back
         </button>
       </div>

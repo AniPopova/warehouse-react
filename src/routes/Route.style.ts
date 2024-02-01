@@ -106,13 +106,6 @@ export const Wrapper = styled.div`
   }
 }
 
-
-/* page content */
-main {
-  max-width: auto;
-  margin: 40px auto;
-} 
-
 `
 
 export const RootHeader = styled.header`

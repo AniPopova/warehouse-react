@@ -1,25 +1,19 @@
 import React, { useState } from "react";
-
-export interface OrderFormProps {
-  onSubmit: (formData: OrderFormData) => void;
-}
-
-export enum OrderType {
-  TRANSFER = "TRANSFER",
-  ORDER = "ORDER",
-  DELIVERY = "DELIVERY",
-}
+import { OrderType } from "../pages/Order/Order.static";
+import { useNavigate } from "react-router-dom";
 
 export interface OrderFormData {
   orderType: OrderType | "";
   clientId: string;
 }
 
-const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
+function OrderForm() {
   const [formData, setFormData] = useState<OrderFormData>({
-    orderType: "", 
+    orderType: "",
     clientId: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -31,9 +25,22 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  //const createOrder = (data: Partial<Order>) => {
+
+  //   fetch(endpoint.order, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //     body: JSON.stringify(data),
+  //   });
+  // };
+
+  const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    onSubmit(formData);
+
+   // createOrder(formData);
 
     setFormData({
       orderType: "",
@@ -42,8 +49,9 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
   };
 
   const handleBackToPreviousPage = () => {
-    history.back();
+    navigate("/");
   };
+
   return (
     <div>
       <h2>Order Form</h2>
@@ -80,6 +88,6 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
       </form>
     </div>
   );
-};
+}
 
 export default OrderForm;

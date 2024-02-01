@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Client, clientUrl } from "./Client.constants";
-import { StyledButton, StyledButtonDelete, StyledButtonUpdate, StyledTable } from "./Client.style";
+import { Client, clientUrl } from "./Client.static";
+import {
+  StyledButton,
+  StyledButtonDelete,
+  StyledButtonUpdate,
+  StyledTable,
+} from "./Client.style";
 import { useNavigate } from "react-router-dom";
+import ClientForm from "../../forms/ClientForm";
 
 function ClientList() {
-
   const [records, setRecords] = useState<Client[]>([]);
   const navigate = useNavigate();
 
@@ -23,12 +28,8 @@ function ClientList() {
   }, []);
 
   const handleBackToPreviousPage = () => {
-    navigate('/');
+    navigate("/");
   };
-
-  function handleRegisterNewClient(): void {
-    throw new Error("Function not implemented.");
-  }
 
   return (
     <div className="container">
@@ -53,18 +54,22 @@ function ClientList() {
                 <td>{record.address}</td>
                 <td>{record.identificationCode}</td>
                 <td>{new Date(record.createdAt).toLocaleString()}</td>
-                <td><StyledButtonUpdate type="submit">Update</StyledButtonUpdate></td>
-                <td><StyledButtonDelete type="submit">Delete</StyledButtonDelete></td>
+                <td>
+                  <StyledButtonUpdate type="submit">Update</StyledButtonUpdate>
+                </td>
+                <td>
+                  <StyledButtonDelete type="submit">Delete</StyledButtonDelete>
+                </td>
               </tr>
             ))}
           </tbody>
         </StyledTable>
         <br />
-        <StyledButton type="button" onClick={() => handleRegisterNewClient()}>
+        <StyledButton type="button" onClick={ClientForm}>
           Register new client
         </StyledButton>
         <br />
-        <StyledButton type="button" onClick={() => handleBackToPreviousPage()}>
+        <StyledButton type="button" onClick={handleBackToPreviousPage}>
           Back
         </StyledButton>
       </div>

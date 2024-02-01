@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Order, orderUrl } from "./Order.static";
-import BestClientReport from "./OrderDetails/BestClientReport";
-import { StyledButton, StyledTable } from "./Order.style";
 import { useNavigate } from "react-router-dom";
-import BestProductReport from "./OrderDetails/BestProductReport";
-import ProductsOnStock from "./OrderDetails/ProductsOnStockReport";
+import { useEffect, useState } from "react";
+import { Order, Client, orderUrl, Warehouse } from "./Order.static";
+import axios from "axios";
+import { clientUrl } from "../Client/Client.static";
+// import { warehouseUrl } from "../Warehouse/Warehouse.static";
+import { StyledButton, StyledTable } from "./Order.style";
+import { backToHomePage } from "../../../utils/utils";
+import OrderForm from "../../forms/OrderForm";
 
 function OrderList() {
   const [records, setRecords] = useState<Order[]>([]);
+  const [clients, setClients] = useState<Client[] | Warehouse[]>([]);
+
   const navigate = useNavigate();
+
   useEffect(() => {
     axios
       .get(orderUrl)
@@ -20,30 +24,44 @@ function OrderList() {
         }
       })
       .catch((err) => console.error(err));
+
+    axios
+      .get(clientUrl)
+      .then((res) => {
+        const data: Client[] = res.data;
+        if (data.length > 0) {
+          setClients(data);
+        }
+      })
+      //     .catch((err) => console.error(err));
+
+      // axios
+      // .get(warehouseUrl)
+      // .then((res) => {
+      //   const data: Warehouse[] = res.data;
+      //   if (data.length > 0) {
+      //     setWarehouses(data);
+      //   }
+      // })
+      .catch((err) => console.error(err));
   }, []);
 
-  const handleBackToPreviousPage = () => {
-    navigate('/');
+  const registerNewOrder = () => {
+    navigate("../../forms/OrderForm");
   };
+  const getClientNameById = (clientId: string): string => {
+    const clientOrWarehouse: Client | Warehouse | undefined = clients.find(
+      (c) => c.id === clientId
+    );
 
-  function handleRegisterNewOrder(): void {
-    throw new Error("Function not implemented.");
-  }
+    if (clientOrWarehouse && "name" in clientOrWarehouse) {
+      return clientOrWarehouse.name;
+    }
+    return "Warehouse";
+  };
 
   return (
     <div className="container">
-      <br />
-      <StyledButton type="button" onClick={() => BestClientReport()}>
-        See best client
-      </StyledButton>
-      <br />
-        <StyledButton type="button" onClick={() => BestProductReport()}>
-          Check product on stock
-        </StyledButton>
-        <br />
-        <StyledButton type="button" onClick={() => ProductsOnStock()}>
-          See best product
-        </StyledButton>
       <div className="mt-3">
         <h3>Registered orders</h3>
         <StyledTable className="table table-bordered">
@@ -60,12 +78,15 @@ function OrderList() {
             {records.map((record: Order, index) => (
               <tr key={index}>
                 <td>{record.type}</td>
-                <td>{record.client}</td>
+                <td>{getClientNameById(record.clientId)}</td>
+                <td>{new Date(record.createdAt).toLocaleString()}</td>
                 <td>
-                  <button type="submit">Update</button>
+                  <button type="button" onClick={OrderForm}>
+                    Update
+                  </button>
                 </td>
                 <td>
-                  <button type="submit">Delete</button>
+                  <button type="button">Delete</button>
                 </td>
               </tr>
             ))}
@@ -73,11 +94,11 @@ function OrderList() {
         </StyledTable>
         <div className="container">
           <br />
-          <StyledButton type="button" onClick={() => handleRegisterNewOrder()}>
+          <StyledButton type="button" onClick={registerNewOrder}>
             Register new order
           </StyledButton>
           <br />
-          <StyledButton type="button" onClick={() => handleBackToPreviousPage()}>
+          <StyledButton type="button" onClick={backToHomePage}>
             Back
           </StyledButton>
         </div>

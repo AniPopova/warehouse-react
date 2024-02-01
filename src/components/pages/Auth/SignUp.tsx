@@ -8,13 +8,14 @@ import {
   StyledInput,
   StyledLabel,
 } from "./Auth.style";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
+import { backToHomePage } from "../../../utils/utils";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+ // const navigate = useNavigate();
 
   const handleSignUp = async () => {
     try {
@@ -24,15 +25,13 @@ const SignUp = () => {
         password,
       });
       console.log("Sign Up successfully", response.data);
-      navigate('/');
+      return backToHomePage;
+      //navigate('/');
     } catch (error) {
       console.log("Sorry you failed, try again.");
     }
   };
 
-  const handleBackToMainPage = () => {
-    window.history.back();
-  };
 
   return (
     <SignUpBox>
@@ -71,7 +70,7 @@ const SignUp = () => {
             <StyledButton type="button" onClick={handleSignUp}>
               Sign Up
             </StyledButton>
-            <StyledButton type="button" onClick={handleBackToMainPage}>
+            <StyledButton type="button" onClick={backToHomePage}>
               Back
             </StyledButton>
           </StyledForm>

@@ -1,18 +1,18 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { loginUrl } from "./Auth.static";
 import {
   StyledLabel,
   StyledInput,
   StyledButton,
+  StyledForm,
   SignUpBox,
 } from "./Auth.style";
+import { backToHomePage } from "../../../utils/utils";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -20,7 +20,7 @@ const Login = () => {
 
       console.log("You are successfully logged in", response.data);
       saveTokenToLocalStorage(response.data.token);
-      navigate("/");
+      return backToHomePage;
     } catch (error) {
       console.error("Login failed:", error);
     }
@@ -30,14 +30,10 @@ const Login = () => {
     localStorage.setItem("token", token);
   };
 
-  const handleBackToMainPage = () => {
-    navigate("/");
-  };
-
   return (
     <SignUpBox>
       <h2>Login</h2>
-      <form>
+      <StyledForm>
         <br />
         <StyledLabel>
           <br />
@@ -71,11 +67,11 @@ const Login = () => {
         <StyledButton
           className="btn btn-success btn-sm"
           type="button"
-          onClick={() => handleBackToMainPage()}
+          onClick={backToHomePage}
         >
           Back
         </StyledButton>
-      </form>
+      </StyledForm>
     </SignUpBox>
   );
 };

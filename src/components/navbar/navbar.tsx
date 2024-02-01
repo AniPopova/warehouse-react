@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./NavBar.style"
+import "./navbar.style"
 
 interface NavBarProps {
   imageSrcPath: string;
@@ -11,7 +11,7 @@ function NavBar({ imageSrcPath, navItems }: NavBarProps) {
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   return (
-    <nav className="navbar navbar-expand-md navbar-light bg-white shadow">
+    <nav >
       <div className="container-fluid">
         <a className="navbar-brand" href="#">
           <img
