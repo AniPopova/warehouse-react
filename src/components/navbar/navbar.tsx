@@ -2,26 +2,15 @@ import { useState } from "react";
 import "./navbar.style"
 
 interface NavBarProps {
-  imageSrcPath: string;
   navItems: string[];
 }
 
-function NavBar({ imageSrcPath, navItems }: NavBarProps) {
+function NavBar({ navItems }: NavBarProps) {
 
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   return (
     <nav >
-      <div className="container-fluid">
-        <a className="navbar-brand" href="#">
-          <img
-            src={imageSrcPath}
-            width="60"
-            height="60"
-            className="d-inline-block align-center"
-            alt=""
-          />
-        </a>
         <button
           className="navbar-toggler"
           type="button"
@@ -57,19 +46,8 @@ function NavBar({ imageSrcPath, navItems }: NavBarProps) {
               </li>
             ))}
           </ul>
-          <form className="d-flex me-3">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button className="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
+
         </div>
-      </div>
     </nav>
   );
 }

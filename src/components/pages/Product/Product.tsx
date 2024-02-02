@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Product, productUrl } from "./Product.constants";
 import axios from "axios";
-import { backToHomePage } from "../../../utils/utils";
+import { BackToHomePage } from "../../../utils/utils";
+import { StyledTable, StyledButton } from "./Product.style";
 
-function ProductList() {
+const ProductList = () => {
   const [records, setRecords] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -20,14 +21,14 @@ function ProductList() {
 
 
   function handleRegisterNewProduct(): void {
-    throw new Error("Function not implemented.");
+    throw new Error("Under Construction");
   }
 
   return (
     <div className="container">
       <div className="mt-3">
         <h3>Registered products</h3>
-        <table className="table table-bordered">
+        <StyledTable className="table table-unordered">
           <thead className="thead-dark">
             <tr>
               <th>Name</th>
@@ -54,16 +55,16 @@ function ProductList() {
               </tr>
             ))}
           </tbody>
-        </table>
+        </StyledTable>
         <br />
-        <button type="button" onClick={() => handleRegisterNewProduct()}>
+        <StyledButton type="button" onClick={() => handleRegisterNewProduct()}>
           Register new product
-        </button>
+        </StyledButton>
         <br />
         <br />
-        <button type="button" onClick={backToHomePage}>
+        <StyledButton type="button" onClick={()=> BackToHomePage()}>
           Back
-        </button>
+        </StyledButton>
       </div>
     </div>
   );

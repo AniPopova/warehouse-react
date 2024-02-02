@@ -8,14 +8,12 @@ import {
   StyledInput,
   StyledLabel,
 } from "./Auth.style";
-//import { useNavigate } from "react-router-dom";
-import { backToHomePage } from "../../../utils/utils";
+import { BackToHomePage } from "../../../utils/utils";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
- // const navigate = useNavigate();
 
   const handleSignUp = async () => {
     try {
@@ -25,8 +23,7 @@ const SignUp = () => {
         password,
       });
       console.log("Sign Up successfully", response.data);
-      return backToHomePage;
-      //navigate('/');
+      return BackToHomePage;
     } catch (error) {
       console.log("Sorry you failed, try again.");
     }
@@ -52,7 +49,7 @@ const SignUp = () => {
             <StyledLabel>
               Email:
               <StyledInput
-                type="email"
+                type="text"
                 name="email"
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -61,16 +58,16 @@ const SignUp = () => {
             <StyledLabel>
               Password:
               <StyledInput
-                type="password"
+                type="text"
                 name="password"
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </StyledLabel>
-            <StyledButton type="button" onClick={handleSignUp}>
+            <StyledButton type="button" onClick={()=>handleSignUp()}>
               Sign Up
             </StyledButton>
-            <StyledButton type="button" onClick={backToHomePage}>
+            <StyledButton type="button" onClick={()=>BackToHomePage()}>
               Back
             </StyledButton>
           </StyledForm>

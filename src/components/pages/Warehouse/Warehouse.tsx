@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Warehouse, warehouseUrl } from "./Warehouse.static";
 import axios from "axios";
 import { StyledTable } from "./Warehouse.style";
-import { backToHomePage } from "../../../utils/utils";
+import { BackToHomePage } from "../../../utils/utils";
+import { StyledButton } from "../Auth/Auth.style";
 
-function WarehouseList() {
+const WarehouseList = () => {
   const [records, setRecords] = useState<Warehouse[]>([]);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ function WarehouseList() {
   }, []);
 
   function handleRegisterNewWarehouse(): void {
-    throw new Error("Function not implemented.");
+    throw new Error("Under construction.");
   }
 
   return (
@@ -55,14 +56,13 @@ function WarehouseList() {
           </tbody>
         </StyledTable>
         <br />
-        <button className="btn btn-success btn-sm" type="button" onClick={() => handleRegisterNewWarehouse()}>
+        <StyledButton  type="button" onClick={() => handleRegisterNewWarehouse()}>
           Register new warehouse
-        </button>
+        </StyledButton>
         <br />
-        <br />
-        <button className="btn btn-success btn-sm" type="button" onClick={backToHomePage}>
+        <StyledButton  type="button" onClick={()=> BackToHomePage()}>
           Back
-        </button>
+        </StyledButton>
       </div>
     </div>
   );

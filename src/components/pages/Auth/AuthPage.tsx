@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Question, RegBox, StyledButton} from "./Auth.style";
+import { Question, RegBox, SignUpBox, StyledButton} from "./Auth.style";
 import Login from "./LogIn";
 import SignUp from "./SignUp";
 
@@ -10,17 +10,18 @@ const AuthPage = () => {
   };
 
   return (
-    <RegBox>     
+    <SignUpBox>     
       {isNewUser === null ? (
         <>
-          <Question>Are you a new user?</Question>
+        <RegBox>
+           <Question>Wellcome to WHM.</Question>
+           <Question>Are you a new user?</Question>
           <div>
-            <button
-              className="btn btn-success btn-sm" 
+            <StyledButton
               onClick={() => handleAnswer(true)}
             >
               Yes
-            </button>
+            </StyledButton>
             <br />
             <br />
             <StyledButton  
@@ -29,13 +30,14 @@ const AuthPage = () => {
               No
             </StyledButton>
           </div>
+          </RegBox>
         </>
       ) : isNewUser ? (
         <SignUp />
       ) : (
         <Login />
       )}
-    </RegBox>
+    </SignUpBox>
   );
 };
 

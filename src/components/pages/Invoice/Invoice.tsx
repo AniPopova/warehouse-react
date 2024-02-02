@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Invoice, invoiceUrl } from "./Invoice.static";
 import { StyledButton, StyledTable } from "./Invoice.style";
 
-function InvoiceList() {
+const InvoiceList = () => {
   const [records, setRecords] = useState<Invoice[]>([]);
 
   useEffect(() => {

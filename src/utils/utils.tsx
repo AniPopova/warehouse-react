@@ -13,7 +13,7 @@ import Warehouse from '../components/pages/Warehouse/Warehouse';
 import RootLayout from '../routes/Route';
 import { routerElements } from '../routes/routes.static';
 
-export function getTokenDuration() {
+export const GetTokenDuration = () => {
   const storedExpirationDate = localStorage.getItem('expiration');
 
   if (storedExpirationDate === null) {
@@ -26,15 +26,14 @@ export function getTokenDuration() {
   return duration;
 }
 
-export function getAuthToken() {
+export const GetAuthToken= () => {
   const token = localStorage.getItem('token');
 
   if (!token) {
     return null;
   }
 
-  const tokenDuration = getTokenDuration();
-
+  const tokenDuration = GetTokenDuration();
   if (tokenDuration < 0) {
     return 'EXPIRED';
   }
@@ -42,14 +41,13 @@ export function getAuthToken() {
   return token;
 }
 
-export function tokenLoader() {
-  const token = getAuthToken();
+export const TokenLoader= () => {
+  const token = GetAuthToken();
   return token;
 }
 
-export function checkAuthLoader() {
-  const token = getAuthToken();
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+export const CheckAuthLoader= () => {
+  const token = GetAuthToken();
   const navigate = useNavigate(); 
 
   if (!token) {
@@ -57,11 +55,10 @@ export function checkAuthLoader() {
   }
 }
 
-export function backToHomePage () {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+export const BackToHomePage = () =>  {
   const navigate = useNavigate();
   navigate('/');
-}
+};
 
 export const router = createBrowserRouter(
   createRoutesFromElements(

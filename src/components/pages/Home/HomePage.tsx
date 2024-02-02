@@ -1,12 +1,8 @@
 
-function Home() {
+const HomePage = () => {
   return (
-    <>
-      <div>
-
-      </div>
-    </>
-  );
+    <div>Under Construction</div>
+  )
 }
 
-export default Home;
+export default HomePage

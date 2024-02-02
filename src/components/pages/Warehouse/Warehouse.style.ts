@@ -7,4 +7,18 @@ export const StyledTable = styled.th`
 
 `;
 
+export const StyledButton = styled.button`
+  margin: 10px;
+  padding: 8px 10px; 
+  font-size: 10px; 
+  background-color: #28a745; 
+  color: #fff;
+  border: 1px solid #28a745; 
+  border-radius: 4px;
+  cursor: pointer;
 
+  &:hover {
+    background-color: #218838; 
+    border-color: #1e7e34; 
+  }
+`;

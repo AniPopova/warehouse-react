@@ -8,12 +8,11 @@ import {
   StyledButtonUpdate,
   StyledTable,
 } from "./Client.style";
-import { useNavigate } from "react-router-dom";
 import ClientForm from "../../forms/ClientForm";
+import { BackToHomePage } from "../../../utils/utils";
 
-function ClientList() {
+const ClientList = () => {
   const [records, setRecords] = useState<Client[]>([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -27,16 +26,13 @@ function ClientList() {
       .catch((err) => console.error(err));
   }, []);
 
-  const handleBackToPreviousPage = () => {
-    navigate("/");
-  };
 
   return (
     <div className="container">
       <div className="mt-3">
         <h3>Registered clients</h3>
         <br />
-        <StyledTable className="table ">
+        <StyledTable>
           <thead className="thead-dark">
             <tr>
               <th>Name</th>
@@ -69,7 +65,7 @@ function ClientList() {
           Register new client
         </StyledButton>
         <br />
-        <StyledButton type="button" onClick={handleBackToPreviousPage}>
+        <StyledButton type="button" onClick={()=> BackToHomePage()}>
           Back
         </StyledButton>
       </div>

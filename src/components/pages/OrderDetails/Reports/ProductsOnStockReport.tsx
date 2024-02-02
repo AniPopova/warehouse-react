@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { BestClient, bestBuyerReportUrl } from "../../Order/Order.static";
+
 import { StyledButton } from "../../Order/Order.style";
+import { BestClient, bestBuyerReportUrl } from "../OrderDetails.static";
+import { BackToHomePage } from "../../../../utils/utils";
 
 function ProductsOnStock() {
   const [records, setRecords] = useState<BestClient[]>([]);
@@ -18,12 +20,9 @@ function ProductsOnStock() {
       .catch((err) => console.error(err));
   }, []);
 
-  const handleBackToPreviousPage = () => {
-    history.back();
-  };
 
   return (
-    <div className="container">
+    <div >
       <div className="mt-3">
         <h3>Client with most orders</h3>
         <table className="table table">
@@ -46,7 +45,7 @@ function ProductsOnStock() {
         </table>
         <div className="container">
           <br />
-          <StyledButton type="button" onClick={handleBackToPreviousPage}>
+          <StyledButton type="button" onClick={()=> BackToHomePage()}>
             Back
           </StyledButton>
         </div>
