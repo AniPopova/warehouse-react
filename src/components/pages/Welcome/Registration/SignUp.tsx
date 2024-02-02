@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { signUpUrl } from "./Auth.static";
+import { signUpUrl } from "../Welcome.static";
 import axios from "axios";
 import {
   SignUpBox,
@@ -7,8 +7,8 @@ import {
   StyledForm,
   StyledInput,
   StyledLabel,
-} from "./Auth.style";
-import { BackToHomePage } from "../../../utils/utils";
+} from "../Welcome.style";
+import { BackToHomePage } from "../../../../utils/utils";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -29,12 +29,11 @@ const SignUp = () => {
     }
   };
 
-
   return (
     <SignUpBox>
       <div className="card">
         <div className="card-body">
-          <h4 >Sign Up</h4>
+          <h4>Sign Up</h4>
           <br />
           <StyledForm>
             <StyledLabel>
@@ -64,10 +63,10 @@ const SignUp = () => {
                 required
               />
             </StyledLabel>
-            <StyledButton type="button" onClick={()=>handleSignUp()}>
+            <StyledButton type="button" onClick={() => handleSignUp()}>
               Sign Up
             </StyledButton>
-            <StyledButton type="button" onClick={()=>BackToHomePage()}>
+            <StyledButton type="button" onClick={() => BackToHomePage()}>
               Back
             </StyledButton>
           </StyledForm>

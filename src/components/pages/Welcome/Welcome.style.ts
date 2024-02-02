@@ -13,17 +13,18 @@ export const RegBox = styled.div`
 `;
 
 export const StyledButton = styled.button`
-  margin: 10px;
-  padding: 8px 10px; 
+  margin: 4px;
+  padding: 2px 4px 5px 2px; 
   font-size: 10px; 
-  background-color: #28a745; 
+  background-color: #218838; 
   color: #fff;
-  border: 1px solid #28a745; 
+  border: 1px solid #218838; 
   border-radius: 4px;
   cursor: pointer;
 
   &:hover {
-    background-color: #218838; 
+    background-color: bisque; 
+    color: black;
     border-color: #1e7e34; 
   }
 `;

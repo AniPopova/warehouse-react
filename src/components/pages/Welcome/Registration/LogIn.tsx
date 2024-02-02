@@ -1,14 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
-import { loginUrl } from "./Auth.static";
+import { loginUrl } from "../Welcome.static";
 import {
   StyledLabel,
   StyledInput,
   StyledButton,
   StyledForm,
   SignUpBox,
-} from "./Auth.style";
-import { BackToHomePage } from "../../../utils/utils";
+} from "../Welcome.style";
+import { BackToHomePage } from "../../../../utils/utils";
 
 const Login = () => {
   const [email, setEmail] = useState("");

@@ -1,33 +1,38 @@
-import { Route, createBrowserRouter, createRoutesFromElements, useNavigate } from 'react-router-dom';
-import Home from '../components/pages/Home/HomePage';
-import ClientForm from '../components/forms/ClientForm';
-import OrderForm from '../components/forms/OrderForm';
-import AuthPage from '../components/pages/Auth/AuthPage';
-import Client from '../components/pages/Client/Client';
-import Invoice from '../components/pages/Invoice/Invoice';
-import Order from '../components/pages/Order/Order';
-import OrderDetailsData from '../components/pages/OrderDetails/OrderDetailsData';
-import BestClientReport from '../components/pages/OrderDetails/Reports/BestClientReport';
-import Product from '../components/pages/Product/Product';
-import Warehouse from '../components/pages/Warehouse/Warehouse';
-import RootLayout from '../routes/Route';
-import { routerElements } from '../routes/routes.static';
+import {
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+  useNavigate,
+} from "react-router-dom";
+import Home from "../components/pages/Home/HomePage";
+import ClientForm from "../components/forms/ClientForm";
+import OrderForm from "../components/forms/OrderForm";
+import AuthPage from "../components/pages/Welcome/WelcomePage";
+import Client from "../components/pages/Client/Client";
+import Invoice from "../components/pages/Invoice/Invoice";
+import Order from "../components/pages/Order/Order";
+import OrderDetailsData from "../components/pages/OrderDetails/OrderDetailsData";
+import BestClientReport from "../components/pages/OrderDetails/Reports/BestClientReport";
+import Product from "../components/pages/Product/Product";
+import Warehouse from "../components/pages/Warehouse/Warehouse";
+import RootLayout from "../routes/Route";
+import { routerElements } from "../routes/routes.static";
 
 export const GetTokenDuration = () => {
-  const storedExpirationDate = localStorage.getItem('expiration');
+  const storedExpirationDate = localStorage.getItem("expiration");
 
   if (storedExpirationDate === null) {
-    return 0; 
+    return 0;
   }
 
   const expirationDate = new Date(storedExpirationDate);
   const now = new Date();
   const duration = expirationDate.getTime() - now.getTime();
   return duration;
-}
+};
 
-export const GetAuthToken= () => {
-  const token = localStorage.getItem('token');
+export const GetAuthToken = () => {
+  const token = localStorage.getItem("token");
 
   if (!token) {
     return null;
@@ -35,29 +40,29 @@ export const GetAuthToken= () => {
 
   const tokenDuration = GetTokenDuration();
   if (tokenDuration < 0) {
-    return 'EXPIRED';
+    return "EXPIRED";
   }
 
   return token;
-}
+};
 
-export const TokenLoader= () => {
+export const TokenLoader = () => {
   const token = GetAuthToken();
   return token;
-}
+};
 
-export const CheckAuthLoader= () => {
+export const CheckAuthLoader = () => {
   const token = GetAuthToken();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   if (!token) {
-    navigate('/auth');
+    navigate("/auth");
   }
-}
+};
 
-export const BackToHomePage = () =>  {
+export const BackToHomePage = () => {
   const navigate = useNavigate();
-  navigate('/');
+  navigate("/");
 };
 
 export const router = createBrowserRouter(
@@ -90,12 +95,11 @@ export const router = createBrowserRouter(
   )
 );
 
-
 export const endpoints = {
-  client: '/client',
-  warehouse: '/warehouse',
-  product: '/product',
-  order: '/order',
-}
+  client: "/client",
+  warehouse: "/warehouse",
+  product: "/product",
+  order: "/order",
+};
 
-export const baseUrl ='http://localhost:3000';
+export const baseUrl = "http://localhost:3000";

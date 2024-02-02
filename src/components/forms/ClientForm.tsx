@@ -2,10 +2,10 @@ import { useState } from "react";
 import axios from "axios";
 import { BackToHomePage } from "../../utils/utils";
 import { createClientUrl } from "../pages/Client/Client.static";
-import { SignUpBox, StyledForm } from "../pages/Auth/Auth.style";
+import { SignUpBox, StyledForm } from "../pages/Welcome/Welcome.style";
 import { StyledButton } from "../pages/Client/Client.style";
 
-const ClientForm = () =>  {
+const ClientForm = () => {
   const [name, setClientName] = useState("");
   const [address, setAddress] = useState("");
   const [identificationCode, setIdentificationCode] = useState("");
@@ -19,18 +19,16 @@ const ClientForm = () =>  {
       });
       console.log("New Client created", response.data);
       return BackToHomePage;
-
     } catch (error) {
       console.log("Sorry you failed, try again.");
     }
   };
 
-
   return (
     <SignUpBox>
       <div className="card">
         <div className="card-body">
-          <h4 >Create</h4>
+          <h4>Create</h4>
           <br />
           <StyledForm>
             <label>
@@ -60,10 +58,10 @@ const ClientForm = () =>  {
                 required
               />
             </label>
-            <StyledButton type="button" onClick={handleCreate}>
+            <StyledButton type="button" onClick={() => handleCreate()}>
               Create
             </StyledButton>
-            <StyledButton type="button" onClick={()=> BackToHomePage()}>
+            <StyledButton type="button" onClick={() => BackToHomePage()}>
               Back
             </StyledButton>
           </StyledForm>
@@ -71,6 +69,6 @@ const ClientForm = () =>  {
       </div>
     </SignUpBox>
   );
-}
+};
 
 export default ClientForm;

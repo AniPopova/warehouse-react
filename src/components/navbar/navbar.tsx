@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./navbar.style"
+
 
 interface NavBarProps {
   navItems: string[];

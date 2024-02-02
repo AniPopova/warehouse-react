@@ -3,7 +3,7 @@ import { Warehouse, warehouseUrl } from "./Warehouse.static";
 import axios from "axios";
 import { StyledTable } from "./Warehouse.style";
 import { BackToHomePage } from "../../../utils/utils";
-import { StyledButton } from "../Auth/Auth.style";
+import { StyledButton } from "../Welcome/Welcome.style";
 
 const WarehouseList = () => {
   const [records, setRecords] = useState<Warehouse[]>([]);
@@ -46,26 +46,33 @@ const WarehouseList = () => {
                 <td>{record.type}</td>
                 <td>{new Date(record.createdAt).toLocaleString()}</td>
                 <td>
-                  <button className="btn btn-primary btn-sm" type="submit">Update</button>
+                  <button className="btn btn-primary btn-sm" type="submit">
+                    Update
+                  </button>
                 </td>
                 <td>
-                  <button className="btn btn-warning btn-sm" type="submit">Delete</button>
+                  <button className="btn btn-warning btn-sm" type="submit">
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </StyledTable>
         <br />
-        <StyledButton  type="button" onClick={() => handleRegisterNewWarehouse()}>
+        <StyledButton
+          type="button"
+          onClick={() => handleRegisterNewWarehouse()}
+        >
           Register new warehouse
         </StyledButton>
         <br />
-        <StyledButton  type="button" onClick={()=> BackToHomePage()}>
+        <StyledButton type="button" onClick={() => BackToHomePage()}>
           Back
         </StyledButton>
       </div>
     </div>
   );
-}
+};
 
 export default WarehouseList;
