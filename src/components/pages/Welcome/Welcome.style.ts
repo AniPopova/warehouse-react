@@ -7,8 +7,8 @@ export const RegBox = styled.div`
   justify-content: center;
   font-size: 16px;
   color: black;
-  height: 200px;
-  width: 200px;
+  height: 300px;
+  width: 300px;
   margin-top: 40px;
   border: 1px solid brown;
   background-color: bisque;
@@ -25,10 +25,10 @@ export const SignUpBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 100px;
   padding: 10px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 16px;
   color: #000;
   height: 300px;
   width: 300px;
@@ -44,13 +44,13 @@ export const WelcomeBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 0px;
   padding: 10px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 14px;
   color: #000;
-  height: 300px;
-  width: 300px;
+  height: 400px;
+  width: 400px;
   margin: 60px auto;
 
   @media (max-width: 600px) {
@@ -59,13 +59,13 @@ export const WelcomeBox = styled.div`
 `;
 
 export const StyledLabel = styled.label`
-  font-size: 8px;
+  font-size: 10px;
   color: black;
   margin-bottom: 3px;
 `;
 
 export const StyledInput = styled.input`
-  font-size: 8px;
+  font-size: 12px;
   background-color: bisque;
   color: #212529;
   padding: 10px;
@@ -79,8 +79,9 @@ export const StyledInput = styled.input`
 `;
 
 export const Question = styled.p`
-  font-size: 14px;
+  font-size: 18px;
   margin-bottom: 20px;
+  color: brown;
 `;
 
 export const StyledForm = styled.form`
@@ -88,16 +89,17 @@ export const StyledForm = styled.form`
   flex-direction: column;
   margin-bottom: 30px;
   padding-bottom: 20px;
+  height: 100px; 
 `;
 
 export const StyledLi = styled.li`
-  font-size: 11px;
+  font-size: 14px;
   color: bisque;
-  text-shadow: 9px;
+  text-shadow: 12px;
 `;
 
 export const StyledOption = styled.option`
-  font-size: 10px;
+  font-size: 12px;
   background-color: bisque;
   border-color: grey;
 `;

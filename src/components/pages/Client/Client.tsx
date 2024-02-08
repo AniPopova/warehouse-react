@@ -28,6 +28,22 @@ const ClientList = () => {
       .catch((err) => console.error(err));
   }, []);
 
+  const deleteClient = (clientId: string) => {
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    axios
+      .delete(`${clientUrl}/${clientId}`, { headers })
+      .then((res) => {
+        setRecords(records.filter((record) => record.id !== clientId));
+       return res;
+      })
+      .catch((err) => console.error(err));
+  };
+
+
   return (
     <Container>
       <Title>Registered clients</Title>
@@ -53,7 +69,9 @@ const ClientList = () => {
                 <Button type="submit">Update</Button>
               </td>
               <td>
-                <RedButton type="submit">Delete</RedButton>
+              <RedButton type="button" onClick={() => deleteClient(record.id)}>
+                Delete
+              </RedButton>
               </td>
             </tr>
           ))}

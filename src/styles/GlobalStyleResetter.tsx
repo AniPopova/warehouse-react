@@ -31,14 +31,13 @@ export const GlobalStyles = createGlobalStyle`
     padding: 0;
   }
 
-  /* Remove hyperlink text decoration */
   a {
     text-decoration: none;
   }
 
   /* Apply a more readable tab size (optional) */
   pre {
-    tab-size: 4;
+    tab-size: 6;
   }
 
   /* Set default font family */
@@ -46,7 +45,7 @@ export const GlobalStyles = createGlobalStyle`
     display: fixed;
     font-family: Arial, sans-serif;
     line-height: 1.5;
-    font-size: 12px;
+    font-size: 16px;
     color: rgba(130, 14, 14, 0.87);
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -76,11 +75,11 @@ export const GlobalStyles = createGlobalStyle`
       height: 100%;
       background-attachment: scroll;
       background-position: center;
-      background-size: auto 80vh;
+      background-size: auto 100vh;
     }
 
     @media (max-width: 480px) {
-      background-size: auto 60vh;
+      background-size: auto 100vh;
     }
   }
 `;

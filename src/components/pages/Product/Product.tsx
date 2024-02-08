@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Product, productUrl } from "./Product.constants";
+import { Product, productUrl } from "./Product.static";
 import axios from "axios";
 import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
 import { Container, Table, Title } from "../../table/table.style";
@@ -27,6 +27,20 @@ const ProductList: React.FC = () => {
       .catch((err) => console.error(err));
   }, []);
 
+  const deleteProduct = (productId: string) => {
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    axios
+      .delete(`${productUrl}/${productId}`, { headers })
+      .then((res) => {
+        setRecords(records.filter((record) => record.id !== productId));
+        return res;
+      })
+      .catch((err) => console.error(err));
+  };
 
 
   const handleRegisterNewProduct = (): void => {
@@ -58,7 +72,9 @@ const ProductList: React.FC = () => {
                 <Button type="submit">Update</Button>
               </td>
               <td>
-                <RedButton type="submit">Delete</RedButton>
+              <RedButton type="button" onClick={() => deleteProduct(record.id)}>
+                Delete
+              </RedButton>
               </td>
             </tr>
           ))}

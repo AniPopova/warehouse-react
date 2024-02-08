@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Order, Client, orderUrl, Warehouse } from "./Order.static";
 import axios from "axios";
-import { clientUrl } from "../Client/Client.static";
-import { BackToHomePage } from "../../../utils/utils";
+import { Order, orderUrl } from "./Order.static";
+import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
 import { Container, Table, Title } from "../../table/table.style";
 import { Button, RedButton } from "../../button/button.style";
+import { Client, clientUrl } from "../Client/Client.static";
+
 
 const OrderList: React.FC = () => {
   const [records, setRecords] = useState<Order[]>([]);
-  const [clients, setClients] = useState<Client[] | Warehouse[]>([]);
+  const [clients, setClients] = useState<Client[]>([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+
     axios
-      .get(orderUrl)
+      .get<Order[]>(orderUrl, { headers })
       .then((res) => {
         const data: Order[] = res.data;
         if (data.length > 0) {
@@ -24,7 +32,7 @@ const OrderList: React.FC = () => {
       .catch((err) => console.error(err));
 
     axios
-      .get(clientUrl)
+      .get<Client[]>(clientUrl)
       .then((res) => {
         const data: Client[] = res.data;
         if (data.length > 0) {
@@ -34,24 +42,19 @@ const OrderList: React.FC = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  const registerNewOrder = () => {
-    navigate("../../forms/OrderForm");
-  };
-
   const handleUpdateClick = (orderId: string) => {
     navigate(`../../forms/OrderForm/${orderId}`);
   };
 
   const getClientNameById = (clientId: string): string => {
-    const clientOrWarehouse: Client | Warehouse | undefined = clients.find(
-      (c) => c.id === clientId
-    );
-
-    if (clientOrWarehouse && "name" in clientOrWarehouse) {
-      return clientOrWarehouse.name;
+    const client: Client | undefined = clients.find((c) => c.id === clientId);
+    if (client && "name" in client) {
+      return client.name;
     }
     return "Warehouse";
   };
+
+
 
   return (
     <Container>
@@ -73,7 +76,10 @@ const OrderList: React.FC = () => {
               <td>{getClientNameById(record.clientId)}</td>
               <td>{new Date(record.createdAt).toLocaleString()}</td>
               <td>
-                <Button type="button" onClick={() => handleUpdateClick(record.id)}>
+                <Button
+                  type="button"
+                  onClick={() => handleUpdateClick(record.id)}
+                >
                   Update
                 </Button>
               </td>
@@ -84,10 +90,10 @@ const OrderList: React.FC = () => {
           ))}
         </tbody>
       </Table>
-      <Button type="button" onClick={() => registerNewOrder()}>
+      <Button type="button" onClick={() => navigate("../../forms/OrderForm")}>
         Register new order
       </Button>
-      <Button type="button" onClick={() => navigate("../../InvoiceList")}>
+      <Button type="button" onClick={() => navigate("/invoiceList")}>
         Issued invoices
       </Button>
       <Button type="button" onClick={() => BackToHomePage(navigate)}>

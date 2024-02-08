@@ -45,7 +45,6 @@ const SignUp = () => {
             required
           />
         </StyledLabel>
-
         <StyledLabel>  
           <StyledInput
             type="email"
@@ -55,7 +54,6 @@ const SignUp = () => {
             required
           />
         </StyledLabel>
-
         <StyledLabel>
           <StyledInput
             type="password"  

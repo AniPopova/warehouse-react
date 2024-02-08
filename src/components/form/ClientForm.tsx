@@ -34,28 +34,28 @@ const ClientForm: React.FC = () => {
           <br />
           <StyledForm>
             <label>
-              Name:
               <input
                 type="text"
                 name="name"
+                placeholder="Name"
                 onChange={(e) => setClientName(e.target.value)}
                 required
               />
             </label>
             <label>
-              Address:
               <input
                 type="text"
                 name="address"
+                placeholder="Address"
                 onChange={(e) => setAddress(e.target.value)}
                 required
               />
             </label>
             <label>
-              UIC:
               <input
                 type="text"
                 name="Uic"
+                placeholder="UIC"
                 onChange={(e) => setIdentificationCode(e.target.value)}
                 required
               />

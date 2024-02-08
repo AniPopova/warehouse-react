@@ -1,4 +1,5 @@
 export interface Invoice{
+  id: string;
   orderId: string;
   invNumber: string;
   createdAt: string;

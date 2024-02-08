@@ -50,8 +50,8 @@ export const BackToHomePage = (navigate: ReturnType<typeof useNavigate>) => {
 
 export const routerElements = {
   home: "/",
-  login: "auth/login",
-  signup: "auth/signup",
+  login: "/login",
+  signup: "/signup",
   client: "client",
   product: "product",
   order: {

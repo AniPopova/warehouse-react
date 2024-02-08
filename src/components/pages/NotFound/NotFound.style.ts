@@ -7,4 +7,5 @@ export const NotFoundDiv = styled.div`
   align-items: center;
   height: 80vh;
 
+  border-radius: 4px;
 `;

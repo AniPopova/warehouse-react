@@ -15,7 +15,6 @@ const WelcomePage: React.FC = () => {
     <WelcomeBox>
       {isNewUser === null ? (
         <RegBox>
-          <Question>Welcome to WHM.</Question>
           <Question>Are you a new user?</Question>
           <div>
             <Button onClick={() => handleAnswer(true)}>Yes</Button>

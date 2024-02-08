@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { baseUrl } from "../../../utils/utils";
+import { GetAuthToken, baseUrl } from "../../../utils/utils";
 import { UserRights } from "../../form/UserForm";
 import { Container, Title } from "../../table/table.style";
 
 interface User {
+  id: string;
   username: string;
   password: string;
   email: string;
@@ -14,14 +15,14 @@ const Profile = () => {
   const [profileData, setProfileData] = useState<User | null>(null);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
+    const token = GetAuthToken();
 
     const fetchProfile = async () => {
       try {
         const response = await fetch(baseUrl, {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${storedToken}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
@@ -37,7 +38,7 @@ const Profile = () => {
       }
     };
 
-    if (storedToken) {
+    if (token) {
       fetchProfile();
     }
   }, []);

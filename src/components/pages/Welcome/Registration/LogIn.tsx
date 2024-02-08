@@ -6,6 +6,7 @@ import {
   StyledInput,
   StyledForm,
   SignUpBox,
+  WelcomeBox,
 } from "../Welcome.style";
 import { BackToHomePage } from "../../../../utils/utils";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +16,7 @@ import { Button } from "../../../button/button.style";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
- const { login } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -25,54 +26,52 @@ const Login = () => {
       console.log("You are successfully logged in", response.data);
 
       saveTokenToLocalStorage(response.data.access_token);
-      
-      BackToHomePage(navigate); 
+
+      BackToHomePage(navigate);
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
-
 
   const saveTokenToLocalStorage = (token: string) => {
     localStorage.setItem("token", token);
   };
 
   return (
+    <WelcomeBox>
     <SignUpBox>
-
-          <h2>Login</h2>
-          <StyledForm>
-            <br />
-            <StyledLabel>
-              <br />
-              E-mail:
-              <br />
-              <StyledInput
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </StyledLabel>
-            <br />
-            <StyledLabel>
-              <br />
-              Password:
-              <br />
-              <StyledInput
-                type="password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </StyledLabel>
-            <br />
-            <Button type="button" onClick={() => handleLogin()}>
-              Login
-            </Button>
-            <Button type="button" onClick={() => BackToHomePage(navigate)}>
-              Back
-            </Button>
-          </StyledForm>
+      <h3>Login</h3>
+      <br />
+      <StyledForm>
+        <StyledLabel>
+          <StyledInput
+            type="email"
+            value={email}
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </StyledLabel>
+        <br />
+        <StyledLabel>
+          <StyledInput
+            type="password"
+            value={password}
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </StyledLabel>
+        <br />
+        <Button type="button" onClick={() => handleLogin()}>
+          Login
+        </Button>
+        <Button type="button" onClick={() => BackToHomePage(navigate)}>
+          Back
+        </Button>
+      </StyledForm>
     </SignUpBox>
+    </WelcomeBox>
   );
 };
 

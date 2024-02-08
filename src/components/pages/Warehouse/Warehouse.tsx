@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Container, Title, Table } from "../../table/table.style";
 import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
 import { useNavigate } from "react-router-dom";
-import { Warehouse, warehouseUrl } from "./Warehouse.static";
+import { Warehouse, WarehouseFormData, warehouseUrl } from "./Warehouse.static";
 import { Button, RedButton } from "../../button/button.style";
+import WarehouseForm from "../../form/WarehouseForm";
 
-const WarehouseList = () => {
-  const [warehouseRecords, setRecords] = useState<Warehouse[]>([]);
+const WarehouseList: React.FC = () => {
+  const [records, setRecords] = useState<Warehouse[]>([]);
+  const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,7 +19,7 @@ const WarehouseList = () => {
     };
 
     axios
-      .get(warehouseUrl, { headers })
+      .get<Warehouse[]>(warehouseUrl, { headers })
       .then((res) => {
         const data: Warehouse[] = res.data;
         if (data.length > 0) {
@@ -27,9 +29,46 @@ const WarehouseList = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  function RegisterNewWarehouse() {
-    navigate("../../forms/WarehouseForm");
-  }
+  const deleteWarehouse = (warehouseId: string) => {
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    axios
+      .delete<Warehouse>(`${warehouseUrl}/${warehouseId}`, { headers })
+      .then((res) => {
+        setRecords(records.filter((record) => record.id !== warehouseId));
+        return res;
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const toggleForm = () => {
+    setShowForm(!showForm);
+  };
+
+  const handleSubmit = (formData: WarehouseFormData) => {
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+  
+    const newWarehouse: Warehouse = {
+      id: "",
+      createdAt: "", // set the created at timestamp
+      ...formData,
+    };
+  
+    axios
+      .post<Warehouse>(warehouseUrl, newWarehouse, { headers })
+      .then((res) => {
+        const newRecord: Warehouse = res.data;
+        setRecords([...records, newRecord]);
+        toggleForm();
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <Container>
@@ -45,7 +84,7 @@ const WarehouseList = () => {
           </tr>
         </thead>
         <tbody>
-          {warehouseRecords.map((record, index) => (
+          {records.map((record, index) => (
             <tr key={index}>
               <td>{record.name}</td>
               <td>{record.type}</td>
@@ -54,18 +93,21 @@ const WarehouseList = () => {
                 <Button type="button">Update</Button>
               </td>
               <td>
-                <RedButton type="button">Delete</RedButton>
+                <RedButton type="button" onClick={() => deleteWarehouse(record.id)}>
+                  Delete
+                </RedButton>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
-      <Button type="button" onClick={RegisterNewWarehouse}>
+      <Button type="button" onClick={toggleForm}>
         Register new warehouse
       </Button>
       <Button type="button" onClick={() => BackToHomePage(navigate)}>
         Back
       </Button>
+      {showForm && <WarehouseForm onCancel={toggleForm} onSubmit={handleSubmit} />}
     </Container>
   );
 };

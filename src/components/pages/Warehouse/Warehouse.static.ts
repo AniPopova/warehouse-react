@@ -5,9 +5,10 @@ export interface Warehouse {
   createdAt: string;
 }
 
-export interface WarehouseFormProps {
+export type WarehouseFormProps = {
   onSubmit: (formData: WarehouseFormData) => void;
-}
+  onCancel: () => void;
+};
 
 export enum ProductType {
   LIQUID = "LIQUID",

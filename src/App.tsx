@@ -13,6 +13,7 @@ import Footer from "./components/view/Footer/Footer";
 import NavBar from "./components/navbar/NavBar";
 
 import { ProvideAuth } from "./components/auth/ProvideAuth";
+import InvoiceList from "./components/pages/Invoice/Invoice";
 
 const App = () => {
   return (
@@ -55,6 +56,14 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <Order />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/invoiceList"
+              element={
+                <ProtectedRoute>
+                  <InvoiceList />
                 </ProtectedRoute>
               }
             />

@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { Button } from "../button/button.style";
 import { ProductType, WarehouseFormData, WarehouseFormProps } from "../pages/Warehouse/Warehouse.static";
 
-
-
-const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
+export const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<WarehouseFormData>({
     name: "",
     type: "",
@@ -41,6 +39,7 @@ const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
             name="name"
             value={formData.name}
             onChange={handleChange}
+            required
           />
         </label>
         <br />
@@ -50,6 +49,7 @@ const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
             name="WarehouseType"
             value={formData.type}
             onChange={handleChange}
+            required
           >
             <option value="">Select Warehouse Type</option>
             <option value={ProductType.LIQUID}>liquid</option>
