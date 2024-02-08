@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Client, clientUrl } from "./Client.static";
+import { Client, ClientFormData, clientUrl } from "./Client.static";
 import ClientForm from "../../form/ClientForm";
 import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
 import { Container, Table, Title } from "../../table/table.style";
 import { useNavigate } from "react-router-dom";
 import { Button, RedButton } from "../../button/button.style";
 
-const ClientList = () => {
+const ClientList: React.FC = () => {
   const [records, setRecords] = useState<Client[]>([]);
+  const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,7 +19,7 @@ const ClientList = () => {
     };
 
     axios
-      .get(clientUrl, { headers })
+      .get<Client[]>(clientUrl, { headers })
       .then((res) => {
         const data: Client[] = res.data;
         if (data.length > 0) {
@@ -35,7 +36,7 @@ const ClientList = () => {
     };
 
     axios
-      .delete(`${clientUrl}/${clientId}`, { headers })
+      .delete<Client>(`${clientUrl}/${clientId}`, { headers })
       .then((res) => {
         setRecords(records.filter((record) => record.id !== clientId));
        return res;
@@ -43,6 +44,31 @@ const ClientList = () => {
       .catch((err) => console.error(err));
   };
 
+  const toggleForm = () => {
+    setShowForm(!showForm);
+  };
+
+  const handleSubmit = (formData: ClientFormData) => {
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+  
+    const newClient: Client = {
+      id: "",
+      createdAt: "",
+      ...formData,
+    };
+  
+    axios
+      .post<Client>(clientUrl, newClient, { headers })
+      .then((res) => {
+        const newRecord: Client = res.data;
+        setRecords([...records, newRecord]);
+        toggleForm();
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <Container>
@@ -78,13 +104,14 @@ const ClientList = () => {
         </tbody>
       </Table>
       <br />
-      <Button type="button" onClick={ClientForm}>
+      <Button type="button" onClick={toggleForm}>
         Register new client
       </Button>
       <br />
       <Button type="button" onClick={() => BackToHomePage(navigate)}>
         Back
       </Button>
+      {showForm && <ClientForm onCancel={toggleForm} onSubmit={handleSubmit} />}
     </Container>
   );
 };

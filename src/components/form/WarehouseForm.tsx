@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Button } from "../button/button.style";
-import { ProductType, WarehouseFormData, WarehouseFormProps } from "../pages/Warehouse/Warehouse.static";
+import { ProductType, WarehouseFormData, WarehouseFormProps, warehouseUrl } from "../pages/Warehouse/Warehouse.static";
+import axios from "axios";
 
 export const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<WarehouseFormData>({
     name: "",
     type: "",
+    client_id: ""
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -17,25 +19,47 @@ export const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
       [name]: value,
     }));
   };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
-
-    setFormData({
-      name: "",
-      type: "",
-    });
+  
+  const handleSubmit = async (formData: WarehouseFormData) => {
+    try {
+      // Assuming you are using a library like axios for HTTP requests
+      const response = await axios.post(warehouseUrl, formData);
+      onSubmit(formData);
+      setFormData({
+            name: "",
+            type: "",
+            client_id: "",
+          });
+      // Handle successful response, e.g., show a success message or redirect
+      console.log('Success:', response.data);
+    } catch (error) {
+      // Handle errors, e.g., show an error message
+      console.error('Error:', error);
+    }
   };
+
+  // const handleSubmit = (e: FormEvent) => {
+  //   e.preventDefault();
+  //   console.log(formData);
+    
+  //   onSubmit(formData);
+  
+  //   setFormData({
+  //     name: "",
+  //     type: "",
+  //     client_id: "",
+  //   });
+  // };
+  
 
   return (
     <div>
       <h2>Create Warehouse</h2>
-      <form onSubmit={handleSubmit}>
+      {/* <form onSubmit={handleSubmit}> */}
+      <form>
         <label>
           Warehouse Name:
           <input
-            type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
@@ -46,15 +70,25 @@ export const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
         <label>
           Warehouse Type:
           <select
-            name="WarehouseType"
+            name="type"
             value={formData.type}
             onChange={handleChange}
             required
           >
             <option value="">Select Warehouse Type</option>
-            <option value={ProductType.LIQUID}>liquid</option>
-            <option value={ProductType.NON_LIQUID}>non-liquid</option>
+            <option value={ProductType.LIQUID}>LIQUID</option>
+            <option value={ProductType.NON_LIQUID}>NON_LIQUID</option>
           </select>
+        </label>
+        <label>
+          Client:
+          <input
+            type="text"
+            name="client_id"
+            value={formData.client_id}
+            onChange={handleChange}
+            required
+          />
         </label>
         <Button type="submit">Save</Button>
       </form>

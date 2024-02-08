@@ -1,3 +1,5 @@
+
+
 export interface Warehouse {
   id: string;
   name: string;
@@ -18,6 +20,9 @@ export enum ProductType {
 export interface WarehouseFormData {
   name: string;
   type: ProductType | '';
+  client_id: string;
 }
+
+
 
 export const warehouseUrl = 'http://localhost:3000/warehouse';
