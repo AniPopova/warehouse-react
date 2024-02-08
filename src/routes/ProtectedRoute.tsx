@@ -11,7 +11,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }: ProtectedRo
   return user ? (
     children
   ) : (
-    <Navigate to="/auth" replace /> 
+    <Navigate to="/login" replace /> 
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Product, productUrl } from "./Product.constants";
 import axios from "axios";
-import { BackToHomePage } from "../../../utils/utils";
+import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
 import { Container, Table, Title } from "../../table/table.style";
 import { Button, RedButton } from "../../button/button.style";
 import { useNavigate } from "react-router-dom";
@@ -11,8 +11,13 @@ const ProductList: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
     axios
-      .get(productUrl)
+      .get(productUrl, { headers })
       .then((res) => {
         const data: Product[] = res.data;
         if (data.length > 0) {
@@ -21,6 +26,8 @@ const ProductList: React.FC = () => {
       })
       .catch((err) => console.error(err));
   }, []);
+
+
 
   const handleRegisterNewProduct = (): void => {
     throw new Error("Under Construction");

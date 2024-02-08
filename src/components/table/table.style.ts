@@ -8,14 +8,15 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.h3`
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 20px;
 `;
 
 export const Table = styled.table`
-  width: 100%;
+  width: 80%;
   margin-top: 20px;
   border-collapse: collapse;
+  border: 1px solid brown;
 
   th, td {
     border: 0.1px solid #ddd;

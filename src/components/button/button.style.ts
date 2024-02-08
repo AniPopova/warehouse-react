@@ -23,7 +23,7 @@ export const RedButton = styled.button`
 margin: 10px;
 padding: 8px 12px;
 font-size: 12px;
-background-color: #32465c;
+background-color: brown;
 color: whitesmoke;
 border: none;
 border-radius: 4px;

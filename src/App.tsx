@@ -11,7 +11,8 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import WelcomePage from "./components/pages/Welcome/WelcomePage";
 import Footer from "./components/view/Footer/Footer";
 import NavBar from "./components/navbar/NavBar";
-import { Provide}
+
+import { ProvideAuth } from "./components/auth/ProvideAuth";
 
 const App = () => {
   return (

@@ -1,45 +1,31 @@
 import { useEffect, useState } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { Container, Title, Table } from "../../table/table.style";
-import { BackToHomePage } from "../../../utils/utils";
+import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
 import { useNavigate } from "react-router-dom";
 import { Warehouse, warehouseUrl } from "./Warehouse.static";
-import useToken from "../../../hooks/token.hook";
 import { Button, RedButton } from "../../button/button.style";
 
 const WarehouseList = () => {
-  const [warehouseRecords, setWarehouseRecords] = useState<Warehouse[]>([]);
+  const [warehouseRecords, setRecords] = useState<Warehouse[]>([]);
   const navigate = useNavigate();
-  const token = useToken();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(warehouseUrl, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = response.data;
-
-        if (data.length > 0) {
-          setWarehouseRecords(data);
-        }
-      } catch (error) {
-        console.error("Warehouse request failed:", error);
-
-        if (axios.isAxiosError(error)) {
-          const axiosError: AxiosError = error;
-          if (axiosError.response?.status === 403) {
-            console.log('You are not authorized for this action.');
-            navigate("/");
-          }
-        }
-      }
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
     };
 
-    fetchData();
-  }, [token, navigate]);
+    axios
+      .get(warehouseUrl, { headers })
+      .then((res) => {
+        const data: Warehouse[] = res.data;
+        if (data.length > 0) {
+          setRecords(data);
+        }
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   function RegisterNewWarehouse() {
     navigate("../../forms/WarehouseForm");

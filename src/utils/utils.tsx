@@ -40,7 +40,7 @@ export const CheckAuthLoader = () => {
   const navigate = useNavigate();
 
   if (!token) {
-    navigate("/auth");
+    navigate("/login");
   }
 };
 
