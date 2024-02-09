@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { ClientFormData, ClientFormProps } from "../pages/Client/Client.static";
-import { SignUpBox } from "../pages/Welcome/Welcome.style";
+import { RegBox } from "../pages/Welcome/Welcome.style";
 import { Button } from "../button/button.style";
+import { createClient } from "../pages/Client/Client.logic";
+
 
 const ClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<ClientFormData>({
@@ -20,20 +22,30 @@ const ClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();  
+    try {
+      const newClient = await createClient(
+        formData.name,
+        formData.address,
+        formData.identificationCode
+      );
 
-    setFormData({
-      name: "",
-      address: "",
-      identificationCode: "",
-    });
+      onSubmit(newClient);
+
+      setFormData({
+        name: "",
+        address: "",
+        identificationCode: "",
+      });
+    } catch (error) {
+      console.error(`Failed to create client: `, error);
+    }
   };
 
   return (
-    <SignUpBox>
-      <h2>Create Warehouse</h2>
+    <RegBox>
+      <h2>Register new client</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Client Name:
@@ -69,7 +81,7 @@ const ClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
         </label>
         <Button type="submit">Save</Button>
       </form>
-    </SignUpBox>
+    </RegBox>
   );
 };
 

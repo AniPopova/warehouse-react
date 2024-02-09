@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Client, ClientFormData, clientUrl } from "./Client.static";
 import ClientForm from "../../form/ClientForm";
@@ -16,6 +16,7 @@ const ClientList: React.FC = () => {
     const token = GetAuthToken();
     const headers = {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     };
 
     axios
@@ -33,13 +34,14 @@ const ClientList: React.FC = () => {
     const token = GetAuthToken();
     const headers = {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     };
 
     axios
       .delete<Client>(`${clientUrl}/${clientId}`, { headers })
       .then((res) => {
         setRecords(records.filter((record) => record.id !== clientId));
-       return res;
+        return res;
       })
       .catch((err) => console.error(err));
   };
@@ -52,14 +54,15 @@ const ClientList: React.FC = () => {
     const token = GetAuthToken();
     const headers = {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     };
-  
+
     const newClient: Client = {
       id: "",
       createdAt: "",
       ...formData,
     };
-  
+
     axios
       .post<Client>(clientUrl, newClient, { headers })
       .then((res) => {
@@ -90,14 +93,21 @@ const ClientList: React.FC = () => {
               <td>{record.name}</td>
               <td>{record.address}</td>
               <td>{record.identificationCode}</td>
-              <td>{new Date(record.createdAt).toLocaleString()}</td>
+              <td>
+                {record.createdAt && typeof record.createdAt === "string"
+                  ? new Date(record.createdAt).toLocaleString()
+                  : "Invalid Date"}
+              </td>
               <td>
                 <Button type="submit">Update</Button>
               </td>
               <td>
-              <RedButton type="button" onClick={() => deleteClient(record.id)}>
-                Delete
-              </RedButton>
+                <RedButton
+                  type="button"
+                  onClick={() => deleteClient(record.id)}
+                >
+                  Delete
+                </RedButton>
               </td>
             </tr>
           ))}

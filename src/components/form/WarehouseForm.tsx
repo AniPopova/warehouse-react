@@ -1,13 +1,13 @@
 import React, { ChangeEvent, useState } from "react";
 import { Button } from "../button/button.style";
-import { ProductType, WarehouseFormData, WarehouseFormProps, warehouseUrl } from "../pages/Warehouse/Warehouse.static";
-import axios from "axios";
+import { ProductType, WarehouseFormData, WarehouseFormProps } from "../pages/Warehouse/Warehouse.static";
+import { createWarehouse } from "../pages/Warehouse/Warehouse.logic";
 
-export const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
+const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit, onCancel }) => {
   const [formData, setFormData] = useState<WarehouseFormData>({
     name: "",
-    type: "",
-    client_id: ""
+    type: ProductType.LIQUID,
+    clientId: ""
   });
 
   const handleChange = (
@@ -19,47 +19,45 @@ export const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
       [name]: value,
     }));
   };
-  
-  const handleSubmit = async (formData: WarehouseFormData) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      // Assuming you are using a library like axios for HTTP requests
-      const response = await axios.post(warehouseUrl, formData);
-      onSubmit(formData);
+      const newWarehouse = await createWarehouse(
+        formData.name,
+        formData.type,
+        formData.clientId
+      );
+
+      onSubmit(newWarehouse);
+
       setFormData({
-            name: "",
-            type: "",
-            client_id: "",
-          });
-      // Handle successful response, e.g., show a success message or redirect
-      console.log('Success:', response.data);
+        name: "",
+        type: ProductType.LIQUID,
+        clientId: "",
+      });
     } catch (error) {
-      // Handle errors, e.g., show an error message
-      console.error('Error:', error);
+      console.error("Failed to create warehouse:", error);
     }
   };
 
-  // const handleSubmit = (e: FormEvent) => {
-  //   e.preventDefault();
-  //   console.log(formData);
-    
-  //   onSubmit(formData);
-  
-  //   setFormData({
-  //     name: "",
-  //     type: "",
-  //     client_id: "",
-  //   });
-  // };
-  
+  const handleCancel = () => {
+    setFormData({
+      name: "",
+      type: ProductType.LIQUID,
+      clientId: "",
+    });
+    onCancel();
+  };
 
   return (
     <div>
       <h2>Create Warehouse</h2>
-      {/* <form onSubmit={handleSubmit}> */}
-      <form>
+      <form onSubmit={handleSubmit}>
         <label>
-          Warehouse Name:
+          Name:
           <input
+            type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
@@ -68,7 +66,7 @@ export const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
         </label>
         <br />
         <label>
-          Warehouse Type:
+          Type:
           <select
             name="type"
             value={formData.type}
@@ -80,17 +78,22 @@ export const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit }) => {
             <option value={ProductType.NON_LIQUID}>NON_LIQUID</option>
           </select>
         </label>
+        <br />
         <label>
-          Client:
+          Client ID:
           <input
             type="text"
-            name="client_id"
-            value={formData.client_id}
+            name="clientId"
+            value={formData.clientId}
             onChange={handleChange}
             required
           />
         </label>
+        <br />
         <Button type="submit">Save</Button>
+        <Button type="button" onClick={handleCancel}>
+          Cancel
+        </Button>
       </form>
     </div>
   );

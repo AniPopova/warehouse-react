@@ -7,8 +7,9 @@ export interface Client {
   createdAt?: string;
 }
 
+
 export type ClientFormProps = {
-  onSubmit: (formData: ClientFormData) => void;
+  onSubmit: (formData: ClientFormData | Client) => void;
   onCancel: () => void;
 };
 

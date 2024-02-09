@@ -16,6 +16,7 @@ const WarehouseList: React.FC = () => {
     const token = GetAuthToken();
     const headers = {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     };
 
     axios
@@ -33,6 +34,7 @@ const WarehouseList: React.FC = () => {
     const token = GetAuthToken();
     const headers = {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     };
 
     axios
@@ -52,11 +54,12 @@ const WarehouseList: React.FC = () => {
     const token = GetAuthToken();
     const headers = {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     };
   
     const newWarehouse: Warehouse = {
       id: "",
-      createdAt: "", // set the created at timestamp
+      createdAt: "", 
       ...formData,
     };
   
@@ -78,6 +81,7 @@ const WarehouseList: React.FC = () => {
           <tr>
             <th>Name</th>
             <th>Type</th>
+            <th>Client</th>
             <th>Created At</th>
             <th>Update</th>
             <th>Delete</th>
@@ -88,6 +92,7 @@ const WarehouseList: React.FC = () => {
             <tr key={index}>
               <td>{record.name}</td>
               <td>{record.type}</td>
+              <td>{record.clientId}</td>
               <td>{new Date(record.createdAt).toLocaleString()}</td>
               <td>
                 <Button type="button">Update</Button>

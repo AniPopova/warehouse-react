@@ -30,6 +30,7 @@ const InvoiceList = () => {
     const token = GetAuthToken();
     const headers = {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     };
 
     axios

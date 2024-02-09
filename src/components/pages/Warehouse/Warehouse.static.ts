@@ -3,12 +3,13 @@
 export interface Warehouse {
   id: string;
   name: string;
-  type: string;
+  type: ProductType;
+  clientId: string;
   createdAt: string;
 }
 
 export type WarehouseFormProps = {
-  onSubmit: (formData: WarehouseFormData) => void;
+  onSubmit: (formData: WarehouseFormData | Warehouse) => void;
   onCancel: () => void;
 };
 
@@ -19,8 +20,8 @@ export enum ProductType {
 
 export interface WarehouseFormData {
   name: string;
-  type: ProductType | '';
-  client_id: string;
+  type: ProductType;
+  clientId: string;
 }
 
 
