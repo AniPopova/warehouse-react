@@ -1,7 +1,13 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Button } from "../button/button.style";
-import { ProductType, WarehouseFormData, WarehouseFormProps } from "../pages/Warehouse/Warehouse.static";
-import { createWarehouse } from "../pages/Warehouse/Warehouse.logic";
+import {
+  ProductType,
+  WarehouseFormData,
+  WarehouseFormProps,
+} from "../pages/Warehouse/Warehouse.static";
+import { createWarehouse} from "../pages/Warehouse/Warehouse.logic";
+import { Client } from "../pages/Client/Client.static";
+import { getClients } from "../pages/Client/Client.logic";
 
 const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit, onCancel }) => {
   const [formData, setFormData] = useState<WarehouseFormData>({
@@ -9,6 +15,20 @@ const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit, onCancel }) => 
     type: ProductType.LIQUID,
     clientId: ""
   });
+  const [clients, setClients] = useState<Client[]>([]);
+
+  useEffect(() => {
+    async function fetchClients() {
+      try {
+        const clientsData = await getClients();
+        setClients(clientsData);
+      } catch (error) {
+        console.error("Failed to fetch clients:", error);
+      }
+    }
+
+    fetchClients();
+  }, []);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -28,7 +48,6 @@ const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit, onCancel }) => 
         formData.type,
         formData.clientId
       );
-
       onSubmit(newWarehouse);
 
       setFormData({
@@ -73,7 +92,6 @@ const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit, onCancel }) => 
             onChange={handleChange}
             required
           >
-            <option value="">Select Warehouse Type</option>
             <option value={ProductType.LIQUID}>LIQUID</option>
             <option value={ProductType.NON_LIQUID}>NON_LIQUID</option>
           </select>
@@ -81,13 +99,19 @@ const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit, onCancel }) => 
         <br />
         <label>
           Client ID:
-          <input
-            type="text"
+          <select
             name="clientId"
             value={formData.clientId}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Select a client</option>
+            {clients.map((client) => (
+              <option key={client.id} value={client.id}>
+                {client.name}
+              </option>
+            ))}
+          </select>
         </label>
         <br />
         <Button type="submit">Save</Button>

@@ -48,23 +48,6 @@ export const BackToHomePage = (navigate: ReturnType<typeof useNavigate>) => {
   navigate("/");
 };
 
-export const routerElements = {
-  home: "/",
-  login: "/login",
-  signup: "/signup",
-  client: "client",
-  product: "product",
-  order: {
-    root:"order",
-    invoice: "invoice",
-    orderDetails: "order-details",
-    bestClient: "best-client",
-    bestProduct: "best-product",
-    productsOnStock: "stock",
-    ordersDetails: "orders-details",
-  },
-  warehouse: "/warehouse",
-};
 
 
-export const baseUrl = "http://localhost:3000";
+

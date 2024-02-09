@@ -1,22 +1,72 @@
-import React, { useState } from "react";
-import { OrderType } from "../pages/Order/Order.static";
-import { useNavigate } from "react-router-dom";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import {
+  OrderFormData,
+  OrderFormProps,
+  OrderType,
+} from "../pages/Order/Order.static";
+import { Button } from "../button/button.style";
+import { Product } from "../pages/Product/Product.static";
+import { Warehouse } from "../pages/Warehouse/Warehouse.static";
+import { Client } from "../pages/Client/Client.static";
+import { createOrder } from "../pages/Order/Order.logic";
+import { getClients } from "../pages/Client/Client.logic";
+import { getWarehouses } from "../pages/Warehouse/Warehouse.logic";
+import { getProducts } from "../pages/Product/Product.logic";
 
-export interface OrderFormData {
-  orderType: OrderType | "";
-  clientId: string;
-}
-
-function OrderForm() {
+const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }) => {
   const [formData, setFormData] = useState<OrderFormData>({
-    orderType: "",
+    type: OrderType.ORDER,
     clientId: "",
+    warehouseId: "",
+    productId: "",
+    quantity: 0,
+    price: 0,
   });
 
-  const navigate = useNavigate();
+  const [clients, setClients] = useState<Client[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+  useEffect(() => {
+    async function fetchClients() {
+      try {
+        const clientsData = await getClients();
+        setClients(clientsData);
+      } catch (error) {
+        console.error("Failed to fetch clients:", error);
+      }
+    }
+
+    fetchClients();
+  }, []);
+
+  useEffect(() => {
+    async function fetchWarehouses() {
+      try {
+        const warehousesData = await getWarehouses();
+        setWarehouses(warehousesData);
+      } catch (error) {
+        console.error("Failed to fetch warehouses:", error);
+      }
+    }
+
+    fetchWarehouses();
+  }, []);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const productsData = await getProducts();
+        setProducts(productsData);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+      }
+    }
+
+    fetchProducts();
+  }, []);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -25,69 +75,133 @@ function OrderForm() {
     }));
   };
 
-  //const createOrder = (data: Partial<Order>) => {
-
-  //   fetch(endpoint.order, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-type": "application/json",
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //     body: JSON.stringify(data),
-  //   });
-  // };
-
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      const newOrder = await createOrder(
+        formData.type,
+        formData.clientId,
+        formData.warehouseId,
+        formData.productId,
+        formData.quantity,
+        formData.price
+      );
 
-   // createOrder(formData);
+      onSubmit(newOrder);
 
-    setFormData({
-      orderType: "",
-      clientId: "",
-    });
+      setFormData({
+        type: OrderType.ORDER,
+        clientId: "",
+        warehouseId: "",
+        productId: "",
+        quantity: 0,
+        price: 0,
+      });
+    } catch (error) {
+      console.error("Failed to create order:", error);
+    }
   };
 
-  const handleBackToPreviousPage = () => {
-    navigate("/");
+  const handleCancel = () => {
+    setFormData({
+      type: OrderType.ORDER,
+      clientId: "",
+      warehouseId: "",
+      productId: "",
+      quantity: 0,
+      price: 0,
+    });
+    onCancel();
   };
 
   return (
     <div>
-      <h2>Order Form</h2>
+      <h2>Create Order</h2>
       <form onSubmit={handleSubmit}>
         <label>
-          Order Type:
-          <select
-            name="orderType"
-            value={formData.orderType}
-            onChange={handleChange}
-          >
-            <option value="">Select Order Type</option>
-            <option value={OrderType.TRANSFER}>Transfer</option>
-            <option value={OrderType.ORDER}>Order</option>
-            <option value={OrderType.DELIVERY}>Delivery</option>
+          Type:
+          <select name="type" value={formData.type} onChange={handleChange}>
+            <option value={OrderType.TRANSFER}>TRANSFER</option>
+            <option value={OrderType.ORDER}>ORDER</option>
+            <option value={OrderType.DELIVERY}>DELIVERY</option>
           </select>
         </label>
         <br />
         <label>
-          Client ID:
-          <input
-            type="text"
+          Client:
+          <select
             name="clientId"
             value={formData.clientId}
+            onChange={handleChange}
+          >
+            <option value="">Select Client</option>
+            {clients.map((client) => (
+              <option key={client.id} value={client.id}>
+                {client.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <br />
+        <label>
+          Warehouse:
+          <select
+            name="warehouseId"
+            value={formData.warehouseId}
+            onChange={handleChange}
+          >
+            <option value="">Select Warehouse</option>
+            {warehouses.map((warehouse) => (
+              <option key={warehouse.id} value={warehouse.id}>
+                {warehouse.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <br />
+        <label>
+          Product:
+          <select
+            name="productId"
+            value={formData.productId}
+            onChange={handleChange}
+          >
+            <option value="">Select Product</option>
+            {products.map((product) => (
+              <option key={product.id} value={product.id}>
+                {product.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <br />
+        <label>
+          Quantity:
+          <input
+            type="number"
+            name="quantity"
+            value={formData.quantity}
             onChange={handleChange}
           />
         </label>
         <br />
-        <button type="submit">Submit</button>
+        <label>
+          Price:
+          <input
+            type="number"
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+          />
+        </label>
         <br />
-        <button type="button" onClick={handleBackToPreviousPage}>
-          Back
-        </button>
+        <Button type="submit">Save</Button>
+        <Button type="button" onClick={handleCancel}>
+          Cancel
+        </Button>
       </form>
     </div>
   );
-}
+};
 
 export default OrderForm;

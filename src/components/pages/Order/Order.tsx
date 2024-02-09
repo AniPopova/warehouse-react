@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Order, orderUrl } from "./Order.static";
+import { Order, OrderFormData } from "./Order.static";
 import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
 import { Container, Table, Title } from "../../table/table.style";
 import { Button, RedButton } from "../../button/button.style";
-import { Client, clientUrl } from "../Client/Client.static";
-
+import { BASE_URL, ROUTES } from "../../../routes/routes.static";
+import OrderForm from "../../form/OrderForm";
 
 const OrderList: React.FC = () => {
   const [records, setRecords] = useState<Order[]>([]);
-  const [clients, setClients] = useState<Client[]>([]);
-
+  const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,7 +21,7 @@ const OrderList: React.FC = () => {
     };
 
     axios
-      .get<Order[]>(orderUrl, { headers })
+      .get<Order[]>(`${BASE_URL}${ROUTES.ORDER}`, { headers })
       .then((res) => {
         const data: Order[] = res.data;
         if (data.length > 0) {
@@ -30,31 +29,52 @@ const OrderList: React.FC = () => {
         }
       })
       .catch((err) => console.error(err));
-
-    axios
-      .get<Client[]>(clientUrl)
-      .then((res) => {
-        const data: Client[] = res.data;
-        if (data.length > 0) {
-          setClients(data);
-        }
-      })
-      .catch((err) => console.error(err));
   }, []);
 
-  const handleUpdateClick = (orderId: string) => {
-    navigate(`../../forms/OrderForm/${orderId}`);
+  const deleteOrder = (orderId: string) => {
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+
+    axios
+      .delete<Order>(`${BASE_URL}${ROUTES.ORDER}/${orderId}`, { headers })
+      .then((res) => {
+        setRecords((currentRecords) =>
+          currentRecords.filter((record) => record.id !== orderId)
+        );
+        return res;
+      })
+      .catch((err) => console.error(err));
   };
 
-  const getClientNameById = (clientId: string): string => {
-    const client: Client | undefined = clients.find((c) => c.id === clientId);
-    if (client && "name" in client) {
-      return client.name;
-    }
-    return "Warehouse";
+  const toggleForm = () => {
+    setShowForm(!showForm);
   };
 
+  const handleSubmit = (formData: Order | OrderFormData)  => {
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
 
+    const newOrder: Order = {
+      id: "",
+      createdAt: "",
+      ...formData,
+    };
+
+    axios
+      .post<Order>(`${BASE_URL}${ROUTES.ORDER}`, newOrder, { headers })
+      .then((res) => {
+        const newRecord: Order = res.data;
+        setRecords([...records, newRecord]);
+        toggleForm();
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <Container>
@@ -70,27 +90,24 @@ const OrderList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {records.map((record: Order, index) => (
-            <tr key={index}>
+          {records.map((record) => (
+            <tr key={record.id}>
               <td>{record.type}</td>
-              <td>{getClientNameById(record.clientId)}</td>
+              <td>{record.clientId}</td>
               <td>{new Date(record.createdAt).toLocaleString()}</td>
               <td>
-                <Button
-                  type="button"
-                  onClick={() => handleUpdateClick(record.id)}
-                >
-                  Update
-                </Button>
+                <Button type="button">Update</Button>
               </td>
               <td>
-                <RedButton type="button">Delete</RedButton>
+                <RedButton type="button" onClick={() => deleteOrder(record.id)}>
+                  Delete
+                </RedButton>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
-      <Button type="button" onClick={() => navigate("../../forms/OrderForm")}>
+      <Button type="button" onClick={toggleForm}>
         Register new order
       </Button>
       <Button type="button" onClick={() => navigate("/invoiceList")}>
@@ -99,6 +116,7 @@ const OrderList: React.FC = () => {
       <Button type="button" onClick={() => BackToHomePage(navigate)}>
         Back
       </Button>
+      {showForm && <OrderForm onCancel={toggleForm} onSubmit={handleSubmit} />}
     </Container>
   );
 };

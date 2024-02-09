@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Warehouse, WarehouseFormData, warehouseUrl } from "./Warehouse.static";
 import { Button, RedButton } from "../../button/button.style";
 import WarehouseForm from "../../form/WarehouseForm";
+import { BASE_URL, ROUTES } from "../../../routes/routes.static";
 
 const WarehouseList: React.FC = () => {
   const [records, setRecords] = useState<Warehouse[]>([]);
@@ -20,7 +21,7 @@ const WarehouseList: React.FC = () => {
     };
 
     axios
-      .get<Warehouse[]>(warehouseUrl, { headers })
+      .get<Warehouse[]>(`${BASE_URL}${ROUTES.WAREHOUSE}`, { headers })
       .then((res) => {
         const data: Warehouse[] = res.data;
         if (data.length > 0) {
@@ -38,7 +39,7 @@ const WarehouseList: React.FC = () => {
     };
 
     axios
-      .delete<Warehouse>(`${warehouseUrl}/${warehouseId}`, { headers })
+      .delete<Warehouse>(`${BASE_URL}${ROUTES.WAREHOUSE}/${warehouseId}`, { headers })
       .then((res) => {
         setRecords(records.filter((record) => record.id !== warehouseId));
         return res;

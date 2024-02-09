@@ -1,23 +1,11 @@
+import { Client } from "../Client/Client.static";
+import { Product } from "../Product/Product.static";
+import { Warehouse } from "../Warehouse/Warehouse.static";
 
 export interface Order {
   id: string;
   type: OrderType;
   clientId: string; 
-  createdAt: string;
-}
-
-export interface Client {
-  id: string;
-  name: string;
-  address: string;
-  identificationCode: string;
-  createdAt: string;
-}
-
-export interface Warehouse {
-  id: string;
-  name: string;
-  type: string;
   createdAt: string;
 }
 
@@ -28,6 +16,19 @@ export enum OrderType {
   DELIVERY = 'DELIVERY'
 }
 
+export interface OrderFormData {
+  type: OrderType;
+  clientId: Client["id"];
+  warehouseId: Warehouse["id"];
+  productId: Product["id"];
+  quantity: number;
+  price: number;
+}
+
+export type OrderFormProps = {
+  onSubmit: (formData: Order | OrderFormData ) => void;
+  onCancel: () => void;
+}
 
 
 export const orderUrl = 'http://localhost:3000/order'

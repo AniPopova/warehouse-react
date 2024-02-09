@@ -50,7 +50,7 @@ const ClientList: React.FC = () => {
     setShowForm(!showForm);
   };
 
-  const handleSubmit = (formData: ClientFormData) => {
+  const handleSubmit = (formData: ClientFormData | Client) => {
     const token = GetAuthToken();
     const headers = {
       Authorization: `Bearer ${token}`,

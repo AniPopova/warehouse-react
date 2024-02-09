@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Product, productUrl } from "./Product.static";
+import { Product, ProductFormData, productUrl } from "./Product.static";
 import axios from "axios";
 import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
 import { Container, Table, Title } from "../../table/table.style";
 import { Button, RedButton } from "../../button/button.style";
 import { useNavigate } from "react-router-dom";
+import ProductForm from "../../form/ProductForm";
 
 const ProductList: React.FC = () => {
   const [records, setRecords] = useState<Product[]>([]);
+  const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = GetAuthToken();
     const headers = {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     };
 
     axios
-      .get(productUrl, { headers })
+      .get<Product[]>(productUrl, { headers })
       .then((res) => {
         const data: Product[] = res.data;
         if (data.length > 0) {
@@ -31,6 +34,7 @@ const ProductList: React.FC = () => {
     const token = GetAuthToken();
     const headers = {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     };
 
     axios
@@ -43,9 +47,33 @@ const ProductList: React.FC = () => {
   };
 
 
-  const handleRegisterNewProduct = (): void => {
-    throw new Error("Under Construction");
+  const toggleForm = () => {
+    setShowForm(!showForm);
   };
+
+  const handleSubmit = (formData: ProductFormData) => {
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+  
+    const newProduct: Product = {
+      id: "",
+      createdAt: "", 
+      ...formData,
+    };
+  
+    axios
+      .post<Product>(productUrl, newProduct, { headers })
+      .then((res) => {
+        const newRecord: Product = res.data;
+        setRecords([...records, newRecord]);
+        toggleForm();
+      })
+      .catch((err) => console.error(err));
+  };
+
 
   return (
     <Container>
@@ -80,12 +108,13 @@ const ProductList: React.FC = () => {
           ))}
         </tbody>
       </Table>
-      <Button type="button" onClick={() => handleRegisterNewProduct()}>
+      <Button type="button" onClick={toggleForm}>
         Register new product
       </Button>
       <Button type="button" onClick={() => BackToHomePage(navigate)}>
         Back
       </Button>
+      {showForm && <ProductForm onCancel={toggleForm} onSubmit={handleSubmit} />}
     </Container>
   );
 };

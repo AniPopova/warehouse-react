@@ -1,41 +1,32 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import {
-  RegBox,
-  StyledButton,
-  StyledInput,
-  StyledOption,
-  StyledSelect,
-} from "../../styles/CommonStyles";
+  ProductFormData,
+  ProductFormProps,
+  ProductType,
+  UnitType,
+} from "../pages/Product/Product.static";
+import { Button } from "../button/button.style";
+import { createProduct } from "../pages/Product/Product.logic";
 
-export interface ProductFormProps {
-  onSubmit: (formData: ProductFormData) => void;
-}
-
-export enum ProductType {
-  LIQUID = "LIQUID",
-  NON_LIQUID = "NON_LIQUID",
-}
-
-export enum UnitType {
-  KILOGRAMS = "kg",
-  LITTERS = "l",
-}
-
-export interface ProductFormData {
-  name: string;
-  productType: ProductType | "";
-  unit: UnitType | "";
-}
-
-const ProductForm: React.FC<ProductFormProps> = ({ onSubmit }) => {
+const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, onCancel }) => {
   const [formData, setFormData] = useState<ProductFormData>({
     name: "",
-    productType: "",
-    unit: "",
+    type: ProductType.LIQUID,
+    unit: UnitType.LITTERS,
   });
 
+  // const handleChange = (
+  //   e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  // ) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     [name]: value,
+  //   }));
+  // };
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -44,69 +35,84 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit }) => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+    try {
+      const newProduct = await createProduct(
+        formData.name,
+        formData.type,
+        formData.unit
+      );
+      onSubmit(newProduct);
 
-    setFormData({
-      name: "",
-      productType: "",
-      unit: "",
-    });
+      setFormData({
+        name: "",
+        type: ProductType.LIQUID,
+        unit: UnitType.LITTERS,
+      });
+    } catch (error) {
+      console.error("Failed to create product:", error);
+    }
   };
 
-  const handleBackToMainPage = () => {
-    history.back();
+  const handleCancel = () => {
+    setFormData({
+      name: "",
+      type: ProductType.LIQUID,
+      unit: UnitType.LITTERS,
+    });
+    onCancel();
   };
 
   return (
-    <RegBox>
+    <div>
       <h2>Register new product</h2>
       <form onSubmit={handleSubmit}>
         <label>
-          Product Name:
-          <StyledInput
+          Name:
+          <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
+            required
           />
         </label>
         <br />
         <label>
-          Product Type:
-          <StyledSelect
-            name="productType"
-            value={formData.productType}
+          Type:
+          <select
+            name="type"
+            value={formData.type}
             onChange={handleChange}
+            required
           >
-            <StyledOption value="">Select Product Type</StyledOption>
-            <StyledOption value={ProductType.LIQUID}>liquid</StyledOption>
-            <StyledOption value={ProductType.NON_LIQUID}>
-              non-liquid
-            </StyledOption>
-          </StyledSelect>
+            <option value={ProductType.LIQUID}>LIQUID</option>
+            <option value={ProductType.NON_LIQUID}>
+              NON_LIQUID
+            </option>
+          </select>
         </label>
         <br />
         <label>
           Unit Type:
-          <StyledSelect
-            name="productType"
+          <select
+            name="unit"
             value={formData.unit}
             onChange={handleChange}
+            required
           >
-            <StyledOption value="">Select Unit</StyledOption>
-            <StyledOption value={UnitType.LITTERS}>l</StyledOption>
-            <StyledOption value={UnitType.KILOGRAMS}>kg</StyledOption>
-          </StyledSelect>
+            <option value={UnitType.LITTERS}>l</option>
+            <option value={UnitType.KILOGRAMS}>kg</option>
+          </select>
         </label>
         <br />
-        <StyledButton type="button">Submit</StyledButton>
-        <StyledButton type="button" onClick={handleBackToMainPage}>
-          Back
-        </StyledButton>
+        <Button type="submit">Save</Button>
+        <Button type="button" onClick={handleCancel}>
+          Cancel
+        </Button>
       </form>
-    </RegBox>
+    </div>
   );
 };
 

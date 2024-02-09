@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { GetAuthToken, baseUrl } from "../../../utils/utils";
+import { GetAuthToken } from "../../../utils/utils";
 import { UserRights } from "../../form/UserForm";
 import { Container, Title } from "../../table/table.style";
+import { BASE_URL, ROUTES } from "../../../routes/routes.static";
+import { RegBox } from "../Welcome/Welcome.style";
 
-interface User {
+export interface User {
   id: string;
   username: string;
   password: string;
@@ -11,16 +13,16 @@ interface User {
   userRole: UserRights;
 }
 
-const Profile = () => {
-  const [profileData, setProfileData] = useState<User | null>(null);
+const Profile: React.FC = () => {
+  const [profileData, setProfileData] = useState<User>();
 
   useEffect(() => {
     const token = GetAuthToken();
 
     const fetchProfile = async () => {
       try {
-        const response = await fetch(baseUrl, {
-          method: "POST",
+        const response = await fetch(`${BASE_URL}${ROUTES.USER}`, {
+          method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -47,11 +49,11 @@ const Profile = () => {
     <Container>
       <Title>User Profile</Title>
       {profileData ? (
-        <div>
+        <RegBox>
           <p>Username: {profileData.username}</p>
           <p>Email: {profileData.email}</p>
           <p>Role: {profileData.userRole}</p>
-        </div>
+        </RegBox>
       ) : (
         <p>Loading profile...</p>
       )}

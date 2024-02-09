@@ -11,9 +11,9 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import WelcomePage from "./components/pages/Welcome/WelcomePage";
 import Footer from "./components/view/Footer/Footer";
 import NavBar from "./components/navbar/NavBar";
-
 import { ProvideAuth } from "./components/auth/ProvideAuth";
 import InvoiceList from "./components/pages/Invoice/Invoice";
+import Profile from "./components/pages/User/UserProfile";
 
 const App = () => {
   return (
@@ -26,7 +26,14 @@ const App = () => {
             <Route path="/auth" element={<WelcomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-
+            <Route
+              path="/user"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/warehouse"
               element={
