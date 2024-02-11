@@ -6,10 +6,12 @@ export interface Warehouse {
   createdAt: string;
 }
 
-export type WarehouseFormProps = {
+export interface WarehouseFormProps {
+  warehouse?: Warehouse;
+  initialData?: WarehouseFormData | Warehouse;
   onSubmit: (formData: WarehouseFormData | Warehouse) => void;
   onCancel: () => void;
-};
+}
 
 export enum ProductType {
   LIQUID = "LIQUID",
@@ -17,11 +19,8 @@ export enum ProductType {
 }
 
 export interface WarehouseFormData {
+  id?: string;
   name: string;
   type: ProductType;
   clientId: string;
 }
-
-
-
-export const warehouseUrl = 'http://localhost:3000/warehouse';

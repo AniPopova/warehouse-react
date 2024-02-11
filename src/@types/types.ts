@@ -4,6 +4,7 @@ import { UserRights } from "../components/form/UserForm";
 //Authentication
 export interface Token {
   id: string;
+  name: string;
   email: string;
   role: string;
   iat: number;
@@ -11,10 +12,10 @@ export interface Token {
 }
 
 export interface User {
-  id: string;
-  name: string;
-  email: string;
-  userRole: UserRights;
+  id?: string;
+  name?: string;
+  email?: string;
+  userRole?: UserRights;
 }
 
 export interface AuthContextValue {
@@ -41,4 +42,10 @@ export interface AuthContextType {
 
 export interface ProvideAuthProps {
   children: ReactNode;
+}
+
+export interface JWTPayload {
+  username: string;
+  email: string;
+  userRole: UserRights;
 }

@@ -98,7 +98,7 @@ const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit, onCancel }) => 
         </label>
         <br />
         <label>
-          Client ID:
+          Client:
           <select
             name="clientId"
             value={formData.clientId}

@@ -53,7 +53,7 @@ const OrderList: React.FC = () => {
     setShowForm(!showForm);
   };
 
-  const handleSubmit = (formData: Order | OrderFormData)  => {
+  const handleSubmit = (formData: Order | OrderFormData) => {
     const token = GetAuthToken();
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -99,7 +99,10 @@ const OrderList: React.FC = () => {
                 <Button type="button">Update</Button>
               </td>
               <td>
-                <RedButton type="button" onClick={() => deleteOrder(record.id)}>
+                <RedButton
+                  type="button"
+                  onClick={() => deleteOrder(record.id)}
+                >
                   Delete
                 </RedButton>
               </td>
@@ -112,6 +115,9 @@ const OrderList: React.FC = () => {
       </Button>
       <Button type="button" onClick={() => navigate("/invoiceList")}>
         Issued invoices
+      </Button>
+      <Button type="button" onClick={() => navigate("/orderDetailsData")}>
+        Analyses
       </Button>
       <Button type="button" onClick={() => BackToHomePage(navigate)}>
         Back

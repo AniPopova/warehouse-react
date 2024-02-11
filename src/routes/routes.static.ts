@@ -10,6 +10,10 @@ export const ROUTES = {
   ORDER: '/order',
   WAREHOUSE: '/warehouse',
   INVOICE:'/invoice',
-  USER: '/user'
+  USER: '/user',
+  ORDER_DETAILS: '/order-details',
+  BEST_CLIENT: '/order-details/best-client',
+  BEST_PRODUCT: '/order-details/best-product',
+  AVAILABILITY: '/order-details/stock'
 };
 

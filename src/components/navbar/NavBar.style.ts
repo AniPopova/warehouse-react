@@ -14,6 +14,9 @@ export const NavContainer = styled.nav`
   background-color: grey;
   font-size: 20px;
   height: 2.7rem;
+  position: fixed; 
+  top: 0;
+  width: 100%; 
 `;
 
 export const NavLinks = styled.div`

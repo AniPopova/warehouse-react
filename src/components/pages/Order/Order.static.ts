@@ -1,5 +1,4 @@
 import { Client } from "../Client/Client.static";
-import { Product } from "../Product/Product.static";
 import { Warehouse } from "../Warehouse/Warehouse.static";
 
 export interface Order {
@@ -20,9 +19,6 @@ export interface OrderFormData {
   type: OrderType;
   clientId: Client["id"];
   warehouseId: Warehouse["id"];
-  productId: Product["id"];
-  quantity: number;
-  price: number;
 }
 
 export type OrderFormProps = {
@@ -30,6 +26,19 @@ export type OrderFormProps = {
   onCancel: () => void;
 }
 
+export interface CreateOrderDto {
+  type: string;
+  clientId: string;
+  warehouseId: string | null;
+}
 
-export const orderUrl = 'http://localhost:3000/order'
-export const createOrderUrl = 'http://localhost:3000/order'
+export interface OrderDetail {
+  warehouseId: string;
+  productId: string;
+  quantity: number;
+  price: number;
+}
+
+
+
+

@@ -5,6 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
+  margin-bottom: 40px;
 `;
 
 export const Title = styled.h3`

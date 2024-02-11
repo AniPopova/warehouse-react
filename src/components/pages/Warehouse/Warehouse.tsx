@@ -3,12 +3,12 @@ import axios from "axios";
 import { Container, Title, Table } from "../../table/table.style";
 import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
 import { useNavigate } from "react-router-dom";
-import { Warehouse, WarehouseFormData, warehouseUrl } from "./Warehouse.static";
+import { Warehouse, WarehouseFormData } from "./Warehouse.static";
 import { Button, RedButton } from "../../button/button.style";
 import WarehouseForm from "../../form/WarehouseForm";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
 
-const WarehouseList: React.FC = () => {
+const WarehouseInfo: React.FC = () => {
   const [records, setRecords] = useState<Warehouse[]>([]);
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ const WarehouseList: React.FC = () => {
     };
   
     axios
-      .post<Warehouse>(warehouseUrl, newWarehouse, { headers })
+      .post<Warehouse>(`${BASE_URL}${ROUTES.WAREHOUSE}`, newWarehouse, { headers })
       .then((res) => {
         const newRecord: Warehouse = res.data;
         setRecords([...records, newRecord]);
@@ -89,7 +89,7 @@ const WarehouseList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {records.map((record, index) => (
+          {records.map((record: Warehouse, index) => (
             <tr key={index}>
               <td>{record.name}</td>
               <td>{record.type}</td>
@@ -118,4 +118,4 @@ const WarehouseList: React.FC = () => {
   );
 };
 
-export default WarehouseList;
+export default WarehouseInfo;

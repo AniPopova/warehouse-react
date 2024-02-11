@@ -17,10 +17,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }) => {
   const [formData, setFormData] = useState<OrderFormData>({
     type: OrderType.ORDER,
     clientId: "",
-    warehouseId: "",
-    productId: "",
-    quantity: 0,
-    price: 0,
+    warehouseId: ""
   });
 
   const [clients, setClients] = useState<Client[]>([]);
@@ -81,10 +78,6 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }) => {
       const newOrder = await createOrder(
         formData.type,
         formData.clientId,
-        formData.warehouseId,
-        formData.productId,
-        formData.quantity,
-        formData.price
       );
 
       onSubmit(newOrder);
@@ -92,10 +85,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }) => {
       setFormData({
         type: OrderType.ORDER,
         clientId: "",
-        warehouseId: "",
-        productId: "",
-        quantity: 0,
-        price: 0,
+        warehouseId: ""
       });
     } catch (error) {
       console.error("Failed to create order:", error);
@@ -106,10 +96,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }) => {
     setFormData({
       type: OrderType.ORDER,
       clientId: "",
-      warehouseId: "",
-      productId: "",
-      quantity: 0,
-      price: 0,
+      warehouseId: ""
     });
     onCancel();
   };

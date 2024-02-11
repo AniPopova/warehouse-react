@@ -14,6 +14,8 @@ import NavBar from "./components/navbar/NavBar";
 import { ProvideAuth } from "./components/auth/ProvideAuth";
 import InvoiceList from "./components/pages/Invoice/Invoice";
 import Profile from "./components/pages/User/UserProfile";
+import BestClient from "./components/pages/OrderDetails/Reports/BestClient";
+import OrderDetailsInfo from "./components/pages/OrderDetails/OrderDetails";
 
 const App = () => {
   return (
@@ -22,7 +24,14 @@ const App = () => {
         <BrowserRouter>
           <NavBar />
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <HomePage />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/auth" element={<WelcomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
@@ -71,6 +80,22 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <InvoiceList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/analysis"
+              element={
+                <ProtectedRoute>
+                  <OrderDetailsInfo />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/clientreport"
+              element={
+                <ProtectedRoute>
+                  <BestClient />
                 </ProtectedRoute>
               }
             />

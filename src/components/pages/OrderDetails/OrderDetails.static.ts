@@ -1,9 +1,11 @@
 export interface OrderDetail{
+  id: string;
   warehouseId: string;
   orderId: string;
   productId: string;
   quantity: number;
-  price: number
+  price: number;
+  totalPrice: string;
   createdAt: string;
 }
 
@@ -14,8 +16,9 @@ export interface BestClient{
 }
 
 export interface BestProduct{
-  soldQuantity: number;
-  ProductName: string;
+  soldQuantity: string;
+  unit: string;
+  productName: string;
 }
 
 export interface ProductsOnStock{
@@ -23,7 +26,3 @@ export interface ProductsOnStock{
   productName: string;
   warehouseName: string;
 }
-
-export const bestBuyerReportUrl = 'http://localhost:3000/order-details/best-client'
-export const bestProductUrl = 'http://localhost:3000/order-details/best-product'
-export const productsOnStockUrl = 'http://localhost:3000/order-details/stock'

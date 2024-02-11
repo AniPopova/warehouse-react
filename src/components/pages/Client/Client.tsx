@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Client, ClientFormData, clientUrl } from "./Client.static";
+import { Client, ClientFormData } from "./Client.static";
 import ClientForm from "../../form/ClientForm";
 import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
 import { Container, Table, Title } from "../../table/table.style";
 import { useNavigate } from "react-router-dom";
 import { Button, RedButton } from "../../button/button.style";
+import { BASE_URL, ROUTES } from "../../../routes/routes.static";
 
-const ClientList: React.FC = () => {
+const ClientInfo: React.FC = () => {
   const [records, setRecords] = useState<Client[]>([]);
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const ClientList: React.FC = () => {
     };
 
     axios
-      .get<Client[]>(clientUrl, { headers })
+      .get<Client[]>(`${BASE_URL}${ROUTES.CLIENT}`, { headers })
       .then((res) => {
         const data: Client[] = res.data;
         if (data.length > 0) {
@@ -38,7 +39,7 @@ const ClientList: React.FC = () => {
     };
 
     axios
-      .delete<Client>(`${clientUrl}/${clientId}`, { headers })
+      .delete<Client>(`${BASE_URL}${ROUTES.CLIENT}/${clientId}`, { headers })
       .then((res) => {
         setRecords(records.filter((record) => record.id !== clientId));
         return res;
@@ -64,7 +65,7 @@ const ClientList: React.FC = () => {
     };
 
     axios
-      .post<Client>(clientUrl, newClient, { headers })
+      .post<Client>(`${BASE_URL}${ROUTES.CLIENT}`, newClient, { headers })
       .then((res) => {
         const newRecord: Client = res.data;
         setRecords([...records, newRecord]);
@@ -126,4 +127,4 @@ const ClientList: React.FC = () => {
   );
 };
 
-export default ClientList;
+export default ClientInfo;

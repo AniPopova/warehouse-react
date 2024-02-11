@@ -2,6 +2,7 @@ import axios from "axios";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
 import { GetAuthToken } from "../../../utils/utils";
 import { Client } from "./Client.static";
+import { MethodType } from "../../../services/app.requests";
 
 export const createClient = async (
   name: string,
@@ -10,7 +11,7 @@ export const createClient = async (
 ): Promise<Client> => {
   try {
     const response = await fetch(`${BASE_URL}${ROUTES.CLIENT}`, {
-      method: "POST",
+      method: MethodType.POST,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "application/json",
@@ -54,17 +55,6 @@ export const getClients = async (): Promise<Client[]> => {
   }
 }
 
-// export function permDelete(_record: Client): void {
-//   throw new Error("Function not implemented.");
-// }
-
-// export function softDelete(_record: Client): void {
-//   throw new Error("Function not implemented.");
-// }
-
-// export function handleUpdate(_record: Client): void {
-//   throw new Error("Function not implemented.");
-// }
 
 
 

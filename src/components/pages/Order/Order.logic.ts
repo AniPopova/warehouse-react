@@ -1,17 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
 import { GetAuthToken } from "../../../utils/utils";
-import { Order, OrderFormData } from "./Order.static";
+import { CreateOrderDto, Order, OrderFormData } from "./Order.static";
 import axios from "axios";
+import { Invoice } from "../Invoice/Invoice.static";
+import { OrderDetail } from "../OrderDetails/OrderDetails.static";
 
 export const createOrder = async (
-  type: string,
-  clientId: string,
-  warehouseId: string,
-  productId: string,
-  quantity: number,
-  price: number,
-): Promise<Order> => {
+  createOrderDto: CreateOrderDto,
+  createOrderDetail: OrderDetail,
+): Promise<{ newOrder: Order; newInvoice: Invoice; newOrderDetail: OrderDetail }> => {
   try {
     const token = GetAuthToken();
     const response = await fetch(`${BASE_URL}${ROUTES.ORDER}`, {
@@ -21,18 +19,13 @@ export const createOrder = async (
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        type,
-        clientId,
-        warehouseId,
-        productId,
-        quantity,
-        price
+        createOrderDto,
+        createOrderDetail,
       }),
     });
     if (!response.ok) {
       const errorData = await response.json();
-      const errorMessage =
-        errorData?.error?.message || "Unknown error occurred";
+      const errorMessage = errorData?.error?.message || "Unknown error occurred";
       console.error(`Failed to create order: ${errorMessage}`);
       throw new Error(`Failed to create order: ${errorMessage}`);
     }
@@ -42,6 +35,7 @@ export const createOrder = async (
     throw error;
   }
 };
+
 
 export const UpdateOrder = async (formData: OrderFormData) => {
   const refresh = useNavigate();

@@ -18,6 +18,7 @@ const NavBar: React.FC = () => {
   const toggleNav = () => {
     setOpen((prevOpen) => !prevOpen);
   };
+
   return (
     <ResponsiveStyles>
       <RootStyle>
@@ -44,7 +45,6 @@ const NavBar: React.FC = () => {
             </NavLinks>
           </NavContainer>
         </header>
-
         <main>
           <Outlet />
         </main>

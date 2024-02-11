@@ -1,18 +1,20 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
 import { GetAuthToken } from "../../../utils/utils";
-import { Warehouse } from "./Warehouse.static";
-
+import { Warehouse, WarehouseFormData } from "./Warehouse.static";
+import { MethodType } from "../../../services/app.requests";
+import { Client } from "../Client/Client.static";
+import { getClients } from "../Client/Client.logic";
 
 export const createWarehouse = async (
   name: string,
   type: string,
-  clientId: string,
+  clientId: string
 ): Promise<Warehouse> => {
   try {
     const token = GetAuthToken();
     const response = await fetch(`${BASE_URL}${ROUTES.WAREHOUSE}`, {
-      method: "POST",
+      method: MethodType.POST,
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -26,16 +28,13 @@ export const createWarehouse = async (
 
     if (!response.ok) {
       const errorData = await response.json();
-      const errorMessage =
-        errorData?.error?.message || "Unknown error occurred";
-      console.error(`Failed to create warehouse: ${errorMessage}`);
+      const errorMessage = errorData?.error?.message || "Unknown error occurred";
       throw new Error(`Failed to create warehouse: ${errorMessage}`);
     }
 
-    return await response.json();
+    return response.json();
   } catch (error) {
-    console.error(`Failed to create warehouse, try again: `, error);
-    throw error;
+    throw new Error(`Failed to create warehouse: ${error}`);
   }
 };
 
@@ -47,10 +46,61 @@ export const getWarehouses = async (): Promise<Warehouse[]> => {
       "Content-Type": "application/json",
     };
 
-    const response = await axios.get<Warehouse[]>(`${BASE_URL}${ROUTES.WAREHOUSE}`, { headers });
+    const response = await axios.get<Warehouse[]>(`${BASE_URL}${ROUTES.WAREHOUSE}`, {
+      headers,
+    });
     return response.data;
   } catch (error) {
-    console.error("Failed to fetch warehouses:", error);
-    throw error;
+    throw new Error(`Failed to fetch warehouses: ${error}`);
   }
-}
+};
+
+export const deleteWarehouse = async (warehouseId: string): Promise<void> => {
+  try {
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+
+    await axios.delete<Warehouse>(
+      `${BASE_URL}${ROUTES.WAREHOUSE}/${warehouseId}`,
+      { headers }
+    );
+  } catch (error) {
+    throw new Error(`Failed to delete warehouse: ${error}`);
+  }
+};
+
+export const updateWarehouse = async (
+  warehouseId: string,
+  formData: WarehouseFormData
+): Promise<Warehouse> => {
+  try {
+    const token = GetAuthToken();
+    const headers = {
+      method: MethodType.PATCH,
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+
+    const response: AxiosResponse<Warehouse> = await axios.patch<Warehouse>(
+      `${BASE_URL}${ROUTES.WAREHOUSE}/${warehouseId}`,
+      formData,
+      { headers }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error(`Failed to update warehouse: ${error}`);
+  }
+};
+
+export const getClientsData = async (): Promise<Client[]> => {
+  try {
+    const clientsData = await getClients();
+    return clientsData;
+  } catch (error) {
+    throw new Error(`Failed to fetch clients: ${error}`);
+  }
+};

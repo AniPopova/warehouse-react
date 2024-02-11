@@ -4,81 +4,82 @@ import { Invoice } from "./Invoice.static";
 import axios from "axios";
 import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
 import { useNavigate } from "react-router-dom";
-import { RedButton, Button } from "../../button/button.style";
+import { Button } from "../../button/button.style";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
-import { getClients } from "../Client/Client.logic";
-import { Client } from "../Client/Client.static";
 import { Order } from "../Order/Order.static";
 import { getOrders } from "../Order/Order.logic";
+import { Product } from "../Product/Product.static";
+import { getProducts } from "../Product/Product.logic";
+import { getOrderDetails } from "../OrderDetails/OrderDetails.logic";
+import { OrderDetail } from "../OrderDetails/OrderDetails.static";
+import { Client } from "../Client/Client.static";
+import { getClients } from "../Client/Client.logic";
 
 const InvoiceList = () => {
   const [records, setRecords] = useState<Invoice[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
-  // const [clients, setClients] = useState<Client[]>([]);
-  // const [clients, setClients] = useState<Client[]>([]);
+  const [orderDetails, setOrderDetails] = useState<OrderDetail[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = GetAuthToken();
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
-    axios
-     .get(`${BASE_URL}${ROUTES.INVOICE}`, { headers })
-      .then((res) => {
-        if (res.data.length > 0) {
-          setRecords(res.data);
+    const fetchInvoices = async () => {
+      const token = GetAuthToken();
+      try {
+        const response = await axios.get(`${BASE_URL}${ROUTES.INVOICE}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.data.length > 0) {
+          setRecords(response.data);
         }
-      })
-      .catch((err) => console.error(err));
+      } catch (error) {
+        console.error("Error fetching invoices:", error);
+      }
+    };
+
+    fetchInvoices();
   }, []);
 
   useEffect(() => {
-    async function fetchClients() {
+    const fetchData = async () => {
       try {
+        const orderDetailsData = await getOrderDetails();
+        setOrderDetails(orderDetailsData);
+        
+        const productsData = await getProducts();
+        setProducts(productsData);
+        
         const clientsData = await getClients();
         setClients(clientsData);
-      } catch (error) {
-        console.error("Failed to fetch clients:", error);
-      }
-    }
 
-    fetchClients();
-  }, []);
-
-  useEffect(() => {
-    async function fetchOrders() {
-      try {
         const ordersData = await getOrders();
         setOrders(ordersData);
       } catch (error) {
-        console.error("Failed to fetch orders:", error);
+        console.error("Error fetching data:", error);
       }
     }
 
-    fetchOrders();
+    fetchData();
   }, []);
-  
-  
-  const deleteInvoice = (invoiceId: string) => {
-    const token = GetAuthToken();
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
 
-    axios
-      .delete(`${BASE_URL}${ROUTES.INVOICE}/${invoiceId}`, { headers })
-      .then((res) => {
-        setRecords(records.filter((record) => record.id !== invoiceId));
-        return res;
-      })
-      .catch((err) => console.error(err));
+  const getProductName = (orderId: string): string => {
+    const orderDetail = orderDetails.find((od) => od.orderId === orderId);
+    const product = orderDetail ? products.find((p) => p.id === orderDetail.productId) : undefined;
+    return product ? product.name : 'N/A';
   };
 
-  
+  const getClientName = (orderId: string): string => {
+    const order = orders.find((o) => o.id === orderId);
+    const client = order ? clients.find((c) => c.id === order.clientId) : undefined;
+    return client ? client.name : 'N/A';
+  };
+
+
   return (
     <Container>
       <Title>Issued invoices</Title>
@@ -86,33 +87,25 @@ const InvoiceList = () => {
         <thead>
           <tr>
             <th>Invoice Nr.</th>
+            <th>Product</th>
             <th>Client</th>
             <th>Created At</th>
-            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
-      {records.map((record) => {
-        const order = orders.find((o) => o.id === record.orderId);
-        const client = clients.find((c) => order && c.id === order.clientId);
-        return (
-          <tr key={record.id}>
-            <td>{record.invNumber}</td>
-            <td>{client ? client.name : 'Client not found'}</td>
-            <td>{new Date(record.createdAt).toLocaleString()}</td>
-            <td>
-              <RedButton type="button" onClick={() => deleteInvoice(record.id)}>
-                Delete
-              </RedButton>
-            </td>
-          </tr>
-        );
-      })}
-    </tbody>
+          {records.map((record: Invoice) => (
+            <tr key={record.id}>
+              <td>{record.invNumber}</td>
+              <td>{getProductName(record.orderId)}</td>
+              <td>{getClientName(record.orderId)}</td>
+              <td>{new Date(record.createdAt).toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
       </Table>
       <Button type="button" onClick={() => BackToHomePage(navigate)}>
-          Back
-        </Button>
+        Back
+      </Button>
     </Container>
   );
 };
