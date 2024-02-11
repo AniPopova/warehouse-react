@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Card, PageContainer, Title } from "./Home.style";
+import { Card, CardsContainer, PageContainer, Title } from "./Home.style";
 import { User } from "../../../@types/types";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../button/button.style";
 import { getUsers, parseJwt } from "../User/User.logic";
 import { ROUTES } from "../../../routes/routes.static";
-
-
 
 const HomePage: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -15,6 +13,13 @@ const HomePage: React.FC = () => {
   const storedToken = localStorage.getItem("token");
   const userPayload = storedToken ? parseJwt(storedToken) : null;
   const userName = userPayload ? userPayload.username : "user";
+
+  const modules = [
+    { name: 'Client', path: '/client' },
+    { name: 'Product', path: '/product' },
+    { name: 'Order', path: '/order' },
+    { name: 'Warehouse', path: '/warehouse' },
+  ];
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -33,16 +38,30 @@ const HomePage: React.FC = () => {
     navigate(`${ROUTES.USER}`);
   };
 
+
+
+  const handleCardClick = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <PageContainer>
       <Card>
         <Title>Welcome {userName}!</Title>
-      </Card>
-      <Button type="button" onClick={showProfile}>
+        <Button type="button" onClick={showProfile}>
         Profile
       </Button>
+      </Card>
+      <CardsContainer>
+        {modules.map((module, index) => (
+          <Card key={index} onClick={() => handleCardClick(module.path)}>
+            {module.name}
+          </Card>
+        ))}
+      </CardsContainer>
     </PageContainer>
   );
 };
 
 export default HomePage;
+

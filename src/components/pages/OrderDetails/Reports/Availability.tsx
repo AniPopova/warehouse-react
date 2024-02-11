@@ -36,17 +36,17 @@ const AvailabilityReport: React.FC = () => {
       <Table>
         <thead>
           <tr>
-            <th>Available quantity</th>
-            <th>Product name</th>
             <th>Warehouse name</th>
+            <th>Product name</th>
+            <th>Available quantity</th>
           </tr>
         </thead>
         <tbody>
           {records.map((record: ProductsOnStock, index) => (
             <tr key={index}>
-              <td>{record.warehouseName}</td>
-              <td>{record.productName}</td>
-              <td>{record.totalQuantity}</td>
+              <td>{record.warehouse_name}</td>
+              <td>{record.product_name}</td>
+              <td>{record.total_quantity}</td>
             </tr>
           ))}
         </tbody>

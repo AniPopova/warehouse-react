@@ -14,8 +14,10 @@ import NavBar from "./components/navbar/NavBar";
 import { ProvideAuth } from "./components/auth/ProvideAuth";
 import InvoiceList from "./components/pages/Invoice/Invoice";
 import Profile from "./components/pages/User/UserProfile";
-import BestClient from "./components/pages/OrderDetails/Reports/BestClient";
 import OrderDetailsInfo from "./components/pages/OrderDetails/OrderDetails";
+import BestProductReport from "./components/pages/OrderDetails/Reports/BestProduct";
+import BestClientReport from "./components/pages/OrderDetails/Reports/BestClient";
+import AvailabilityReport from "./components/pages/OrderDetails/Reports/Availability";
 
 const App = () => {
   return (
@@ -92,10 +94,26 @@ const App = () => {
               }
             />
             <Route
-              path="/clientreport"
+              path="/order-details/best-client"
               element={
                 <ProtectedRoute>
-                  <BestClient />
+                  <BestClientReport />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/order-details/best-product"
+              element={
+                <ProtectedRoute>
+                  <BestProductReport />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/order-details/stock"
+              element={
+                <ProtectedRoute>
+                  <AvailabilityReport />
                 </ProtectedRoute>
               }
             />

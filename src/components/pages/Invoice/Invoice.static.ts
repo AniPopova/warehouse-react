@@ -1,8 +1,18 @@
+import { Order } from "../Order/Order.static";
+
 export interface Invoice{
   id: string;
-  orderId: string;
-  invNumber: string;
+  orderId: Order['id'];
+  invNumber: number;
   createdAt: string;
 }
 
-export const invoiceUrl = 'http://localhost:3000/invoice';
+export interface InvoiceFormData {
+  orderId: Order['id']
+}
+
+export interface InvoiceFormProps {
+  onSubmit: (formData: InvoiceFormData ) => void;
+  onCancel: () => void;
+}
+

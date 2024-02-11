@@ -15,16 +15,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, onCancel }) => {
     unit: UnitType.LITTERS,
   });
 
-  // const handleChange = (
-  //   e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  // ) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     [name]: value,
-  //   }));
-  // };
-
   const handleChange = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
   ) => {

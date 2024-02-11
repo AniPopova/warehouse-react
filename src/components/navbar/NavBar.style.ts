@@ -1,11 +1,5 @@
-import styled from "styled-components";
-import { NavLink } from "react-router-dom";
-
-export const RootStyle = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-`;
+import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 export const NavContainer = styled.nav`
   display: flex;
@@ -51,23 +45,13 @@ export const StyledNavLink = styled(NavLink)`
   }
 `;
 
-export const ResponsiveStyles = styled.div`
-  @media only screen and (max-width: 768px) {
-
-    ${NavLinks} {
-      display: none;
-    }
-
-    ${RootStyle}.nav-open ${NavLinks} {
-      display: flex;
-    }
-  }
-`;
-
-
 export const BurgerMenu = styled.div`
-  display: none;
+  display: block;
   cursor: pointer;
+
+  @media only screen and (min-width: 769px) {
+    display: none; 
+  }
 `;
 
 export const Bar = styled.div`
@@ -75,4 +59,36 @@ export const Bar = styled.div`
   height: 2px;
   background-color: grey;
   margin: 4px 0;
+`;
+
+export const RootStyles = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  @media only screen and (max-width: 768px) {
+    ${NavLinks} {
+      display: none;
+    }
+
+    &.nav-open ${NavLinks} {
+      display: flex;
+    }
+
+    ${BurgerMenu} {
+      display: block; 
+    }
+  }
+`;
+
+export const ResponsiveStyles = styled.div`
+  @media only screen and (max-width: 768px) {
+    ${NavLinks} {
+      display: none;
+    }
+
+    &.nav-open ${NavLinks} {
+      display: flex;
+    }
+  }
 `;

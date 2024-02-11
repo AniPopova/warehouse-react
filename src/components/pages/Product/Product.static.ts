@@ -27,6 +27,9 @@ export interface ProductFormData {
   unit: UnitType;
 }
 
-
-export const productUrl = 'http://localhost:3000/product'
+export interface UpdateModalProps {
+  initialData: ProductFormData;
+  onUpdate: (data: ProductFormData) => void;
+  onCancel: () => void;
+}
 

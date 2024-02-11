@@ -1,10 +1,13 @@
 import { Client } from "../Client/Client.static";
+import { InvoiceFormProps } from "../Invoice/Invoice.static";
+import { OrderDetailFormProps } from "../OrderDetails/OrderDetails.static";
 import { Warehouse } from "../Warehouse/Warehouse.static";
 
 export interface Order {
   id: string;
   type: OrderType;
-  clientId: string; 
+  clientId: Client['id']; 
+  warehouseId: string;
   createdAt: string;
 }
 
@@ -21,23 +24,13 @@ export interface OrderFormData {
   warehouseId: Warehouse["id"];
 }
 
-export type OrderFormProps = {
-  onSubmit: (formData: Order | OrderFormData ) => void;
+export interface OrderFormProps extends OrderDetailFormProps, InvoiceFormProps {
+  onSubmit: (newOrder: unknown) => void;
   onCancel: () => void;
 }
 
-export interface CreateOrderDto {
-  type: string;
-  clientId: string;
-  warehouseId: string | null;
-}
 
-export interface OrderDetail {
-  warehouseId: string;
-  productId: string;
-  quantity: number;
-  price: number;
-}
+
 
 
 

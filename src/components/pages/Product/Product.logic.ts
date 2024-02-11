@@ -39,6 +39,37 @@ export const createProduct = async (
   }
 };
 
+export const updateProduct = async (
+  productId: string,
+  updatedData: Partial<Product>
+): Promise<Product> => {
+  try {
+    const token = GetAuthToken();
+    const response = await fetch(`${BASE_URL}${ROUTES.PRODUCT}/${productId}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage =
+        errorData?.error?.message || "Unknown error occurred";
+      console.error(`Failed to update product: ${errorMessage}`);
+      throw new Error(`Failed to update product: ${errorMessage}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`Failed to update product, try again: `, error);
+    throw error;
+  }
+};
+
+
 export const getProducts = async (): Promise<Product[]> => {
   try {
     const token = GetAuthToken();

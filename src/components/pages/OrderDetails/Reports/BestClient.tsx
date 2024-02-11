@@ -45,9 +45,9 @@ const BestClientReport: React.FC = () => {
         <tbody>
           {records.map((record: BestClient, index) => (
             <tr key={index}>
-              <td>{record.clientName}</td>
-              <td>{record.ordersCount}</td>
-              <td>{record.spentMoney}</td>
+              <td>{record.client_name}</td>
+              <td>{record.orders}</td>
+              <td>{record.total_money_spent}</td>
             </tr>
           ))}
         </tbody>

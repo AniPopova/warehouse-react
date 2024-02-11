@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { ClientFormData, ClientFormProps } from "../pages/Client/Client.static";
-import { RegBox } from "../pages/Welcome/Welcome.style";
 import { Button } from "../button/button.style";
 import { createClient } from "../pages/Client/Client.logic";
 
 
-const ClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
+const ClientForm: React.FC<ClientFormProps> = ({ onSubmit , onCancel}) => {
   const [formData, setFormData] = useState<ClientFormData>({
     name: "",
     address: "",
@@ -43,8 +42,17 @@ const ClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
     }
   };
 
+  const handleCancel = () => {
+    setFormData({
+      name: "",
+      address: "",
+      identificationCode: ""
+    });
+    onCancel();
+  };
+
   return (
-    <RegBox>
+    <div>
       <h2>Register new client</h2>
       <form onSubmit={handleSubmit}>
         <label>
@@ -80,8 +88,11 @@ const ClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
           />
         </label>
         <Button type="submit">Save</Button>
+        <Button type="button" onClick={handleCancel}>
+          Cancel
+        </Button>
       </form>
-    </RegBox>
+    </div>
   );
 };
 

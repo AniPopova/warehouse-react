@@ -7,10 +7,13 @@ import { Container, Table, Title } from "../../table/table.style";
 import { useNavigate } from "react-router-dom";
 import { Button, RedButton } from "../../button/button.style";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
+import UpdateModal from "./ClientDetails/UpdateModal";
 
 const ClientInfo: React.FC = () => {
   const [records, setRecords] = useState<Client[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,7 +54,12 @@ const ClientInfo: React.FC = () => {
     setShowForm(!showForm);
   };
 
-  const handleSubmit = (formData: ClientFormData | Client) => {
+  const openUpdateModal = (client: Client) => {
+    setSelectedClient(client);
+    setShowUpdateModal(true);
+  };
+
+  const handleSubmit = (formData: ClientFormData) => {
     const token = GetAuthToken();
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -70,6 +78,28 @@ const ClientInfo: React.FC = () => {
         const newRecord: Client = res.data;
         setRecords([...records, newRecord]);
         toggleForm();
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const updateClient = (clientId: string, updatedData: ClientFormData) => {
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+
+    axios
+      .patch<Client>(`${BASE_URL}${ROUTES.CLIENT}/${clientId}`, updatedData, {
+        headers,
+      })
+      .then((res) => {
+        const updatedRecord: Client = res.data;
+        setRecords((prevRecords) =>
+          prevRecords.map((record) =>
+            record.id === updatedRecord.id ? updatedRecord : record
+          )
+        );
       })
       .catch((err) => console.error(err));
   };
@@ -100,7 +130,9 @@ const ClientInfo: React.FC = () => {
                   : "Invalid Date"}
               </td>
               <td>
-                <Button type="submit">Update</Button>
+                <Button type="button" onClick={() => openUpdateModal(record)}>
+                  Update
+                </Button>
               </td>
               <td>
                 <RedButton
@@ -114,15 +146,27 @@ const ClientInfo: React.FC = () => {
           ))}
         </tbody>
       </Table>
-      <br />
       <Button type="button" onClick={toggleForm}>
         Register new client
       </Button>
-      <br />
       <Button type="button" onClick={() => BackToHomePage(navigate)}>
         Back
       </Button>
       {showForm && <ClientForm onCancel={toggleForm} onSubmit={handleSubmit} />}
+      {showUpdateModal && selectedClient && (
+        <UpdateModal
+          initialData={{
+            name: selectedClient.name,
+            address: selectedClient.address,
+            identificationCode: selectedClient.identificationCode,
+          }}
+          onUpdate={(updatedData: ClientFormData) => {
+            updateClient(selectedClient.id, updatedData);
+            setShowUpdateModal(false);
+          }}
+          onCancel={() => setShowUpdateModal(false)}
+        />
+      )}
     </Container>
   );
 };

@@ -1,26 +1,31 @@
 import { useNavigate } from "react-router-dom";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
 import { GetAuthToken } from "../../../utils/utils";
-import { CreateOrderDto, Order, OrderFormData } from "./Order.static";
+import { Order, OrderFormData, OrderType } from "./Order.static";
 import axios from "axios";
 import { Invoice } from "../Invoice/Invoice.static";
-import { OrderDetail } from "../OrderDetails/OrderDetails.static";
+import { MethodType } from "../../../services/app.requests";
+import { Warehouse } from "../Warehouse/Warehouse.static";
+import { Client } from "../Client/Client.static";
 
 export const createOrder = async (
-  createOrderDto: CreateOrderDto,
-  createOrderDetail: OrderDetail,
-): Promise<{ newOrder: Order; newInvoice: Invoice; newOrderDetail: OrderDetail }> => {
+  type: OrderType,
+  clientId?: Client['id'], 
+  warehouseId?: Warehouse['id']
+
+): Promise<Order > => {
   try {
     const token = GetAuthToken();
     const response = await fetch(`${BASE_URL}${ROUTES.ORDER}`, {
-      method: "POST",
+      method: MethodType.POST,
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        createOrderDto,
-        createOrderDetail,
+        type: type,
+        clientId: clientId, 
+        warehouseId: warehouseId
       }),
     });
     if (!response.ok) {
@@ -81,3 +86,33 @@ export const getOrders = async (): Promise<Order[]> => {
     throw error;
   }
 }
+
+
+export const createInvoice = async (orderId: Order['id']): Promise<Invoice> => {
+  try {
+    const response = await fetch(`${BASE_URL}${ROUTES.INVOICE}`, {
+      method: MethodType.POST,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        orderId: orderId 
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage =
+        errorData?.error?.message || "Unknown error occurred";
+      console.error(`Failed to create invoice: ${errorMessage}`);
+      throw new Error(`Failed to create invoice: ${errorMessage}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`Failed to create invoice, try again: `, error);
+    throw error;
+  }
+};
+

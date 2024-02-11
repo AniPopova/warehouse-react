@@ -7,10 +7,15 @@ import { Container, Table, Title } from "../../table/table.style";
 import { Button, RedButton } from "../../button/button.style";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
 import OrderForm from "../../form/OrderForm";
+import { Client } from "../Client/Client.static";
+import { getClients } from "../Client/Client.logic";
+import OrderDetailsInfo from "../OrderDetails/OrderDetails";
 
 const OrderList: React.FC = () => {
   const [records, setRecords] = useState<Order[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const [clients, setClients] = useState<Client[]>([]);
+  const [showOrderDetailsInfo, setShowOrderDetailsInfo] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,6 +34,19 @@ const OrderList: React.FC = () => {
         }
       })
       .catch((err) => console.error(err));
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const clientsData = await getClients();
+        setClients(clientsData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const deleteOrder = (orderId: string) => {
@@ -76,6 +94,14 @@ const OrderList: React.FC = () => {
       .catch((err) => console.error(err));
   };
 
+  const getClientName = (orderId: string): string => {
+    const order = records.find((o) => o.id === orderId);
+    const client = order
+      ? clients.find((c) => c.id === order.clientId)
+      : undefined;
+    return client ? client.name : "N/A";
+  };
+
   return (
     <Container>
       <Title>Registered orders</Title>
@@ -90,19 +116,16 @@ const OrderList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {records.map((record) => (
+          {records.map((record: Order) => (
             <tr key={record.id}>
               <td>{record.type}</td>
-              <td>{record.clientId}</td>
+              <td>{getClientName(record.id)}</td>
               <td>{new Date(record.createdAt).toLocaleString()}</td>
               <td>
                 <Button type="button">Update</Button>
               </td>
               <td>
-                <RedButton
-                  type="button"
-                  onClick={() => deleteOrder(record.id)}
-                >
+                <RedButton type="button" onClick={() => deleteOrder(record.id)}>
                   Delete
                 </RedButton>
               </td>
@@ -116,9 +139,10 @@ const OrderList: React.FC = () => {
       <Button type="button" onClick={() => navigate("/invoiceList")}>
         Issued invoices
       </Button>
-      <Button type="button" onClick={() => navigate("/orderDetailsData")}>
+      <Button type="button" onClick={() => setShowOrderDetailsInfo(true)}>
         Analyses
       </Button>
+      {showOrderDetailsInfo && <OrderDetailsInfo />}
       <Button type="button" onClick={() => BackToHomePage(navigate)}>
         Back
       </Button>
