@@ -1,46 +1,77 @@
 import { useNavigate } from "react-router-dom";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
 import { GetAuthToken } from "../../../utils/utils";
-import { Order, OrderFormData, OrderType } from "./Order.static";
+import { CreateInvoiceDto, CreateOrderDetailDto, CreateOrderDto, NewOrderResponse, Order, OrderFormData } from "./Order.static";
 import axios from "axios";
 import { Invoice } from "../Invoice/Invoice.static";
-import { MethodType } from "../../../services/app.requests";
-import { Warehouse } from "../Warehouse/Warehouse.static";
-import { Client } from "../Client/Client.static";
+ import { MethodType } from "../../../services/app.requests";
+// import { Warehouse } from "../Warehouse/Warehouse.static";
+// import { Client } from "../Client/Client.static";
+
+// export const createOrder = async (
+//   type: OrderType,
+//   clientId?: Client['id'], 
+//   warehouseId?: Warehouse['id']
+
+// ): Promise<Order > => {
+//   try {
+//     const token = GetAuthToken();
+//     const response = await fetch(`${BASE_URL}${ROUTES.ORDER}`, {
+//       method: MethodType.POST,
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         type: type,
+//         clientId: clientId, 
+//         warehouseId: warehouseId
+//       }),
+//     });
+//     if (!response.ok) {
+//       const errorData = await response.json();
+//       const errorMessage = errorData?.error?.message || "Unknown error occurred";
+//       console.error(`Failed to create order: ${errorMessage}`);
+//       throw new Error(`Failed to create order: ${errorMessage}`);
+//     }
+//     return await response.json();
+//   } catch (error) {
+//     console.error(`Failed to create order, try again: `, error);
+//     throw error;
+//   }
+// };
 
 export const createOrder = async (
-  type: OrderType,
-  clientId?: Client['id'], 
-  warehouseId?: Warehouse['id']
-
-): Promise<Order > => {
+  orderDto: CreateOrderDto,
+  orderDetailDto: CreateOrderDetailDto,
+  invoiceDto: CreateInvoiceDto
+): Promise<NewOrderResponse> => {
   try {
+
     const token = GetAuthToken();
     const response = await fetch(`${BASE_URL}${ROUTES.ORDER}`, {
       method: MethodType.POST,
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        type: type,
-        clientId: clientId, 
-        warehouseId: warehouseId
+        orderDto,
+        orderDetailDto,
+        invoiceDto,
       }),
     });
+
     if (!response.ok) {
-      const errorData = await response.json();
-      const errorMessage = errorData?.error?.message || "Unknown error occurred";
-      console.error(`Failed to create order: ${errorMessage}`);
-      throw new Error(`Failed to create order: ${errorMessage}`);
+      throw new Error('Failed to create order');
     }
-    return await response.json();
+    const data: NewOrderResponse = await response.json();
+    return data; 
+
   } catch (error) {
-    console.error(`Failed to create order, try again: `, error);
-    throw error;
+    throw new Error('Failed to create order: ' + error);
   }
 };
-
 
 export const UpdateOrder = async (formData: OrderFormData) => {
   const refresh = useNavigate();
@@ -90,10 +121,11 @@ export const getOrders = async (): Promise<Order[]> => {
 
 export const createInvoice = async (orderId: Order['id']): Promise<Invoice> => {
   try {
+    const token = GetAuthToken();
     const response = await fetch(`${BASE_URL}${ROUTES.INVOICE}`, {
       method: MethodType.POST,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
