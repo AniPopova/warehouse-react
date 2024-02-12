@@ -96,7 +96,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }) => {
     }
   };
 
-  const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleCancel = (e: React.FormEvent) => {
     e.preventDefault();
     setFormData({
       createOrderDto: {

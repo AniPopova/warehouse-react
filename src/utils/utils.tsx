@@ -45,7 +45,7 @@ export const CheckAuthLoader = () => {
 };
 
 export const BackToHomePage = (navigate: ReturnType<typeof useNavigate>) => {
-  navigate("/");
+  navigate(-1);
 };
 
 
