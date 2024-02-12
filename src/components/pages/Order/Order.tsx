@@ -91,7 +91,9 @@ const OrderList: React.FC = () => {
         setRecords([...records, newRecord]);
         toggleForm();
       })
-      .catch((err) => console.error(err));
+      .catch((err: Error) => {
+        console.error(err);
+      });
   };
 
   const getClientName = (orderId: string): string => {
@@ -152,4 +154,3 @@ const OrderList: React.FC = () => {
 };
 
 export default OrderList;
-

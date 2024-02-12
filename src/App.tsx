@@ -18,7 +18,6 @@ import OrderDetailsInfo from "./components/pages/OrderDetails/OrderDetails";
 import BestProductReport from "./components/pages/OrderDetails/Reports/BestProduct";
 import BestClientReport from "./components/pages/OrderDetails/Reports/BestClient";
 import AvailabilityReport from "./components/pages/OrderDetails/Reports/Availability";
-import LogoutPage from "./components/pages/LogOut/LogoutPage";
 
 const App = () => {
   return (
@@ -38,14 +37,7 @@ const App = () => {
             <Route path="/auth" element={<WelcomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route
-              path="/logout"
-              element={
-                <ProtectedRoute>
-                  <LogoutPage />
-                </ProtectedRoute>
-              }
-            />
+
             <Route
               path="/user"
               element={
