@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ProductType, UnitType, UpdateModalProps } from "../Product.static";
-import { ModalContainer, ModalContent } from "./Modal.style";
+import { ModalContainer, ModalContent } from "../../../modal/Modal.style";
+
 
 const UpdateModal: React.FC<UpdateModalProps> = ({
   initialData,

@@ -8,7 +8,7 @@ import ProductForm from "../../form/ProductForm";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
 import { Product, ProductFormData } from "./Product.static";
 import { updateProduct } from "./Product.logic";
-import UpdateModal from "./ProductDetails/productModal";
+import UpdateModal from "./ProductDetails/ProductModal";
 
 const ProductList: React.FC = () => {
   const [records, setRecords] = useState<Product[]>([]);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ModalContainer, ModalContent } from "./Modal.style";
+import { ModalContainer, ModalContent } from "../../../modal/Modal.style";
 import { ProductType, UpdateModalProps } from "../Warehouse.static";
 
 

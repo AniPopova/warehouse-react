@@ -8,7 +8,7 @@ import { Button, RedButton } from "../../button/button.style";
 import WarehouseForm from "../../form/WarehouseForm";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
 import { updateWarehouse } from "./Warehouse.logic";
-import UpdateModal from "./WarehouseDetails/warehouseModal";
+import UpdateModal from "./WarehouseDetails/WarehouseModal";
 import { Client } from "../Client/Client.static";
 import { getClients } from "../Client/Client.logic";
 

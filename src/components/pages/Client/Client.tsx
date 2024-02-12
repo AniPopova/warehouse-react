@@ -7,7 +7,7 @@ import { Container, Table, Title } from "../../table/table.style";
 import { useNavigate } from "react-router-dom";
 import { Button, RedButton } from "../../button/button.style";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
-import UpdateModal from "./ClientDetails/UpdateModal";
+import UpdateModal from "./ClientDetails/ClientModal";
 
 const ClientInfo: React.FC = () => {
   const [records, setRecords] = useState<Client[]>([]);

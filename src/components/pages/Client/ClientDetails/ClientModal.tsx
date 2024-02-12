@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { UpdateModalProps } from "../Client.static";
-import { ModalContainer, ModalContent } from "./Modal.style";
+import { ModalContainer, ModalContent } from "../../../modal/Modal.style";
 
 
 
