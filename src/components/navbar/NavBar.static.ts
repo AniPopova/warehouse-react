@@ -1,0 +1,1 @@
+export const imageSrcPath = '/src/assets/deliveryBox.png'
