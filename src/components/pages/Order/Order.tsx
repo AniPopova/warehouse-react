@@ -1,107 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { Order, OrderFormData } from "./Order.static";
-import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
+import { Order, OrderFormProps } from "./Order.static";
+import { BackToHomePage } from "../../../utils/utils";
 import { Container, Table, Title } from "../../table/table.style";
 import { Button, RedButton } from "../../button/button.style";
-import { BASE_URL, ROUTES } from "../../../routes/routes.static";
 import OrderForm from "../../form/OrderForm";
-import { Client } from "../Client/Client.static";
-import { getClients } from "../Client/Client.logic";
 import OrderDetailsInfo from "../OrderDetails/OrderDetails";
+import { useOrderLogic } from "../../../hooks/order.hook";
 
 const OrderList: React.FC = () => {
-  const [records, setRecords] = useState<Order[]>([]);
-  const [showForm, setShowForm] = useState(false);
-  const [clients, setClients] = useState<Client[]>([]);
-  const [showOrderDetailsInfo, setShowOrderDetailsInfo] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = GetAuthToken();
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
+  const {
+    records,
+    showForm,
+    showOrderDetailsInfo,
+    setShowOrderDetailsInfo,
+    deleteOrder,
+    toggleForm,
+    handleSubmit,
+    getClientName,
+  } = useOrderLogic();
 
-    axios
-      .get<Order[]>(`${BASE_URL}${ROUTES.ORDER}`, { headers })
-      .then((res) => {
-        const data: Order[] = res.data;
-        if (data.length > 0) {
-          setRecords(data);
-        }
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [formData, setFormData] = useState<any>(null); 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const clientsData = await getClients();
-        setClients(clientsData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const deleteOrder = (orderId: string) => {
-    const token = GetAuthToken();
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
-
-    axios
-      .delete<Order>(`${BASE_URL}${ROUTES.ORDER}/${orderId}`, { headers })
-      .then((res) => {
-        setRecords((currentRecords) =>
-          currentRecords.filter((record) => record.id !== orderId)
-        );
-        return res;
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const toggleForm = () => {
-    setShowForm(!showForm);
-  };
-
-  const handleSubmit = (formData: Order | OrderFormData) => {
-    const token = GetAuthToken();
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
-
-    const newOrder: Order = {
-      id: "",
-      createdAt: "",
-      ...formData,
-    };
-
-    axios
-      .post<Order>(`${BASE_URL}${ROUTES.ORDER}`, newOrder, { headers })
-      .then((res) => {
-        const newRecord: Order = res.data;
-        setRecords([...records, newRecord]);
-        toggleForm();
-      })
-      .catch((err: Error) => {
-        console.error(err);
-      });
-  };
-
-  const getClientName = (orderId: string): string => {
-    const order = records.find((o) => o.id === orderId);
-    const client = order
-      ? clients.find((c) => c.id === order.clientId)
-      : undefined;
-    return client ? client.name : "N/A";
+  const orderFormProps: OrderFormProps = {
+    onCancel: toggleForm,
+    onSubmit: handleSubmit,
+    formData: formData,
+    setFormData: setFormData,
   };
 
   return (
@@ -148,7 +76,7 @@ const OrderList: React.FC = () => {
       <Button type="button" onClick={() => BackToHomePage(navigate)}>
         Back
       </Button>
-      {showForm && <OrderForm onCancel={toggleForm} onSubmit={handleSubmit} />}
+      {showForm && <OrderForm {...orderFormProps} />}
     </Container>
   );
 };

@@ -4,7 +4,7 @@ import { ProductType, UpdateModalProps } from "../Warehouse.static";
 
 
 
-const UpdateModal: React.FC<UpdateModalProps> = ({
+export const UpdateWarehouseModal: React.FC<UpdateModalProps> = ({
   initialData,
   onUpdate,
   onCancel,
@@ -54,4 +54,4 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
     </ModalContainer>
   );
 };
-export default UpdateModal;
+export default UpdateWarehouseModal;

@@ -1,14 +1,11 @@
-import { Client } from "../Client/Client.static";
 import { Invoice } from "../Invoice/Invoice.static";
 import { OrderDetail } from "../OrderDetails/OrderDetails.static";
-import { Product } from "../Product/Product.static";
-import { Warehouse } from "../Warehouse/Warehouse.static";
 
 export interface Order {
   id: string;
   type: OrderType;
-  clientId: Client['id'];
-  warehouseId: Warehouse['id'];
+  clientId: string;
+  warehouseId: string;
   createdAt: string;
 }
 
@@ -19,20 +16,20 @@ export enum OrderType {
 }
 
 export interface CreateOrderDto {
-  clientId: Client['id'];
-  warehouseId: Warehouse['id'];
   type: OrderType;
+  clientId: string;
+  warehouseId: string;
 }
 
 export interface CreateOrderDetailDto {
-  productId: Product['id'];
-  warehouseId: Warehouse['id'];
+  productId: string;
+  warehouseId: string;
   quantity: number;
   price: number;
 }
 
 export interface CreateInvoiceDto {
-  orderId: Order['id'];
+  orderId: string;
 }
 
 export interface OrderFormData {
@@ -42,7 +39,7 @@ export interface OrderFormData {
 }
 
 export interface OrderFormProps {
-  onSubmit: (newOrder: NewOrderResponse) => void;
+  onSubmit: (formData: Order | OrderFormData) => void; 
   onCancel: () => void;
   formData: OrderFormData;
   setFormData: React.Dispatch<React.SetStateAction<OrderFormData>>;

@@ -1,125 +1,28 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import { Container, Title, Table } from "../../table/table.style";
-import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
-import { useNavigate } from "react-router-dom";
-import { Warehouse, WarehouseFormData } from "./Warehouse.static";
+import { BackToHomePage } from "../../../utils/utils";
+import { Warehouse } from "./Warehouse.static";
 import { Button, RedButton } from "../../button/button.style";
 import WarehouseForm from "../../form/WarehouseForm";
-import { BASE_URL, ROUTES } from "../../../routes/routes.static";
-import { updateWarehouse } from "./Warehouse.logic";
-import UpdateModal from "./WarehouseDetails/WarehouseModal";
-import { Client } from "../Client/Client.static";
-import { getClients } from "../Client/Client.logic";
+import UpdateWarehouseModal from "./WarehouseDetails/WarehouseModal";
+import useWarehouseLogic from "../../../hooks/warehouse.hook";
 
 const WarehouseInfo: React.FC = () => {
-  const [records, setRecords] = useState<Warehouse[]>([]);
-  const [clients, setClients] = useState<Client[]>([]);
-  const [showForm, setShowForm] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [selectedWarehouse, setSelectedWarehouse] = useState<Warehouse | null>(null);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = GetAuthToken();
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
-
-    axios
-      .get<Warehouse[]>(`${BASE_URL}${ROUTES.WAREHOUSE}`, { headers })
-      .then((res) => {
-        const data: Warehouse[] = res.data;
-        if (data.length > 0) {
-          setRecords(data);
-        }
-      })
-      .catch((err) => console.error(err));
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {       
-        const clientsData = await getClients();
-        setClients(clientsData);
-
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-
-    fetchData();
-  }, []);
-
-  const getClientName = (clientId: string): string => {
-    const client = clients.find((c) => c.id === clientId);
-    return client ? client.name : '';
-  };
-
-  const deleteWarehouse = (warehouseId: string) => {
-    const token = GetAuthToken();
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
-
-    axios
-      .delete<Warehouse>(`${BASE_URL}${ROUTES.WAREHOUSE}/${warehouseId}`, { headers })
-      .then((res) => {
-        setRecords(records.filter((record) => record.id !== warehouseId));
-        return res;
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const toggleForm = () => {
-    setShowForm(!showForm);
-  };
-
-  const handleSubmit = (formData: WarehouseFormData) => {
-    const token = GetAuthToken();
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
-  
-    const newWarehouse: Warehouse = {
-      id: "",
-      createdAt: "", 
-      ...formData,
-    };
-  
-    axios
-      .post<Warehouse>(`${BASE_URL}${ROUTES.WAREHOUSE}`, newWarehouse, { headers })
-      .then((res) => {
-        const newRecord: Warehouse = res.data;
-        setRecords([...records, newRecord]);
-        toggleForm();
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const openUpdateModal = (warehouse: Warehouse) => {
-    setSelectedWarehouse(warehouse);
-    setShowUpdateModal(true);
-  };
-
-  const handleWarehouseUpdate = async (updatedData: WarehouseFormData) => {
-    try {
-      if (selectedWarehouse) {
-        const updatedProduct = await updateWarehouse(selectedWarehouse.id, updatedData);
-        setRecords((prevRecords) =>
-          prevRecords.map((record) =>
-            record.id === updatedProduct.id ? updatedProduct : record
-          )
-        );
-      }
-      setShowUpdateModal(false);
-    } catch (error) {
-      console.error("Failed to update warehouse: ", error);
-    }
-  };
+  const {
+    records,
+    showForm,
+    showUpdateModal,
+    setShowUpdateModal,
+    selectedWarehouse,
+    navigate,
+    toggleForm,
+    handleSubmit,
+    handleWarehouseUpdate,
+    openUpdateModal,
+    deleteWarehouse,
+    getClientName,
+  } = useWarehouseLogic();
 
   return (
     <Container>
@@ -162,7 +65,7 @@ const WarehouseInfo: React.FC = () => {
       </Button>
       {showForm && <WarehouseForm onCancel={toggleForm} onSubmit={handleSubmit} />}
       {showUpdateModal && selectedWarehouse && (
-        <UpdateModal
+        <UpdateWarehouseModal
           initialData={{
             name: selectedWarehouse.name,
             type: selectedWarehouse.type,
