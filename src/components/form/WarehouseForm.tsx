@@ -71,7 +71,7 @@ const WarehouseForm: React.FC<WarehouseFormProps> = ({ onSubmit, onCancel }) => 
 
   return (
     <div>
-      <h2>Create Warehouse</h2>
+      <h2>Register new warehouse</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Name:

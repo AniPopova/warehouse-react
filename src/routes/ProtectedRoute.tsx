@@ -1,5 +1,5 @@
 import React from "react";
-import { useAuth } from "../components/auth/ProvideAuth";
+import { useAuth } from "../contexts/auth/ProvideAuth";
 import { Navigate } from "react-router-dom";
 
 interface ProtectedRouteProps {
@@ -15,6 +15,3 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 };
 
 export default ProtectedRoute;
-
-
-

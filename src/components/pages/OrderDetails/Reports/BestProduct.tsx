@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "../../../button/button.style";
 import { Container, Table } from "../../../table/table.style";
 import { BASE_URL, ROUTES } from "../../../../routes/routes.static";
-import { GetAuthToken } from "../../../../utils/utils";
+import { GetAuthToken } from "../../../../utils/auth.utils";
 import { BestProduct } from "../OrderDetails.static";
 
 const BestProductReport: React.FC = () => {

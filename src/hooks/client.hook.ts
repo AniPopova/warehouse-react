@@ -3,17 +3,17 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Client, ClientFormData } from '../components/pages/Client/Client.static';
 import { BASE_URL, ROUTES } from '../routes/routes.static';
-import { GetAuthToken } from '../utils/utils';
+import { GetAuthToken } from '../utils/auth.utils';
 
 
 interface UseClientInfoResult {
   records: Client[];
   showForm: boolean;
+  setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
   showUpdateModal: boolean;
   setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
   selectedClient: Client | null;
   deleteClient: (clientId: string) => void;
-  toggleForm: () => void;
   openUpdateModal: (client: Client) => void;
   handleSubmit: (formData: ClientFormData) => void;
   updateClient: (clientId: string, updatedData: ClientFormData) => void;
@@ -24,7 +24,7 @@ export const useClientInfo = (): UseClientInfoResult => {
   const [showForm, setShowForm] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
- 
+
   useEffect(() => {
     const token = GetAuthToken();
     const headers = {
@@ -58,11 +58,7 @@ export const useClientInfo = (): UseClientInfoResult => {
       })
       .catch((err) => console.error(err));
   };
-
-  const toggleForm = () => {
-    setShowForm(!showForm);
-  };
-
+  
   const openUpdateModal = (client: Client) => {
     setSelectedClient(client);
     setShowUpdateModal(true);
@@ -86,7 +82,7 @@ export const useClientInfo = (): UseClientInfoResult => {
       .then((res) => {
         const newRecord: Client = res.data;
         setRecords([...records, newRecord]);
-        toggleForm();
+        setShowForm(!showForm);
       })
       .catch((err) => console.error(err));
   };
@@ -116,11 +112,11 @@ export const useClientInfo = (): UseClientInfoResult => {
   return {
     records,
     showForm,
+    setShowForm,
     showUpdateModal,
-    setShowUpdateModal, 
+    setShowUpdateModal,
     selectedClient,
     deleteClient,
-    toggleForm,
     openUpdateModal,
     handleSubmit,
     updateClient,

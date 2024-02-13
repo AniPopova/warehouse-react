@@ -30,11 +30,6 @@ export const GetAuthToken = () => {
   return token;
 };
 
-export const TokenLoader = () => {
-  const token = GetAuthToken();
-  return token;
-};
-
 export const CheckAuthLoader = () => {
   const token = GetAuthToken();
   const navigate = useNavigate();
@@ -44,9 +39,6 @@ export const CheckAuthLoader = () => {
   }
 };
 
-export const BackToHomePage = (navigate: ReturnType<typeof useNavigate>) => {
-  navigate(-1);
-};
 
 
 

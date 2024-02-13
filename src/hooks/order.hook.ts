@@ -4,27 +4,32 @@ import { getClients } from "../components/pages/Client/Client.logic";
 import { Client } from "../components/pages/Client/Client.static";
 import {
   Order,
+  OrderData,
   OrderFormData,
 } from "../components/pages/Order/Order.static";
 import { BASE_URL, ROUTES } from "../routes/routes.static";
-import { GetAuthToken } from "../utils/utils";
+import { GetAuthToken } from "../utils/auth.utils";
+import { Warehouse } from "../components/pages/Warehouse/Warehouse.static";
+import { getWarehouses } from "../components/pages/Warehouse/Warehouse.logic";
 
 interface UseOrderLogicResult {
   records: Order[];
   showForm: boolean;
+  setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
   clients: Client[];
+  warehouses: Warehouse[];
   showOrderDetailsInfo: boolean;
   setShowOrderDetailsInfo: React.Dispatch<React.SetStateAction<boolean>>;
   deleteOrder: (orderId: string) => void;
-  toggleForm: () => void;
   handleSubmit: (formData: Order | OrderFormData) => void;
-  getClientName: (orderId: string) => string;
+  getWarehouseName: (orderId: string) => string;
 }
 
 export const useOrderLogic = (): UseOrderLogicResult => {
   const [records, setRecords] = useState<Order[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [clients, setClients] = useState<Client[]>([]);
+  const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [showOrderDetailsInfo, setShowOrderDetailsInfo] = useState(false);
 
   useEffect(() => {
@@ -65,6 +70,19 @@ export const useOrderLogic = (): UseOrderLogicResult => {
     fetchClients();
   }, []);
 
+    useEffect(() => {
+      const fetchWarehouses = async () => {
+        try {
+          const warehousesData = await getWarehouses();
+          setWarehouses(warehousesData);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+
+    fetchWarehouses();
+  }, []);
+
   const deleteOrder = (orderId: string) => {
     const token = GetAuthToken();
     const headers = {
@@ -83,21 +101,19 @@ export const useOrderLogic = (): UseOrderLogicResult => {
       .catch((err: Error) => console.error(err));
   };
 
-  const toggleForm = () => {
-    setShowForm(!showForm);
-  };
 
-  const handleSubmit = (formData: Order | OrderFormData) => {
+
+
+  const handleSubmit = () => {
     const token = GetAuthToken();
     const headers = {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     };
 
-    const newOrder: OrderFormData | Order = {
+    const newOrder: OrderData = {
       id: "",
       createdAt: "",
-      ...(formData as OrderFormData),
     };
 
     axios
@@ -105,28 +121,31 @@ export const useOrderLogic = (): UseOrderLogicResult => {
       .then((res) => {
         const newRecord: Order = res.data;
         setRecords([...records, newRecord]);
-        toggleForm();
+        setShowForm(!showForm);
       })
       .catch((err: Error) => {
         console.error(err);
       });
+      return newOrder;
   };
 
-  const getClientName = (orderId: string): string => {
+
+  const getWarehouseName = (orderId: string): string => {
     const order = records.find((o) => o.id === orderId);
-    const client = order ? clients.find((c) => c.id === order.clientId) : undefined;
-    return client ? client.name : "N/A";
+    const warehouse = order ? warehouses.find((w) => w.id === order.warehouseId) : undefined;
+    return warehouse ? warehouse.name : "N/A";
   };
 
   return {
     records,
     showForm,
+    setShowForm,
     clients,
+    warehouses,
     showOrderDetailsInfo,
     setShowOrderDetailsInfo,
     handleSubmit,
     deleteOrder,
-    toggleForm,
-    getClientName,
+    getWarehouseName
   };
 };

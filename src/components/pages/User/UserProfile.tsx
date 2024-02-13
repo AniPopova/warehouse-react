@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
+import { GetAuthToken } from "../../../utils/auth.utils";
 import { Container, Table, Title } from "../../../components/table/table.style";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
-import { User } from "../../../@types/types";
+import { User } from "../../../@types/auth.types";
 import { Button } from "../../button/button.style";
 import { useNavigate } from "react-router-dom";
 import { parseJwt } from "./User.logic";
+import { BackToHomePage } from "../../../utils/utils";
 
 const Profile: React.FC = () => {
   const [profileData, setProfileData] = useState<User | null>(null);

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BestClient } from "../OrderDetails.static";
-import { GetAuthToken } from "../../../../utils/utils";
+import { GetAuthToken } from "../../../../utils/auth.utils";
 import { BASE_URL, ROUTES } from "../../../../routes/routes.static";
 import { useNavigate } from "react-router-dom";
 import { Container, Table } from "../../../table/table.style";
 import { Button } from "../../../button/button.style";
-
 
 const BestClientReport: React.FC = () => {
   const [records, setRecords] = useState<BestClient[]>([]);
@@ -28,8 +27,6 @@ const BestClientReport: React.FC = () => {
       })
       .catch((err: Error) => console.error(err));
   }, []);
-
-
 
   return (
     <Container>

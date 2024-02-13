@@ -75,7 +75,7 @@ export const GlobalStyles = createGlobalStyle`
       height: 100%;
       background-attachment: scroll;
       background-position: center;
-      background-size: auto 100vh;
+      background-size: 100vh;
     }
 
     @media (max-width: 480px) {

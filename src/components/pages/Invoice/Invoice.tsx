@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Container, Table, Title } from "../../table/table.style";
 import { Invoice } from "./Invoice.static";
 import axios from "axios";
-import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
+import { GetAuthToken } from "../../../utils/auth.utils";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../button/button.style";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
@@ -14,6 +14,7 @@ import { getOrderDetails } from "../OrderDetails/OrderDetails.logic";
 import { OrderDetail } from "../OrderDetails/OrderDetails.static";
 import { Client } from "../Client/Client.static";
 import { getClients } from "../Client/Client.logic";
+import { BackToHomePage } from "../../../utils/utils";
 
 const InvoiceList = () => {
   const [records, setRecords] = useState<Invoice[]>([]);
@@ -50,10 +51,10 @@ const InvoiceList = () => {
       try {
         const orderDetailsData = await getOrderDetails();
         setOrderDetails(orderDetailsData);
-        
+
         const productsData = await getProducts();
         setProducts(productsData);
-        
+
         const clientsData = await getClients();
         setClients(clientsData);
 
@@ -62,23 +63,26 @@ const InvoiceList = () => {
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-    }
+    };
 
     fetchData();
   }, []);
 
   const getProductName = (orderId: string): string => {
     const orderDetail = orderDetails.find((od) => od.orderId === orderId);
-    const product = orderDetail ? products.find((p) => p.id === orderDetail.productId) : undefined;
-    return product ? product.name : 'N/A';
+    const product = orderDetail
+      ? products.find((p) => p.id === orderDetail.productId)
+      : undefined;
+    return product ? product.name : "N/A";
   };
 
   const getClientName = (orderId: string): string => {
     const order = orders.find((o) => o.id === orderId);
-    const client = order ? clients.find((c) => c.id === order.clientId) : undefined;
-    return client ? client.name : 'N/A';
+    const client = order
+      ? clients.find((c) => c.id === order.clientId)
+      : undefined;
+    return client ? client.name : "N/A";
   };
-
 
   return (
     <Container>

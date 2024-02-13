@@ -9,22 +9,21 @@ import {
   WarehouseFormData,
 } from "../components/pages/Warehouse/Warehouse.static";
 import { BASE_URL, ROUTES } from "../routes/routes.static";
-import { GetAuthToken } from "../utils/utils";
+import { GetAuthToken } from "../utils/auth.utils";
 
 interface WarehouseLogicResult {
   records: Warehouse[];
   showForm: boolean;
+  setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
   showUpdateModal: boolean;
   setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
   selectedWarehouse: Warehouse | null;
   clients: Client[];
   navigate: ReturnType<typeof useNavigate>;
   handleSubmit: (formData: WarehouseFormData) => void;
-  toggleForm: () => void;
   openUpdateModal: (warehouse: Warehouse) => void;
   deleteWarehouse: (warehouseId: string) => void;
   handleWarehouseUpdate: (updatedData: WarehouseFormData) => void;
-  getClientName: (clientId: string) => string;
 }
 
 const useWarehouseLogic = (): WarehouseLogicResult => {
@@ -67,10 +66,6 @@ const useWarehouseLogic = (): WarehouseLogicResult => {
     fetchData();
   }, []);
 
-  const getClientName = (clientId: string): string => {
-    const client = clients.find((c) => c.id === clientId);
-    return client ? client.name : "";
-  };
 
   const deleteWarehouse = (warehouseId: string) => {
     const token = GetAuthToken();
@@ -88,10 +83,6 @@ const useWarehouseLogic = (): WarehouseLogicResult => {
         return res;
       })
       .catch((err) => console.error(err));
-  };
-
-  const toggleForm = () => {
-    setShowForm(!showForm);
   };
 
   const handleSubmit = (formData: WarehouseFormData) => {
@@ -114,7 +105,7 @@ const useWarehouseLogic = (): WarehouseLogicResult => {
       .then((res) => {
         const newRecord: Warehouse = res.data;
         setRecords([...records, newRecord]);
-        toggleForm();
+        setShowForm(!showForm);
       })
       .catch((err) => console.error(err));
   };
@@ -146,17 +137,16 @@ const useWarehouseLogic = (): WarehouseLogicResult => {
   return {
     records,
     showForm,
+    setShowForm,
     showUpdateModal,
     setShowUpdateModal,
     selectedWarehouse,
     clients,
     navigate,
-    toggleForm,
     handleSubmit,
     handleWarehouseUpdate,
     openUpdateModal,
-    deleteWarehouse,
-    getClientName,
+    deleteWarehouse
   };
 };
 

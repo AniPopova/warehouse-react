@@ -3,7 +3,6 @@ import { UpdateModalProps } from "../Client.static";
 import { ModalContainer, ModalContent } from "../../../modal/Modal.style";
 
 
-
 const UpdateModal: React.FC<UpdateModalProps> = ({
   initialData,
   onUpdate,

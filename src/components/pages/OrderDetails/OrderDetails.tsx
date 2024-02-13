@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { OrderDetail } from "./OrderDetails.static";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
-import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
+import { GetAuthToken } from "../../../utils/auth.utils";
 import { Container, Table } from "../../table/table.style";
 import { Button } from "../../button/button.style";
 import BestClientReport from "./Reports/BestClient";
@@ -17,6 +17,7 @@ import { getClients } from "../Client/Client.logic";
 import { getOrders } from "../Order/Order.logic";
 import { Warehouse } from "../Warehouse/Warehouse.static";
 import { getWarehouses } from "../Warehouse/Warehouse.logic";
+import { BackToHomePage } from "../../../utils/utils";
 
 const OrderDetailsInfo: React.FC = () => {
   const [records, setRecords] = useState<OrderDetail[]>([]);
@@ -38,7 +39,7 @@ const OrderDetailsInfo: React.FC = () => {
     };
 
     axios
-      .get<OrderDetail[]>(`${BASE_URL}${ROUTES.ORDER_DETAILS}`, {headers})
+      .get<OrderDetail[]>(`${BASE_URL}${ROUTES.ORDER_DETAILS}`, { headers })
       .then((res) => {
         const data: OrderDetail[] = res.data;
         if (data.length > 0) {
@@ -53,7 +54,7 @@ const OrderDetailsInfo: React.FC = () => {
       try {
         const productsData = await getProducts();
         setProducts(productsData);
-        
+
         const clientsData = await getClients();
         setClients(clientsData);
 
@@ -62,33 +63,34 @@ const OrderDetailsInfo: React.FC = () => {
 
         const warehouseData = await getWarehouses();
         setWarehouses(warehouseData);
-
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-    }
+    };
 
     fetchData();
   }, []);
 
   const getProductName = (productId: string): string => {
     const product = products.find((p) => p.id === productId);
-    return product ? product.name : 'N/A';
+    return product ? product.name : "N/A";
   };
 
   const getWarehouseName = (warehouseId: string): string => {
     const warehouse = warehouses.find((w) => w.id === warehouseId);
-    return warehouse ? warehouse.name : 'N/A';
+    return warehouse ? warehouse.name : "N/A";
   };
   const getClientName = (orderId: string): string => {
-    const order = orders.find(o => o.id === orderId);
-    const client = order ? clients.find(c => c.id === order.clientId) : undefined;
-    return client ? client.name : 'N/A';
+    const order = orders.find((o) => o.id === orderId);
+    const client = order
+      ? clients.find((c) => c.id === order.clientId)
+      : undefined;
+    return client ? client.name : "N/A";
   };
 
   const getOrderType = (orderId: string): string => {
     const order = orders.find((o) => o.id === orderId);
-    return order ? order.type : 'N/A';
+    return order ? order.type : "N/A";
   };
 
   return (
@@ -97,7 +99,7 @@ const OrderDetailsInfo: React.FC = () => {
       <Table>
         <thead>
           <tr>
-          <th>Client</th>
+            <th>Client</th>
             <th>Warehouse</th>
             <th>Order</th>
             <th>Product</th>
@@ -111,7 +113,7 @@ const OrderDetailsInfo: React.FC = () => {
           {records.map((record: OrderDetail, index) => (
             <tr key={index}>
               <td>{getClientName(record.orderId)}</td>
-              <td>{getWarehouseName(record.warehouseId)}</td>
+              <td>{getWarehouseName(record.senderWarehouseId)}</td>
               <td>{getOrderType(record.orderId)}</td>
               <td>{getProductName(record.productId)}</td>
               <td>{record.quantity}</td>

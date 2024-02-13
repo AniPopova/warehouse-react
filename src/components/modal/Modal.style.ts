@@ -3,11 +3,13 @@ import { styled } from "styled-components";
 export const ModalContainer = styled.div`
   top: 0;
   left: 0;
+  margin-top: 10px;
   width: 300px;
   height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 `;
 
 export const ModalContent = styled.div`

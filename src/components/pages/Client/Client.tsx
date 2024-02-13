@@ -1,117 +1,24 @@
 import React from "react";
 import { Client, ClientFormData } from "./Client.static";
 import ClientForm from "../../form/ClientForm";
-import { BackToHomePage } from "../../../utils/utils";
 import { Container, Table, Title } from "../../table/table.style";
 import { useNavigate } from "react-router-dom";
 import { Button, RedButton } from "../../button/button.style";
-import UpdateModal from "./ClientDetails/ClientModal";
+import UpdateModal from "./ClientUpdate/ClientModal";
 import { useClientInfo } from "../../../hooks/client.hook";
+import { BackToHomePage } from "../../../utils/utils";
 
 const ClientInfo: React.FC = () => {
-  // const [records, setRecords] = useState<Client[]>([]);
-  // const [showForm, setShowForm] = useState(false);
-  // const [showUpdateModal, setShowUpdateModal] = useState(false);
-  // const [selectedClient, setSelectedClient] = useState<Client | null>(null);
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const token = GetAuthToken();
-  //   const headers = {
-  //     Authorization: `Bearer ${token}`,
-  //     "Content-Type": "application/json",
-  //   };
-
-  //   axios
-  //     .get<Client[]>(`${BASE_URL}${ROUTES.CLIENT}`, { headers })
-  //     .then((res) => {
-  //       const data: Client[] = res.data;
-  //       if (data.length > 0) {
-  //         setRecords(data);
-  //       }
-  //     })
-  //     .catch((err) => console.error(err));
-  // }, []);
-
-  // const deleteClient = (clientId: string) => {
-  //   const token = GetAuthToken();
-  //   const headers = {
-  //     Authorization: `Bearer ${token}`,
-  //     "Content-Type": "application/json",
-  //   };
-
-  //   axios
-  //     .delete<Client>(`${BASE_URL}${ROUTES.CLIENT}/${clientId}`, { headers })
-  //     .then((res) => {
-  //       setRecords(records.filter((record) => record.id !== clientId));
-  //       return res;
-  //     })
-  //     .catch((err) => console.error(err));
-  // };
-
-  // const toggleForm = () => {
-  //   setShowForm(!showForm);
-  // };
-
-  // const openUpdateModal = (client: Client) => {
-  //   setSelectedClient(client);
-  //   setShowUpdateModal(true);
-  // };
-
-  // const handleSubmit = (formData: ClientFormData) => {
-  //   const token = GetAuthToken();
-  //   const headers = {
-  //     Authorization: `Bearer ${token}`,
-  //     "Content-Type": "application/json",
-  //   };
-
-  //   const newClient: Client = {
-  //     id: "",
-  //     createdAt: "",
-  //     ...formData,
-  //   };
-
-  //   axios
-  //     .post<Client>(`${BASE_URL}${ROUTES.CLIENT}`, newClient, { headers })
-  //     .then((res) => {
-  //       const newRecord: Client = res.data;
-  //       setRecords([...records, newRecord]);
-  //       toggleForm();
-  //     })
-  //     .catch((err) => console.error(err));
-  // };
-
-  // const updateClient = (clientId: string, updatedData: ClientFormData) => {
-  //   const token = GetAuthToken();
-  //   const headers = {
-  //     Authorization: `Bearer ${token}`,
-  //     "Content-Type": "application/json",
-  //   };
-
-  //   axios
-  //     .patch<Client>(`${BASE_URL}${ROUTES.CLIENT}/${clientId}`, updatedData, {
-  //       headers,
-  //     })
-  //     .then((res) => {
-  //       const updatedRecord: Client = res.data;
-  //       setRecords((prevRecords) =>
-  //         prevRecords.map((record) =>
-  //           record.id === updatedRecord.id ? updatedRecord : record
-  //         )
-  //       );
-  //     })
-  //     .catch((err) => console.error(err));
-  // };
 
   const navigate = useNavigate();
   const {
     records,
     showForm,
+    setShowForm,
     showUpdateModal,
     setShowUpdateModal,
     selectedClient,
     deleteClient,
-    toggleForm,
     openUpdateModal,
     handleSubmit,
     updateClient,
@@ -159,13 +66,13 @@ const ClientInfo: React.FC = () => {
           ))}
         </tbody>
       </Table>
-      <Button type="button" onClick={toggleForm}>
+      <Button type="button" onClick={()=>setShowForm(true)}>
         Register new client
       </Button>
       <Button type="button" onClick={() => BackToHomePage(navigate)}>
         Back
       </Button>
-      {showForm && <ClientForm onCancel={toggleForm} onSubmit={handleSubmit} />}
+      {showForm && <ClientForm onCancel={()=>setShowForm} onSubmit={handleSubmit} />}
       {showUpdateModal && selectedClient && (
         <UpdateModal
           initialData={{

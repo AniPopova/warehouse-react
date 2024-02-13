@@ -1,7 +1,7 @@
 import axios from "axios";
-import { JWTPayload, User } from "../../../@types/types";
+import { JWTPayload, User } from "../../../@types/auth.types";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
-import { GetAuthToken } from "../../../utils/utils";
+import { GetAuthToken } from "../../../utils/auth.utils";
 
 export const getUsers = async (): Promise<User[]> => {
   try {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardsContainer, PageContainer, Title } from "./Home.style";
-import { User } from "../../../@types/types";
+import { User } from "../../../@types/auth.types";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../button/button.style";
 import { getUsers, parseJwt } from "../User/User.logic";
@@ -15,10 +15,10 @@ const HomePage: React.FC = () => {
   const userName = userPayload ? userPayload.username : "user";
 
   const modules = [
-    { name: 'Client', path: '/client' },
-    { name: 'Product', path: '/product' },
-    { name: 'Order', path: '/order' },
-    { name: 'Warehouse', path: '/warehouse' },
+    { name: "Client", path: "/client" },
+    { name: "Product", path: "/product" },
+    { name: "Order", path: "/order" },
+    { name: "Warehouse", path: "/warehouse" },
   ];
 
   useEffect(() => {
@@ -38,8 +38,6 @@ const HomePage: React.FC = () => {
     navigate(`${ROUTES.USER}`);
   };
 
-
-
   const handleCardClick = (path: string) => {
     navigate(path);
   };
@@ -49,8 +47,8 @@ const HomePage: React.FC = () => {
       <Card>
         <Title>Welcome {userName}!</Title>
         <Button type="button" onClick={showProfile}>
-        Profile
-      </Button>
+          Profile
+        </Button>
       </Card>
       <CardsContainer>
         {modules.map((module, index) => (
@@ -64,4 +62,3 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
-

@@ -14,6 +14,10 @@ export const NavContainer = styled.nav`
   background-color: grey;
   font-size: 20px;
   height: 2.7rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000; /* Ensure the navbar is above other content */
 `;
 
 export const NavLinks = styled.div`
@@ -50,7 +54,6 @@ export const StyledNavLink = styled(NavLink)`
 
 export const ResponsiveStyles = styled.div`
   @media only screen and (max-width: 768px) {
-
     ${NavLinks} {
       display: none;
     }
@@ -60,7 +63,6 @@ export const ResponsiveStyles = styled.div`
     }
   }
 `;
-
 
 export const BurgerMenu = styled.div`
   display: none;

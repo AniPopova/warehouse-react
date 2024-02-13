@@ -1,92 +1,86 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { BackToHomePage, GetAuthToken } from "../../../utils/utils";
+import React from "react";
 import { Container, Table, Title } from "../../table/table.style";
 import { Button, RedButton } from "../../button/button.style";
-import { useNavigate } from "react-router-dom";
 import ProductForm from "../../form/ProductForm";
-import { BASE_URL, ROUTES } from "../../../routes/routes.static";
-import { Product, ProductFormData } from "./Product.static";
-import { updateProduct } from "./Product.logic";
+import { Product } from "./Product.static";
+import { deleteProduct } from "./Product.logic";
 import UpdateModal from "./ProductDetails/ProductModal";
+import { BackToHomePage } from "../../../utils/utils";
+import useProductList from "../../../hooks/product.hook";
 
 const ProductList: React.FC = () => {
-  const [records, setRecords] = useState<Product[]>([]);
-  const [showForm, setShowForm] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const navigate = useNavigate();
+  const {
+    records,
+    showForm,
+    showUpdateModal,
+    setShowUpdateModal,
+    selectedProduct,
+    openUpdateModal,
+    handleProductUpdate,
+    handleSubmit,
+    handleFormVisibility,
+  } = useProductList();
+  // const [records, setRecords] = useState<Product[]>([]);
+  // const [showForm, setShowForm] = useState(false);
+  // const [showUpdateModal, setShowUpdateModal] = useState(false);
+  // const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = GetAuthToken();
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
+  // useEffect(() => {
+  //   const token = GetAuthToken();
+  //   const headers = {
+  //     Authorization: `Bearer ${token}`,
+  //     "Content-Type": "application/json",
+  //   };
 
-    axios
-      .get<Product[]>(`${BASE_URL}${ROUTES.PRODUCT}`, { headers })
-      .then((res) => {
-        const data: Product[] = res.data;
-        if (data.length > 0) {
-          setRecords(data);
-        }
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  //   axios
+  //     .get<Product[]>(`${BASE_URL}${ROUTES.PRODUCT}`, { headers })
+  //     .then((res) => {
+  //       const data: Product[] = res.data;
+  //       if (data.length > 0) {
+  //         setRecords(data);
+  //       }
+  //     })
+  //     .catch((err) => console.error(err));
+  // }, []);
 
-  const deleteProduct = (productId: string) => {
-    const token = GetAuthToken();
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
+ 
 
-    axios
-      .delete(`${BASE_URL}${ROUTES.PRODUCT}/${productId}`, { headers })
-      .then((res) => {
-        setRecords(records.filter((record) => record.id !== productId));
-        return res;
-      })
-      .catch((err) => console.error(err));
-  };
+  // const openUpdateModal = (product: Product) => {
+  //   setSelectedProduct(product);
+  //   setShowUpdateModal(true);
+  // };
 
-  const toggleForm = () => {
-    setShowForm(!showForm);
-  };
+  // const handleSubmit = (formData: ProductFormData) => {
+  //   const token = GetAuthToken();
+  //   const headers = {
+  //     Authorization: `Bearer ${token}`,
+  //     "Content-Type": "application/json",
+  //   };
 
-  const openUpdateModal = (product: Product) => {
-    setSelectedProduct(product);
-    setShowUpdateModal(true);
-  };
+  //   const newProduct: Product = {
+  //     id: "",
+  //     createdAt: "",
+  //     ...formData,
+  //   };
 
-  const handleSubmit = (formData: ProductFormData) => {
-    const token = GetAuthToken();
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
-
-    const newProduct: Product = {
-      id: "",
-      createdAt: "",
-      ...formData,
-    };
-
-    axios
-      .post<Product>(`${BASE_URL}${ROUTES.PRODUCT}`, newProduct, { headers })
-      .then((res) => {
-        const newRecord: Product = res.data;
-        setRecords([...records, newRecord]);
-        toggleForm();
-      })
-      .catch((err) => console.error(err));
-  };
+  //   axios
+  //     .post<Product>(`${BASE_URL}${ROUTES.PRODUCT}`, newProduct, { headers })
+  //     .then((res) => {
+  //       const newRecord: Product = res.data;
+  //       setRecords([...records, newRecord]);
+  //       setShowForm(!showForm);
+  //     })
+  //     .catch((err) => console.error(err));
+  // };
 
   const handleProductUpdate = async (updatedData: ProductFormData) => {
     try {
       if (selectedProduct) {
-        const updatedProduct = await updateProduct(selectedProduct.id, updatedData);
+        const updatedProduct = await updateProduct(
+          selectedProduct.id,
+          updatedData
+        );
         setRecords((prevRecords) =>
           prevRecords.map((record) =>
             record.id === updatedProduct.id ? updatedProduct : record
@@ -126,7 +120,10 @@ const ProductList: React.FC = () => {
                 </Button>
               </td>
               <td>
-                <RedButton type="button" onClick={() => deleteProduct(record.id)}>
+                <RedButton
+                  type="button"
+                  onClick={() => deleteProduct(record.id)}
+                >
                   Delete
                 </RedButton>
               </td>
@@ -134,13 +131,15 @@ const ProductList: React.FC = () => {
           ))}
         </tbody>
       </Table>
-      <Button type="button" onClick={toggleForm}>
+      <Button type="button" onClick={()=> handleFormVisibility()}>
         Register new product
       </Button>
-      <Button type="button" onClick={() => BackToHomePage(navigate)}>
+      <Button type="button" onClick={() => BackToHomePage}>
         Back
       </Button>
-      {showForm && <ProductForm onCancel={toggleForm} onSubmit={handleSubmit} />}
+      {showForm && (
+        <ProductForm onCancel={()=>handleFormVisibility()} onSubmit={handleSubmit} />
+      )}
       {showUpdateModal && selectedProduct && (
         <UpdateModal
           initialData={{

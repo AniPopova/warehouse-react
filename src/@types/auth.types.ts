@@ -49,3 +49,4 @@ export interface JWTPayload {
   email: string;
   userRole: UserRights;
 }
+

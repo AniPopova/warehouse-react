@@ -16,14 +16,16 @@ export enum OrderType {
 }
 
 export interface CreateOrderDto {
+  id: string;
   type: OrderType;
-  clientId: string;
-  warehouseId: string;
+  clientId?: string;
+  warehouseId?: string;
 }
 
 export interface CreateOrderDetailDto {
+  senderWarehouseId: string;
+  receiverWarehouseId?:string;
   productId: string;
-  warehouseId: string;
   quantity: number;
   price: number;
 }
@@ -38,15 +40,38 @@ export interface OrderFormData {
   createInvoiceDto: CreateInvoiceDto;
 }
 
+// export interface OrderFormProps {
+//   onSubmit: (formData: Order | OrderFormData | NewOrderResponse) => void; 
+//   onCancel: () => void;
+//   formData: OrderFormData;
+//   setFormData: React.Dispatch<React.SetStateAction<OrderFormData>>;
+// }
+
 export interface OrderFormProps {
-  onSubmit: (formData: Order | OrderFormData) => void; 
-  onCancel: () => void;
-  formData: OrderFormData;
-  setFormData: React.Dispatch<React.SetStateAction<OrderFormData>>;
+  onSubmit: (data: OrderData) => void; // Function to handle form submission
+  onCancel: () => void; // Function to handle form cancellation
+}
+
+
+export interface OrderData {
+  createOrderDto: {
+    type: OrderType.ORDER;
+    clientId: string;
+    warehouseId: string;
+  };
+  createOrderDetailDto: {
+    productId: string;
+    warehouseId: string;
+    quantity: number;
+    price: number;
+  };
+  createInvoiceDto: {
+    orderId: string;
+  };
 }
 
 export interface NewOrderResponse {
   newOrder: Order;
-  newInvoice: Invoice;
   newOrderDetail: OrderDetail;
+  newInvoice: Invoice;
 }

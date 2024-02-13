@@ -1,5 +1,9 @@
-import React, { createContext, useState, useContext } from 'react';
-import { AuthContextProviderProps, AuthContextType, ProvideAuthProps } from '../../@types/types';
+import React, { createContext, useState, useContext } from "react";
+import {
+  AuthContextProviderProps,
+  AuthContextType,
+  ProvideAuthProps,
+} from "../../@types/auth.types";
 
 interface AuthContextProps extends AuthContextType {
   login: (user: string) => void;
@@ -8,7 +12,9 @@ interface AuthContextProps extends AuthContextType {
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-export const ProvideAuth: React.FC<ProvideAuthProps> = ({ children }: AuthContextProviderProps) => {
+export const ProvideAuth: React.FC<ProvideAuthProps> = ({
+  children,
+}: AuthContextProviderProps) => {
   const [user, setUser] = useState<string | null>(null);
 
   const login = (user: string) => setUser(user);
@@ -17,7 +23,7 @@ export const ProvideAuth: React.FC<ProvideAuthProps> = ({ children }: AuthContex
   const authContextValue: AuthContextProps = {
     user,
     login,
-    logout
+    logout,
   };
 
   return (
@@ -30,7 +36,7 @@ export const ProvideAuth: React.FC<ProvideAuthProps> = ({ children }: AuthContex
 export const useAuth = (): AuthContextProps => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('Auth problem!!!');
+    throw new Error("Auth problem!!!");
   }
   return context;
 };

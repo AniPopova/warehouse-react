@@ -11,13 +11,14 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import WelcomePage from "./components/pages/Welcome/WelcomePage";
 import Footer from "./components/view/Footer/Footer";
 import NavBar from "./components/navbar/NavBar";
-import { ProvideAuth } from "./components/auth/ProvideAuth";
+import { ProvideAuth } from "./contexts/auth/ProvideAuth";
 import InvoiceList from "./components/pages/Invoice/Invoice";
 import Profile from "./components/pages/User/UserProfile";
 import OrderDetailsInfo from "./components/pages/OrderDetails/OrderDetails";
 import BestProductReport from "./components/pages/OrderDetails/Reports/BestProduct";
 import BestClientReport from "./components/pages/OrderDetails/Reports/BestClient";
 import AvailabilityReport from "./components/pages/OrderDetails/Reports/Availability";
+import LogoutPage from "./components/pages/LogOut/LogoutPage";
 
 const App = () => {
   return (
@@ -37,7 +38,7 @@ const App = () => {
             <Route path="/auth" element={<WelcomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-
+            <Route path="/logout" element={<LogoutPage />} />
             <Route
               path="/user"
               element={

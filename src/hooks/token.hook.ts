@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-import { Token } from "../@types/types";
+import { Token } from "../@types/auth.types";
 
 export const useToken = () => {
   const validToken = localStorage.getItem("token");

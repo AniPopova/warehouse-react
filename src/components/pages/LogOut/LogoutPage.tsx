@@ -1,11 +1,13 @@
 import React from "react";
+import { Container } from "./Logout.style";
+
 
 const LogoutPage: React.FC = () => {
   return (
-    <div>
+    <Container>
       <h2>You have been logged out</h2>
       <p>Thank you for using our application!</p>
-    </div>
+    </Container>
   );
 };
 

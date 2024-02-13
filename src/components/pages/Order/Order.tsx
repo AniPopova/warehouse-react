@@ -1,36 +1,29 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Order, OrderFormProps } from "./Order.static";
-import { BackToHomePage } from "../../../utils/utils";
 import { Container, Table, Title } from "../../table/table.style";
 import { Button, RedButton } from "../../button/button.style";
 import OrderForm from "../../form/OrderForm";
 import OrderDetailsInfo from "../OrderDetails/OrderDetails";
 import { useOrderLogic } from "../../../hooks/order.hook";
+import { BackToHomePage, getClientName } from "../../../utils/utils";
+import { Order } from "./Order.static";
 
 const OrderList: React.FC = () => {
   const navigate = useNavigate();
 
   const {
     records,
+    clients,
     showForm,
+    setShowForm,
     showOrderDetailsInfo,
     setShowOrderDetailsInfo,
-    deleteOrder,
-    toggleForm,
     handleSubmit,
-    getClientName,
+    deleteOrder,
+    getWarehouseName
   } = useOrderLogic();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [formData, setFormData] = useState<any>(null); 
-
-  const orderFormProps: OrderFormProps = {
-    onCancel: toggleForm,
-    onSubmit: handleSubmit,
-    formData: formData,
-    setFormData: setFormData,
-  };
+  
 
   return (
     <Container>
@@ -40,6 +33,7 @@ const OrderList: React.FC = () => {
           <tr>
             <th>Type</th>
             <th>Client</th>
+            <th>Warehouse</th>
             <th>Created At</th>
             <th>Update</th>
             <th>Delete</th>
@@ -49,7 +43,8 @@ const OrderList: React.FC = () => {
           {records.map((record: Order) => (
             <tr key={record.id}>
               <td>{record.type}</td>
-              <td>{getClientName(record.id)}</td>
+              <td>{getClientName(clients, record.clientId)}</td>
+              <td>{getWarehouseName(record.warehouseId)}</td>
               <td>{new Date(record.createdAt).toLocaleString()}</td>
               <td>
                 <Button type="button">Update</Button>
@@ -63,7 +58,7 @@ const OrderList: React.FC = () => {
           ))}
         </tbody>
       </Table>
-      <Button type="button" onClick={toggleForm}>
+      <Button type="button" onClick={()=>setShowForm(true)}>
         Register new order
       </Button>
       <Button type="button" onClick={() => navigate("/invoiceList")}>
@@ -76,7 +71,7 @@ const OrderList: React.FC = () => {
       <Button type="button" onClick={() => BackToHomePage(navigate)}>
         Back
       </Button>
-      {showForm && <OrderForm {...orderFormProps} />}
+      {showForm && <OrderForm onCancel={()=>setShowForm} onSubmit={handleSubmit} />}
     </Container>
   );
 };

@@ -1,8 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
-import { GetAuthToken } from "../../../utils/utils";
+import { GetAuthToken } from "../../../utils/auth.utils";
 import { Warehouse, WarehouseFormData } from "./Warehouse.static";
-import { MethodType } from "../../../services/app.requests";
 import { Client } from "../Client/Client.static";
 import { getClients } from "../Client/Client.logic";
 
@@ -13,26 +12,23 @@ export const createWarehouse = async (
 ): Promise<Warehouse> => {
   try {
     const token = GetAuthToken();
-    const response = await fetch(`${BASE_URL}${ROUTES.WAREHOUSE}`, {
-      method: MethodType.POST,
+    const response = await axios.post(`${BASE_URL}${ROUTES.WAREHOUSE}`, {
+      name,
+      type,
+      clientId,
+    }, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        name,
-        type,
-        clientId,
-      }),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      const errorMessage = errorData?.error?.message || "Unknown error occurred";
+    if (response.status !== 200) {
+      const errorMessage = response.data?.error?.message || "Unknown error occurred";
       throw new Error(`Failed to create warehouse: ${errorMessage}`);
     }
 
-    return response.json();
+    return response.data;
   } catch (error) {
     throw new Error(`Failed to create warehouse: ${error}`);
   }
@@ -79,7 +75,6 @@ export const updateWarehouse = async (
   try {
     const token = GetAuthToken();
     const headers = {
-      method: MethodType.PATCH,
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     };
@@ -93,36 +88,6 @@ export const updateWarehouse = async (
     return response.data;
   } catch (error) {
     throw new Error(`Failed to update warehouse: ${error}`);
-  }
-};
-
-export const updateProduct = async (
-  warehouseId: string,
-  updatedData: Partial<Warehouse>
-): Promise<Warehouse> => {
-  try {
-    const token = GetAuthToken();
-    const response = await fetch(`${BASE_URL}${ROUTES.WAREHOUSE}/${warehouseId}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedData),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      const errorMessage =
-        errorData?.error?.message || "Unknown error occurred";
-      console.error(`Failed to update warehouse: ${errorMessage}`);
-      throw new Error(`Failed to update warehouse: ${errorMessage}`);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error(`Failed to update product, try again: `, error);
-    throw error;
   }
 };
 

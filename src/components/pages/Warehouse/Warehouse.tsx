@@ -1,27 +1,26 @@
 import React from "react";
 import { Container, Title, Table } from "../../table/table.style";
-import { BackToHomePage } from "../../../utils/utils";
 import { Warehouse } from "./Warehouse.static";
 import { Button, RedButton } from "../../button/button.style";
 import WarehouseForm from "../../form/WarehouseForm";
 import UpdateWarehouseModal from "./WarehouseDetails/WarehouseModal";
 import useWarehouseLogic from "../../../hooks/warehouse.hook";
+import { BackToHomePage, getClientName } from "../../../utils/utils";
 
 const WarehouseInfo: React.FC = () => {
-
   const {
     records,
+    clients,
     showForm,
+    setShowForm,
     showUpdateModal,
     setShowUpdateModal,
     selectedWarehouse,
     navigate,
-    toggleForm,
     handleSubmit,
     handleWarehouseUpdate,
     openUpdateModal,
-    deleteWarehouse,
-    getClientName,
+    deleteWarehouse
   } = useWarehouseLogic();
 
   return (
@@ -43,13 +42,16 @@ const WarehouseInfo: React.FC = () => {
             <tr key={index}>
               <td>{record.name}</td>
               <td>{record.type}</td>
-              <td>{getClientName(record.clientId)}</td>
+              <td>{getClientName(clients, record.clientId)}</td>
               <td>{new Date(record.createdAt).toLocaleString()}</td>
               <Button type="button" onClick={() => openUpdateModal(record)}>
-                  Update
-                </Button>
+                Update
+              </Button>
               <td>
-                <RedButton type="button" onClick={() => deleteWarehouse(record.id)}>
+                <RedButton
+                  type="button"
+                  onClick={() => deleteWarehouse(record.id)}
+                >
                   Delete
                 </RedButton>
               </td>
@@ -57,13 +59,15 @@ const WarehouseInfo: React.FC = () => {
           ))}
         </tbody>
       </Table>
-      <Button type="button" onClick={toggleForm}>
-        Register new warehouse
-      </Button>
-      <Button type="button" onClick={() => BackToHomePage(navigate)}>
-        Back
-      </Button>
-      {showForm && <WarehouseForm onCancel={toggleForm} onSubmit={handleSubmit} />}
+      <Button type="button" onClick={() => setShowForm(true)}>
+  Register new warehouse
+</Button>
+<Button type="button" onClick={() => BackToHomePage(navigate)}>
+  Back
+</Button>
+      {showForm && (
+        <WarehouseForm onCancel={() => setShowForm(false)} onSubmit={handleSubmit} />
+      )}
       {showUpdateModal && selectedWarehouse && (
         <UpdateWarehouseModal
           initialData={{
@@ -74,7 +78,7 @@ const WarehouseInfo: React.FC = () => {
           onUpdate={handleWarehouseUpdate}
           onCancel={() => setShowUpdateModal(false)}
         />
-      )} 
+      )}
     </Container>
   );
 };

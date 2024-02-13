@@ -6,11 +6,11 @@ import {
   StyledInput,
   StyledLabel,
 } from "../Welcome.style";
-import { BackToHomePage } from "../../../../utils/utils";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../../button/button.style";
 import { Title } from "../../Home/Home.style";
 import { BASE_URL, ROUTES } from "../../../../routes/routes.static";
+import { BackToHomePage } from "../../../../utils/utils";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -37,18 +37,18 @@ const SignUp = () => {
       <Title>Sign Up</Title>
       <StyledForm>
         <StyledLabel>
-          <StyledInput 
-            type="text" 
+          <StyledInput
+            type="text"
             name="text"
             placeholder="Username"
             onChange={(e) => setUsername(e.target.value)}
             required
           />
         </StyledLabel>
-        <StyledLabel>  
+        <StyledLabel>
           <StyledInput
             type="email"
-            name="email" 
+            name="email"
             placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -56,9 +56,9 @@ const SignUp = () => {
         </StyledLabel>
         <StyledLabel>
           <StyledInput
-            type="password"  
+            type="password"
             name="password"
-            placeholder="Password" 
+            placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
             required
           />
@@ -71,7 +71,6 @@ const SignUp = () => {
         <Button type="button" onClick={() => BackToHomePage(navigate)}>
           Back
         </Button>
-
       </StyledForm>
     </SignUpBox>
   );
