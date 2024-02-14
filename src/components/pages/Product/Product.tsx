@@ -2,11 +2,10 @@ import React from "react";
 import { Container, Table, Title } from "../../table/table.style";
 import { Button, RedButton } from "../../button/button.style";
 import ProductForm from "../../form/ProductForm";
-import { Product } from "./Product.static";
-import { deleteProduct } from "./Product.logic";
+import { Product, ProductFormData } from "./Product.static";
 import UpdateModal from "./ProductDetails/ProductModal";
 import { BackToHomePage } from "../../../utils/utils";
-import useProductList from "../../../hooks/product.hook";
+import useProductInfo from "../../../hooks/product.hook";
 
 const ProductList: React.FC = () => {
   const {
@@ -16,82 +15,13 @@ const ProductList: React.FC = () => {
     setShowUpdateModal,
     selectedProduct,
     openUpdateModal,
-    handleProductUpdate,
+    updateProduct,
+    deleteProduct,
     handleSubmit,
     handleFormVisibility,
-  } = useProductList();
-  // const [records, setRecords] = useState<Product[]>([]);
-  // const [showForm, setShowForm] = useState(false);
-  // const [showUpdateModal, setShowUpdateModal] = useState(false);
-  // const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  // const navigate = useNavigate();
+  } = useProductInfo();
+  
 
-  // useEffect(() => {
-  //   const token = GetAuthToken();
-  //   const headers = {
-  //     Authorization: `Bearer ${token}`,
-  //     "Content-Type": "application/json",
-  //   };
-
-  //   axios
-  //     .get<Product[]>(`${BASE_URL}${ROUTES.PRODUCT}`, { headers })
-  //     .then((res) => {
-  //       const data: Product[] = res.data;
-  //       if (data.length > 0) {
-  //         setRecords(data);
-  //       }
-  //     })
-  //     .catch((err) => console.error(err));
-  // }, []);
-
- 
-
-  // const openUpdateModal = (product: Product) => {
-  //   setSelectedProduct(product);
-  //   setShowUpdateModal(true);
-  // };
-
-  // const handleSubmit = (formData: ProductFormData) => {
-  //   const token = GetAuthToken();
-  //   const headers = {
-  //     Authorization: `Bearer ${token}`,
-  //     "Content-Type": "application/json",
-  //   };
-
-  //   const newProduct: Product = {
-  //     id: "",
-  //     createdAt: "",
-  //     ...formData,
-  //   };
-
-  //   axios
-  //     .post<Product>(`${BASE_URL}${ROUTES.PRODUCT}`, newProduct, { headers })
-  //     .then((res) => {
-  //       const newRecord: Product = res.data;
-  //       setRecords([...records, newRecord]);
-  //       setShowForm(!showForm);
-  //     })
-  //     .catch((err) => console.error(err));
-  // };
-
-  const handleProductUpdate = async (updatedData: ProductFormData) => {
-    try {
-      if (selectedProduct) {
-        const updatedProduct = await updateProduct(
-          selectedProduct.id,
-          updatedData
-        );
-        setRecords((prevRecords) =>
-          prevRecords.map((record) =>
-            record.id === updatedProduct.id ? updatedProduct : record
-          )
-        );
-      }
-      setShowUpdateModal(false);
-    } catch (error) {
-      console.error("Failed to update product: ", error);
-    }
-  };
 
   return (
     <Container>
@@ -147,7 +77,10 @@ const ProductList: React.FC = () => {
             type: selectedProduct.type,
             unit: selectedProduct.unit,
           }}
-          onUpdate={handleProductUpdate}
+          onUpdate={(updatedData: ProductFormData) =>{
+            updateProduct(selectedProduct.id, updatedData);
+            setShowUpdateModal(false);
+          }}
           onCancel={() => setShowUpdateModal(false)}
         />
       )}
@@ -156,3 +89,5 @@ const ProductList: React.FC = () => {
 };
 
 export default ProductList;
+
+

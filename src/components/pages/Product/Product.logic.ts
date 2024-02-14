@@ -64,22 +64,6 @@ export const updateProduct = async (
   }
 };
 
-export const deleteProduct = async (productId: string) => {
-  try {
-    const token = GetAuthToken();
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
-
-    await axios.delete<Product>(`${BASE_URL}${ROUTES.PRODUCT}/${productId}`, {
-      headers,
-    });
-  } catch (error) {
-    throw new Error(`Failed to delete warehouse: ${error}`);
-  }
-};
-
 export const getProducts = async (): Promise<Product[]> => {
   try {
     const token = GetAuthToken();

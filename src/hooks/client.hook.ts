@@ -1,4 +1,3 @@
-// useClientInfo.tsx
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Client, ClientFormData } from '../components/pages/Client/Client.static';
@@ -6,7 +5,7 @@ import { BASE_URL, ROUTES } from '../routes/routes.static';
 import { GetAuthToken } from '../utils/auth.utils';
 
 
-interface UseClientInfoResult {
+interface UseClientInfo {
   records: Client[];
   showForm: boolean;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,7 +18,7 @@ interface UseClientInfoResult {
   updateClient: (clientId: string, updatedData: ClientFormData) => void;
 }
 
-export const useClientInfo = (): UseClientInfoResult => {
+export const useClientInfo = (): UseClientInfo => {
   const [records, setRecords] = useState<Client[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -58,10 +57,35 @@ export const useClientInfo = (): UseClientInfoResult => {
       })
       .catch((err) => console.error(err));
   };
-  
+
+
   const openUpdateModal = (client: Client) => {
     setSelectedClient(client);
     setShowUpdateModal(true);
+  };
+
+
+
+  const updateClient = (clientId: string, updatedData: ClientFormData) => {
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+
+    axios
+      .patch<Client>(`${BASE_URL}${ROUTES.CLIENT}/${clientId}`, updatedData, {
+        headers,
+      })
+      .then((res) => {
+        const updatedRecord: Client = res.data;
+        setRecords((prevRecords) =>
+          prevRecords.map((record) =>
+            record.id === updatedRecord.id ? updatedRecord : record
+          )
+        );
+      })
+      .catch((err) => console.error(err));
   };
 
   const handleSubmit = (formData: ClientFormData) => {
@@ -83,28 +107,6 @@ export const useClientInfo = (): UseClientInfoResult => {
         const newRecord: Client = res.data;
         setRecords([...records, newRecord]);
         setShowForm(!showForm);
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const updateClient = (clientId: string, updatedData: ClientFormData) => {
-    const token = GetAuthToken();
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
-
-    axios
-      .patch<Client>(`${BASE_URL}${ROUTES.CLIENT}/${clientId}`, updatedData, {
-        headers,
-      })
-      .then((res) => {
-        const updatedRecord: Client = res.data;
-        setRecords((prevRecords) =>
-          prevRecords.map((record) =>
-            record.id === updatedRecord.id ? updatedRecord : record
-          )
-        );
       })
       .catch((err) => console.error(err));
   };

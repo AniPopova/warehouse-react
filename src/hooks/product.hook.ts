@@ -1,11 +1,13 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { updateProduct } from "../components/pages/Product/Product.logic";
-import { Product, ProductFormData } from "../components/pages/Product/Product.static";
+import {
+  Product,
+  ProductFormData,
+} from "../components/pages/Product/Product.static";
 import { BASE_URL, ROUTES } from "../routes/routes.static";
 import { GetAuthToken } from "../utils/auth.utils";
 
-interface ProductListHook {
+interface UseProductInfo {
   records: Product[];
   showForm: boolean;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,63 +15,77 @@ interface ProductListHook {
   setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
   selectedProduct: Product | null;
   openUpdateModal: (product: Product) => void;
-  handleProductUpdate: (updatedData: ProductFormData) => void;
+  updateProduct: (productId: string, updatedData: ProductFormData) => void;
   handleSubmit: (formData: ProductFormData) => void;
   handleFormVisibility: () => void;
-  handleDelete: (productId: string) => void;
+  deleteProduct: (productId: string, updatedData: ProductFormData) => void;
 }
 
-const useProductList = (): ProductListHook => {
+const useProductInfo = (): UseProductInfo => {
   const [records, setRecords] = useState<Product[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-
   useEffect(() => {
-    const fetchData = async () => {
-      const token = GetAuthToken();
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      };
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
 
-      try {
-        const response = await axios.get<Product[]>(`${BASE_URL}${ROUTES.PRODUCT}`, { headers });
+    axios
+      .get<Product[]>(`${BASE_URL}${ROUTES.PRODUCT}`, { headers })
+      .then((response) => {
         const data: Product[] = response.data;
         if (data.length > 0) {
           setRecords(data);
         }
-      } catch (error) {
-        console.error(error);
-      }
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
+  const deleteProduct = (productId: string) => {
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     };
 
-    fetchData();
-  }, []);
+    axios
+      .delete<Product>(`${BASE_URL}${ROUTES.PRODUCT}/${productId}`, { headers })
+      .then((res) => {
+        setRecords(records.filter((record) => record.id !== productId));
+        return res;
+      })
+      .catch((err) => console.error(err));
+  };
+
 
   const openUpdateModal = (product: Product) => {
     setSelectedProduct(product);
     setShowUpdateModal(true);
   };
 
-  const handleProductUpdate = async (updatedData: ProductFormData) => {
-    try {
-      if (selectedProduct) {
-        const updatedProduct = await updateProduct(
-          selectedProduct.id,
-          updatedData
-        );
+  const updateProduct = async (productId: string, updatedData: ProductFormData) => {
+    const token = GetAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+    axios
+      .patch<Product>(`${BASE_URL}${ROUTES.PRODUCT}/${productId}`,
+        updatedData, { headers })
+      .then((response) => {
+        const updatedRecord: Product = response.data
         setRecords((prevRecords) =>
           prevRecords.map((record) =>
-            record.id === updatedProduct.id ? updatedProduct : record
+            record.id === updatedRecord.id ? updatedRecord : record
           )
         );
-      }
-      setShowUpdateModal(false);
-    } catch (error) {
-      console.error("Failed to update product: ", error);
-    }
+
+      }).catch((error) => console.error(error));
+
   };
 
   const handleSubmit = (formData: ProductFormData) => {
@@ -95,21 +111,6 @@ const useProductList = (): ProductListHook => {
       .catch((err) => console.error(err));
   };
 
-  const handleDelete = async (productId: string) => {
-    try {
-      const token = GetAuthToken();
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      };
-  
-      await axios.delete<Product>(`${BASE_URL}${ROUTES.PRODUCT}/${productId}`, {
-        headers,
-      });
-    } catch (error) {
-      throw new Error(`Failed to delete warehouse: ${error}`);
-    }
-  };
 
   const handleFormVisibility = () => {
     setShowForm(!showForm);
@@ -123,11 +124,11 @@ const useProductList = (): ProductListHook => {
     setShowUpdateModal,
     selectedProduct,
     openUpdateModal,
-    handleProductUpdate,
+    updateProduct,
+    deleteProduct,
     handleSubmit,
-    handleFormVisibility,
-    handleDelete
+    handleFormVisibility
   };
 };
 
-export default useProductList;
+export default useProductInfo;
