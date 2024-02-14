@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../contexts/auth/ProvideAuth";
 import { Button } from "../../../button/button.style";
 import { BASE_URL, ROUTES } from "../../../../routes/routes.static";
-import { BackToHomePage } from "../../../../utils/utils";
+import { BackToHomePage, validateEmail } from "../../../../utils/utils";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -25,6 +25,11 @@ const Login = () => {
         email,
         password,
       });
+
+      if (!validateEmail(email)) {
+        console.log("Please enter a valid email address.");
+        return;
+      }
       login(response.data.access_token);
       console.log("You are successfully logged in", response.data);
 

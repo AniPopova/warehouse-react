@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import {
   Bar,
   BurgerMenu,
@@ -14,6 +14,12 @@ import { imageSrcPath } from './NavBar.static';
 
 const NavBar: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/logout'); 
+  };
 
   const toggleNav = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -30,20 +36,20 @@ const NavBar: React.FC = () => {
               </Logo>
               <BurgerMenu onClick={toggleNav}>
                 <Bar>{open ? 'Close' : 'Open'}</Bar>
-                <Bar />
-                <Bar />
-                <Bar />
+               <div>line 1</div>
+               <div>line 2</div>
+               <div>line 3</div>
               </BurgerMenu>
               <StyledNavLink to="/" end>
-                 Home
-               </StyledNavLink>
-               <StyledNavLink to="/auth">LogIn / SignUp</StyledNavLink>
-               <StyledNavLink to="/client">Client</StyledNavLink>
-               <StyledNavLink to="/product">Product</StyledNavLink>
-               <StyledNavLink to="/order">Order</StyledNavLink>
-               <StyledNavLink to="/warehouse">Warehouse</StyledNavLink>
+                Home
+              </StyledNavLink>
+              <StyledNavLink to="/auth">LogIn / SignUp</StyledNavLink>
+              <StyledNavLink to="/client">Client</StyledNavLink>
+              <StyledNavLink to="/product">Product</StyledNavLink>
+              <StyledNavLink to="/order">Order</StyledNavLink>
+              <StyledNavLink to="/warehouse">Warehouse</StyledNavLink>
             </NavLinks>
-            <StyledNavLink to="/logout">Logout</StyledNavLink>
+            <StyledNavLink to="/logout" onClick={handleLogout} style={{ display: 'none' }}>Logout</StyledNavLink>
           </NavContainer>
         </header>
         <main>

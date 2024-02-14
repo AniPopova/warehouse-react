@@ -10,25 +10,30 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "../../../button/button.style";
 import { Title } from "../../Home/Home.style";
 import { BASE_URL, ROUTES } from "../../../../routes/routes.static";
-import { BackToHomePage } from "../../../../utils/utils";
+import { BackToHomePage, validateEmail } from "../../../../utils/utils";
 
-const SignUp = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const SignUp: React.FC = () => {
+  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (): Promise<void> => {
+    if (!validateEmail(email)) {
+      console.log("Please enter a valid email address.");
+      return;
+    }
+
     try {
       const response = await axios.post(`${BASE_URL}${ROUTES.SIGNUP}`, {
         username,
         email,
         password,
       });
-      console.log("Sign Up successfully", response.data);
+      console.log("Sign Up successful", response.data);
       return BackToHomePage(navigate);
     } catch (error) {
-      console.log("Sorry you failed, try again.");
+      console.log("Sorry, sign up failed. Please try again.");
     }
   };
 
@@ -40,7 +45,7 @@ const SignUp = () => {
           <StyledInput
             type="text"
             name="text"
-            placeholder="Username"
+            placeholder="Name"
             onChange={(e) => setUsername(e.target.value)}
             required
           />
@@ -63,11 +68,9 @@ const SignUp = () => {
             required
           />
         </StyledLabel>
-
-        <Button type="button" onClick={() => handleSignUp()}>
+        <Button type="button" onClick={handleSignUp}>
           Sign Up
         </Button>
-
         <Button type="button" onClick={() => BackToHomePage(navigate)}>
           Back
         </Button>
