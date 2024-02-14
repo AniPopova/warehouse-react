@@ -19,14 +19,14 @@ import { GetAuthToken } from "../../utils/auth.utils";
 const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormProps) => {
   const [formData, setFormData] = useState<OrderFormData>({
     createOrderDto: {
+      id: "",
       type: OrderType.ORDER,
       clientId: "",
       warehouseId: "",
-      id: ""
     },
     createOrderDetailDto: {
+      warehouseId:"",
       productId: "",
-      senderWarehouseId: "",
       quantity: 0,
       price: 0,
     },
@@ -35,59 +35,18 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
     },
   });
 
-  const handleInputChange = (field: string, value: string | number) => {
-    const [parentField, childField] = field.split(".");
+  const handleInputChange = (key: string, value: string) => {
     setFormData((prevData) => ({
       ...prevData,
-      [parentField]: {
-        ...prevData[parentField as keyof OrderFormData],
-        [childField]: value,
-      },
+      [key]: value,
     }));
   };
-  const createOrder = async () => {
-    const data = {
-      createOrderDto: {
-        type: "ORDER",
-        clientId: "7398fac9-a2a3-4f41-9292-14039af0e24f",
-        warehouseId: null
-      },
-      createOrderDetailDto: {
-        productId: "904a550d-9ba1-4d47-95fc-a434fd72cdab",
-        quantity: 150,
-        price: 9
-      }
-    };
-  
-    try {
-      const token = GetAuthToken();
-      const response = await axios.post(`${BASE_URL}${ROUTES.ORDER}`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-  
-      if (response.status === 200) {
-        console.log('Order created successfully');
-      } else {
 
-        console.error('Failed to create order');
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
-  };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const orderData = {
-        createOrderDto: formData.createOrderDto,
-        createOrderDetailDto: formData.createOrderDetailDto,
-      };
       const token = GetAuthToken();
-      const response = await axios.post(`${BASE_URL}${ROUTES.ORDER}`, orderData, {
-      
+      const response = await axios.post(`${BASE_URL}${ROUTES.ORDER}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -96,13 +55,36 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
 
       if (response.status === 200) {
         console.log('Order created successfully');
-        onSubmit(response.data); // Assuming the response contains the created order data
+        onSubmit(response.data);
       } else {
         console.error('Failed to create order');
       }
     } catch (error) {
       console.error("Failed to create order:", error);
     }
+  };
+
+  const handleCancel = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormData({
+      createOrderDto: {
+        id: "",
+        type: OrderType.ORDER,
+        clientId: "",
+        warehouseId: "",
+      },
+      createOrderDetailDto: {
+        warehouseId:"",
+        productId: "",
+        quantity: 0,
+        price: 0,
+      },
+      createInvoiceDto: {
+        orderId: "",
+      },
+    });
+
+    onCancel();
   };
 
   const [clients, setClients] = useState<Client[]>([]);
@@ -148,34 +130,13 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
     fetchProducts();
   }, []);
 
-  const handleCancel = (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormData({
-      createOrderDto: {
-        type: OrderType.ORDER,
-        clientId: "",
-        warehouseId: "",
-        id: ""
-      },
-      createOrderDetailDto: {
-        productId: "",
-        senderWarehouseId: "",
-        quantity: 0,
-        price: 0,
-      },
-      createInvoiceDto: {
-        orderId: "",
-      },
-    });
 
-    onCancel();
-  };
 
   return (
     <div>
       <h2>Register new order</h2>
       <form onSubmit={handleSubmit}>
-      <label>
+        <label>
           Type:
           <select
             name="type"
@@ -183,11 +144,11 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
             onChange={(e) => handleInputChange("createOrderDto.type", e.target.value)}
             required
           >
-            <option value={OrderType.ORDER}>ORDER</option>
-            <option value={OrderType.DELIVERY}>DELIVERY</option>
-            <option value={OrderType.TRANSFER}>TRANSFER</option>
+            <option value="ORDER">ORDER</option>
+            <option value="DELIVERY">DELIVERY</option>
+            <option value="TRANSFER">TRANSFER</option>
           </select>
-          </label>
+        </label>
         <label>
           Client:
           <select
@@ -203,7 +164,6 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
             ))}
           </select>
         </label>
-
         <label>
           Warehouse:
           <select
@@ -219,7 +179,21 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
             ))}
           </select>
         </label>
-
+        <label>
+          Warehouse Supplier:
+          <select
+            value={formData.createOrderDto.warehouseId}
+            onChange={(e) =>
+              handleInputChange("createOrderDetailDto.senderWarehouseId", e.target.value)
+            }
+          >
+            {warehouses.map((warehouse) => (
+              <option key={warehouse.id} value={warehouse.id}>
+                {warehouse.name}
+              </option>
+            ))}
+          </select>
+          </label>
         <label>
           Product:
           <select
@@ -261,7 +235,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
             }
           />
         </label>
-        <Button type="submit"onClick={createOrder}>Create Order</Button>
+        <Button type="submit">Create Order</Button>
         <Button type="button" onClick={handleCancel}>
           Cancel
         </Button>
@@ -271,3 +245,4 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
 };
 
 export default OrderForm;
+

@@ -1,9 +1,8 @@
 import { styled } from "styled-components";
 
 export const ModalContainer = styled.div`
-  top: 0;
-  left: 0;
-  margin-top: 10px;
+  position: fixed;
+  margin: 50px;
   width: 300px;
   height: 300px;
   display: flex;
@@ -19,7 +18,7 @@ export const ModalContent = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   width: 80%; 
 
-  @media (max-width: 768px) {
+  @media (min-width: 768px) {
     width: 90%;  
   }
 
@@ -44,7 +43,7 @@ export const ModalContent = styled.div`
       margin-top: 10px;
       border: none;
       border-radius: 3px;
-      background-color: blue;
+      background-color: brown;
       color: #fff;
       cursor: pointer;
     }

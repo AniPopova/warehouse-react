@@ -10,13 +10,14 @@ export const createClient = async (
   identificationCode: string
 ): Promise<Client> => {
   try {
+    const token = GetAuthToken();
     const response = await axios.post(`${BASE_URL}${ROUTES.CLIENT}`, {
       name,
       address,
       identificationCode,
     }, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       }
     });
@@ -67,21 +68,5 @@ export const getClients = async (): Promise<Client[]> => {
     console.error("Failed to fetch clients:", error);
     throw error;
   }
-};
-
-export const deleteClient = (clientId: string, records: Client[], setRecords: React.Dispatch<React.SetStateAction<Client[]>>) => {
-  const token = GetAuthToken();
-  const headers = {
-    Authorization: `Bearer ${token}`,
-    "Content-Type": "application/json",
-  };
-
-  axios
-    .delete<Client>(`${BASE_URL}${ROUTES.CLIENT}/${clientId}`, { headers })
-    .then((res) => {
-      setRecords(records.filter((record) => record.id !== clientId));
-      return res;
-    })
-    .catch((err) => console.error(err));
 };
 

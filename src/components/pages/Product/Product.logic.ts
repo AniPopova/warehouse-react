@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
 import { GetAuthToken } from "../../../utils/auth.utils";
-import { Product, ProductType, UnitType } from "./Product.static";
+import { Product, ProductType, UnitType, UpdateProductDto } from "./Product.static";
 
 export const createProduct = async (
   name: string,
@@ -25,10 +25,6 @@ export const createProduct = async (
       }
     );
 
-    if (response.status !== 200) {
-      throw new Error(`Failed to create product: ${response.data.error}`);
-    }
-
     return response.data;
   } catch (error) {
     console.error(`Failed to create product, try again: `, error);
@@ -37,14 +33,13 @@ export const createProduct = async (
 };
 
 export const updateProduct = async (
-  productId: string,
-  updatedData: Partial<Product>
+  updateData: UpdateProductDto
 ): Promise<Product> => {
   try {
     const token = GetAuthToken();
     const response = await axios.patch(
-      `${BASE_URL}${ROUTES.PRODUCT}/${productId}`,
-      updatedData,
+      `${BASE_URL}${ROUTES.PRODUCT}/${updateData.id}`,
+      updateData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -52,11 +47,6 @@ export const updateProduct = async (
         },
       }
     );
-
-    if (response.status !== 200) {
-      throw new Error(`Failed to update product.`);
-    }
-
     return response.data;
   } catch (error) {
     console.error(`Failed to update product, try again: `, error);
@@ -85,8 +75,10 @@ export const getProducts = async (): Promise<Product[]> => {
 
 export const getProductName = async (productId: string): Promise<string> => {
   try {
-    const response = await axios.get<Product>(`${BASE_URL}${ROUTES.PRODUCT}/${productId}`);
-    
+    const response = await axios.get<Product>(
+      `${BASE_URL}${ROUTES.PRODUCT}/${productId}`
+    );
+
     if (response.status !== 200) {
       throw new Error(`Failed to get product name for product ID ${productId}`);
     }
@@ -94,7 +86,10 @@ export const getProductName = async (productId: string): Promise<string> => {
     const product = response.data;
     return product.id === productId ? product.name : "N/A";
   } catch (error) {
-    console.error(`Failed to get product name for product ID ${productId}: `, error);
+    console.error(
+      `Failed to get product name for product ID ${productId}: `,
+      error
+    );
     throw error;
   }
 };

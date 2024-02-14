@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Table, Title } from "../../table/table.style";
 import { Button, RedButton } from "../../button/button.style";
@@ -9,6 +9,7 @@ import { BackToHomePage, getClientName } from "../../../utils/utils";
 import { Order } from "./Order.static";
 
 const OrderList: React.FC = () => {
+
   const navigate = useNavigate();
 
   const {
@@ -68,7 +69,7 @@ const OrderList: React.FC = () => {
         Analyses
       </Button>
       {showOrderDetailsInfo && <OrderDetailsInfo />}
-      <Button type="button" onClick={() => BackToHomePage(navigate)}>
+      <Button type="button" onClick={() => BackToHomePage}>
         Back
       </Button>
       {showForm && <OrderForm onCancel={()=>setShowForm} onSubmit={handleSubmit} />}

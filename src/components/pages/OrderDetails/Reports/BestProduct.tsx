@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { Button } from "../../../button/button.style";
 import { Container, Table } from "../../../table/table.style";
 import { BASE_URL, ROUTES } from "../../../../routes/routes.static";
 import { GetAuthToken } from "../../../../utils/auth.utils";
@@ -9,7 +7,6 @@ import { BestProduct } from "../OrderDetails.static";
 
 const BestProductReport: React.FC = () => {
   const [records, setRecords] = useState<BestProduct[]>([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const token = GetAuthToken();
@@ -51,10 +48,6 @@ const BestProductReport: React.FC = () => {
           ))}
         </tbody>
       </Table>
-      <br />
-      <Button type="button" onClick={() => navigate(-1)}>
-        Back
-      </Button>
     </Container>
   );
 };

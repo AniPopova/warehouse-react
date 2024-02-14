@@ -39,7 +39,11 @@ export const CheckAuthLoader = () => {
   }
 };
 
-
+export const decodeUserRole = (token: string): string => {
+  const decodedToken = JSON.parse(atob(token.split(".")[1]));
+  const userRole = decodedToken.userRole;
+  return userRole;
+};
 
 
 

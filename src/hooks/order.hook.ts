@@ -4,7 +4,6 @@ import { getClients } from "../components/pages/Client/Client.logic";
 import { Client } from "../components/pages/Client/Client.static";
 import {
   Order,
-  OrderData,
   OrderFormData,
 } from "../components/pages/Order/Order.static";
 import { BASE_URL, ROUTES } from "../routes/routes.static";
@@ -101,9 +100,6 @@ export const useOrderLogic = (): UseOrderLogicResult => {
       .catch((err: Error) => console.error(err));
   };
 
-
-
-
   const handleSubmit = () => {
     const token = GetAuthToken();
     const headers = {
@@ -111,7 +107,7 @@ export const useOrderLogic = (): UseOrderLogicResult => {
       "Content-Type": "application/json",
     };
 
-    const newOrder: OrderData = {
+    const newOrder = {
       id: "",
       createdAt: "",
     };

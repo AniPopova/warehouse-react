@@ -1,24 +1,21 @@
-import React, { useState, useEffect, createContext, useContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import {
   AuthContextProps,
   ProvideAuthProps,
   User,
 } from "../../@types/auth.types";
 
-export const AuthContext = createContext<AuthContextProps | undefined>(
-  undefined
-);
+export const decodeUserRole = (token: string): string => {
+  const decodedToken = JSON.parse(atob(token.split(".")[1]));
+  const userRole = decodedToken.userRole;
+  return userRole;
+};
 
-export function useAuth(): AuthContextProps {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("helper hook for AuthProvider");
-  }
-  return context;
-}
+export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider: React.FC<ProvideAuthProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+
 
   useEffect(() => {
     const authenticatedUser = localStorage.getItem("user");
@@ -31,6 +28,7 @@ export const AuthProvider: React.FC<ProvideAuthProps> = ({ children }) => {
       }
     }
   }, []);
+
 
   const signIn = (newUser: User, callback: () => void): void => {
     localStorage.setItem("user", JSON.stringify(newUser));
@@ -52,3 +50,4 @@ export const AuthProvider: React.FC<ProvideAuthProps> = ({ children }) => {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+

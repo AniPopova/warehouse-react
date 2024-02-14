@@ -80,6 +80,7 @@ const OrderDetailsInfo: React.FC = () => {
     const warehouse = warehouses.find((w) => w.id === warehouseId);
     return warehouse ? warehouse.name : "N/A";
   };
+  
   const getClientName = (orderId: string): string => {
     const order = orders.find((o) => o.id === orderId);
     const client = order

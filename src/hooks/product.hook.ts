@@ -18,7 +18,7 @@ interface UseProductInfo {
   updateProduct: (productId: string, updatedData: ProductFormData) => void;
   handleSubmit: (formData: ProductFormData) => void;
   handleFormVisibility: () => void;
-  deleteProduct: (productId: string, updatedData: ProductFormData) => void;
+  deleteProduct: (productId: string) => void;
 }
 
 const useProductInfo = (): UseProductInfo => {

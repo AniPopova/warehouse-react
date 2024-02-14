@@ -3,13 +3,10 @@ import axios from "axios";
 import { BestClient } from "../OrderDetails.static";
 import { GetAuthToken } from "../../../../utils/auth.utils";
 import { BASE_URL, ROUTES } from "../../../../routes/routes.static";
-import { useNavigate } from "react-router-dom";
 import { Container, Table } from "../../../table/table.style";
-import { Button } from "../../../button/button.style";
 
 const BestClientReport: React.FC = () => {
   const [records, setRecords] = useState<BestClient[]>([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const token = GetAuthToken();
@@ -49,10 +46,6 @@ const BestClientReport: React.FC = () => {
           ))}
         </tbody>
       </Table>
-      <br />
-      <Button type="button" onClick={() => navigate(-1)}>
-        Back
-      </Button>
     </Container>
   );
 };

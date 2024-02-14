@@ -17,5 +17,3 @@ export const ROUTES = {
   AVAILABILITY: '/order-details/stock'
 };
 
-export const loginUrl = 'http://localhost:3000/auth/login';
-export const signUpUrl = 'http://localhost:3000/auth/signup';
