@@ -18,7 +18,7 @@ export interface CreateInvoiceDto {
 
 export interface CreateOrderDto {
   id: string;
-  type: OrderType;
+  type: string;
   clientId?: string;
   warehouseId?: string;
 }
@@ -31,7 +31,7 @@ export interface CreateOrderDetailDto {
 }
 
 export interface OrderFormData {
-  createOrderDto: CreateOrderDto & { id: string };
+  createOrderDto: CreateOrderDto;
   createOrderDetailDto: CreateOrderDetailDto;
   createInvoiceDto?: CreateInvoiceDto;
 }

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { OrderDetail } from "./OrderDetails.static";
 import { BASE_URL, ROUTES } from "../../../routes/routes.static";
 import { GetAuthToken } from "../../../utils/auth.utils";
@@ -17,7 +16,6 @@ import { getClients } from "../Client/Client.logic";
 import { getOrders } from "../Order/Order.logic";
 import { Warehouse } from "../Warehouse/Warehouse.static";
 import { getWarehouses } from "../Warehouse/Warehouse.logic";
-import { BackToHomePage } from "../../../utils/utils";
 
 const OrderDetailsInfo: React.FC = () => {
   const [records, setRecords] = useState<OrderDetail[]>([]);
@@ -28,8 +26,6 @@ const OrderDetailsInfo: React.FC = () => {
   const [showBestClientReport, setShowBestClientReport] = useState(false);
   const [showBestProductReport, setShowBestProductReport] = useState(false);
   const [showAvailabilityReport, setShowAvailabilityReport] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const token = GetAuthToken();
@@ -137,9 +133,6 @@ const OrderDetailsInfo: React.FC = () => {
         See best product
       </Button>
       {showAvailabilityReport && <AvailabilityReport />}
-      <Button type="button" onClick={() => BackToHomePage(navigate)}>
-        Back
-      </Button>
     </Container>
   );
 };

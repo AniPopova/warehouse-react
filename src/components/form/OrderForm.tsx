@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   OrderFormData,
   OrderFormProps,
-  OrderType,
 } from "../pages/Order/Order.static";
 import { Button } from "../button/button.style";
 import { Product } from "../pages/Product/Product.static";
@@ -20,7 +19,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
   const [formData, setFormData] = useState<OrderFormData>({
     createOrderDto: {
       id: "",
-      type: OrderType.ORDER,
+      type: "",
       clientId: "",
       warehouseId: "",
     },
@@ -69,7 +68,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
     setFormData({
       createOrderDto: {
         id: "",
-        type: OrderType.ORDER,
+        type: "",
         clientId: "",
         warehouseId: "",
       },
@@ -144,6 +143,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
             onChange={(e) => handleInputChange("createOrderDto.type", e.target.value)}
             required
           >
+            <option value="">Select Type</option>
             <option value="ORDER">ORDER</option>
             <option value="DELIVERY">DELIVERY</option>
             <option value="TRANSFER">TRANSFER</option>
@@ -153,10 +153,9 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
           Client:
           <select
             value={formData.createOrderDto.clientId}
-            onChange={(e) =>
-              handleInputChange("createOrderDto.clientId", e.target.value)
-            }
+            onChange={(e) => handleInputChange("createOrderDto.clientId", e.target.value)}
           >
+            <option value="">Select Client</option>
             {clients.map((client) => (
               <option key={client.id} value={client.id}>
                 {client.name}
@@ -168,10 +167,9 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
           Warehouse:
           <select
             value={formData.createOrderDto.warehouseId}
-            onChange={(e) =>
-              handleInputChange("createOrderDto.senderWarehouseId", e.target.value)
-            }
+            onChange={(e) => handleInputChange("createOrderDto.warehouseId", e.target.value)}
           >
+            <option value="">Select Warehouse</option>
             {warehouses.map((warehouse) => (
               <option key={warehouse.id} value={warehouse.id}>
                 {warehouse.name}
@@ -182,29 +180,24 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
         <label>
           Warehouse Supplier:
           <select
-            value={formData.createOrderDto.warehouseId}
-            onChange={(e) =>
-              handleInputChange("createOrderDetailDto.senderWarehouseId", e.target.value)
-            }
+            value={formData.createOrderDetailDto.warehouseId}
+            onChange={(e) => handleInputChange("createOrderDetailDto.warehouseId", e.target.value)}
           >
+            <option value="">Select Warehouse Supplier</option>
             {warehouses.map((warehouse) => (
               <option key={warehouse.id} value={warehouse.id}>
                 {warehouse.name}
               </option>
             ))}
           </select>
-          </label>
+        </label>
         <label>
           Product:
           <select
             value={formData.createOrderDetailDto.productId}
-            onChange={(e) =>
-              handleInputChange(
-                "createOrderDetailDto.productId",
-                e.target.value
-              )
-            }
+            onChange={(e) => handleInputChange("createOrderDetailDto.productId", e.target.value)}
           >
+            <option value="">Select Product</option>
             {products.map((product) => (
               <option key={product.id} value={product.id}>
                 {product.name}
@@ -212,27 +205,23 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
             ))}
           </select>
         </label>
-
+  
         <label>
           Quantity:
           <input
             type="number"
             value={formData.createOrderDetailDto.quantity}
-            onChange={(e) =>
-              handleInputChange("createOrderDetailDto.quantity", e.target.value)
-            }
+            onChange={(e) => handleInputChange("createOrderDetailDto.quantity", e.target.value)}
           />
         </label>
-
+  
         <label>
           Price:
           <input
             type="number"
             step="0.01"
             value={formData.createOrderDetailDto.price}
-            onChange={(e) =>
-              handleInputChange("createOrderDetailDto.price", e.target.value)
-            }
+            onChange={(e) => handleInputChange("createOrderDetailDto.price", e.target.value)}
           />
         </label>
         <Button type="submit">Create Order</Button>

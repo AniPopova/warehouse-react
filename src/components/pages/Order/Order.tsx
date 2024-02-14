@@ -69,7 +69,7 @@ const OrderList: React.FC = () => {
         Analyses
       </Button>
       {showOrderDetailsInfo && <OrderDetailsInfo />}
-      <Button type="button" onClick={() => BackToHomePage}>
+      <Button type="button" onClick={() => BackToHomePage(navigate)}>
         Back
       </Button>
       {showForm && <OrderForm onCancel={()=>setShowForm} onSubmit={handleSubmit} />}
