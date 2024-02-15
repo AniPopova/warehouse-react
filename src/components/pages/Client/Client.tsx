@@ -6,8 +6,10 @@ import { Button, RedButton } from "../../button/button.style";
 import UpdateModal from "./ClientUpdate/ClientModal";
 import { useClientInfo } from "../../../hooks/client.hook";
 import { BackToHomePage } from "../../../utils/utils";
+import { useNavigate } from "react-router-dom";
 
 const ClientInfo: React.FC = () => {
+  const navigate = useNavigate();
 
   const {
     records,
@@ -67,7 +69,7 @@ const ClientInfo: React.FC = () => {
       <Button type="button" onClick={()=>setShowForm(true)}>
         Register new client
       </Button>
-      <Button type="button" onClick={() => BackToHomePage}>
+      <Button type="button" onClick={() => BackToHomePage(navigate)}>
         Back
       </Button>
       {showForm && <ClientForm onCancel={()=>setShowForm} onSubmit={handleSubmit} />}

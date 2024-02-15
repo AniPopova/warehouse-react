@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import {
   OrderFormData,
   OrderFormProps,
 } from "../pages/Order/Order.static";
-import { Button } from "../button/button.style";
 import { Product } from "../pages/Product/Product.static";
 import { Warehouse } from "../pages/Warehouse/Warehouse.static";
 import { Client } from "../pages/Client/Client.static";
@@ -133,8 +133,9 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
 
   return (
     <div>
-      <h2>Register new order</h2>
-      <form onSubmit={handleSubmit}>
+      <h2>Register new order - Under construction!</h2>
+      <h2>Expected soon...</h2>
+      {/* <form onSubmit={handleSubmit}>
         <label>
           Type:
           <select
@@ -228,7 +229,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit, onCancel }: OrderFormPr
         <Button type="button" onClick={handleCancel}>
           Cancel
         </Button>
-      </form>
+      </form> */}
     </div>
   );
 };

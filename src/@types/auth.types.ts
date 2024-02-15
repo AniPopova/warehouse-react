@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { UserRights } from "../components/form/UserForm";
 
 //Authentication
 export interface Token {
@@ -11,11 +10,24 @@ export interface Token {
   exp: number;
 }
 
+export enum UserRights {
+  OWNER = "OWNER",
+  OPERATOR = "OPERATOR",
+  VIEWER = "VIEWER",
+}
+
 export interface User {
   id?: string;
   name?: string;
   email?: string;
   userRole?: UserRights;
+}
+
+export interface UserFormData {
+  username: string;
+  email: string;
+  password: string;
+  userRole: UserRights | "";
 }
 
 export interface AuthContextValue {
@@ -48,5 +60,9 @@ export interface JWTPayload {
   username: string;
   email: string;
   userRole: UserRights;
+}
+
+export interface UserFormProps {
+  onSubmit: (formData: UserFormData) => void;
 }
 
